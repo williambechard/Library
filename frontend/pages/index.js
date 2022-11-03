@@ -1,5 +1,15 @@
 import Head from "next/head";
-import { Section } from "../components";
+import { Header, Section, Footer } from "../components";
+import DULogo from "../public/DU-Logo-Mark.svg";
+import styled from "@emotion/styled";
+import Flex from "../components/Flex";
+import Text from "../components/Text/Text";
+
+const FlexPage = styled.div`
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100vh;
+`;
 
 const Home = () => {
   return (
@@ -11,12 +21,22 @@ const Home = () => {
           content="Capstone project for Digital University Dev Team"
         />
         <link rel="icon" href="/favicon.ico" />
+        <link
+          href="https://fonts.googleapis.com/css?family=Poppins"
+          rel="stylesheet"
+        />
       </Head>
-      <Section>
-        {/*
-          PAGE CONTENT GOES HERE
-        */}
-      </Section>
+      <FlexPage>
+        <Header title={"William's Capstone"} icon={DULogo} height={"75px"} />
+        <Section
+          children={<Text content={"Hello World!"} bgColor="#dfdfdf" />}
+        />
+        <Footer
+          title={"@ 2022 Omni Federal - All Rights Reserved"}
+          bgColor={"black"}
+          fColor={"white"}
+        />
+      </FlexPage>
     </>
   );
 };
