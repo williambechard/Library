@@ -36,7 +36,12 @@ const Header = ({
   fColor = "black",
 }) => {
   return (
-    <HeaderFlex height={height} bgColor={bgColor} fColor={fColor}>
+    <HeaderFlex
+      data-testid={"header-1"}
+      height={height}
+      bgColor={bgColor}
+      fColor={fColor}
+    >
       <HeaderItem>
         <Image width={"50px"} height={"50px"} src={icon} alt={"DU Logo"} />
       </HeaderItem>

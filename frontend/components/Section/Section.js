@@ -23,7 +23,7 @@ const Container = styled.div`
 
 const Section = ({ children }) => {
   return (
-    <StyledSection>
+    <StyledSection data-testid={"section-1"}>
       <Container>{children}</Container>
     </StyledSection>
   );

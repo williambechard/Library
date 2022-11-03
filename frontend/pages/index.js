@@ -21,16 +21,12 @@ const Home = () => {
           content="Capstone project for Digital University Dev Team"
         />
         <link rel="icon" href="/favicon.ico" />
-        <link
-          href="https://fonts.googleapis.com/css?family=Poppins"
-          rel="stylesheet"
-        />
       </Head>
-      <FlexPage>
+      <FlexPage data-testid={"home-1"}>
         <Header title={"William's Capstone"} icon={DULogo} height={"75px"} />
-        <Section
-          children={<Text content={"Hello World!"} bgColor="#dfdfdf" />}
-        />
+        <Section>
+          <Text content={"Hello World!"} bgColor="#dfdfdf" />
+        </Section>
         <Footer
           title={"@ 2022 Omni Federal - All Rights Reserved"}
           bgColor={"black"}

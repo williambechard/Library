@@ -28,7 +28,12 @@ const Footer = ({
   children,
 }) => {
   return (
-    <FooterFlex height={height} bgColor={bgColor} fColor={fColor}>
+    <FooterFlex
+      data-testid={"footer-1"}
+      height={height}
+      bgColor={bgColor}
+      fColor={fColor}
+    >
       <FooterItem>{title}</FooterItem>
     </FooterFlex>
   );

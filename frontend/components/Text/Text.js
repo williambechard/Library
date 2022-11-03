@@ -18,7 +18,7 @@ const TextItem = styled.div`
 `;
 const Text = ({ content, bgColor = "white", fColor = "black" }) => {
   return (
-    <TextItem bgColor={bgColor} fColor={fColor}>
+    <TextItem data-testid={"text-1"} bgColor={bgColor} fColor={fColor}>
       {content}
     </TextItem>
   );

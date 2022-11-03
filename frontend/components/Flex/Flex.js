@@ -7,7 +7,11 @@ const StyledFlex = styled.div`
 `;
 
 const Flex = ({ children, direction = "row", ...props }) => {
-  return <StyledFlex {...props}>{children}</StyledFlex>;
+  return (
+    <StyledFlex data-testid={"flex-1"} {...props}>
+      {children}
+    </StyledFlex>
+  );
 };
 
 export default Flex;
