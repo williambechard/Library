@@ -46,7 +46,7 @@ const Header = ({
         <Image width={"50px"} height={"50px"} src={icon} alt={"DU Logo"} />
       </HeaderItem>
       <HeaderItem>
-        <Text content={title} />
+        <Text content={title} fontSize={1.5} fontWeight={900} />
       </HeaderItem>
     </HeaderFlex>
   );

@@ -25,7 +25,7 @@ const Home = () => {
       <FlexPage data-testid={"home-1"}>
         <Header title={"William's Capstone"} icon={DULogo} height={"75px"} />
         <Section>
-          <Text content={"Hello World!"} bgColor="#dfdfdf" />
+          <Text content={"Hello World!"} bgColor="#dfdfdf" fontSize={1} />
         </Section>
         <Footer
           title={"@ 2022 Omni Federal - All Rights Reserved"}

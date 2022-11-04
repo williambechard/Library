@@ -2,6 +2,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import colors from "../colors";
 import Flex from "../Flex";
+import Text from "../Text";
 
 const FooterFlex = styled(Flex)`
   display: flex;
@@ -14,11 +15,9 @@ const FooterFlex = styled(Flex)`
 `;
 
 const FooterItem = styled.span`
-  margin: auto 20px;
-  font-size: small;
   font-weight: bold;
-  color: ${colors.fColor};
-  font-family: Poppins, serif;
+  margin-top: auto;
+  margin-bottom: auto;
 `;
 const Footer = ({ title, height, bgColor, fColor, children }) => {
   return (
@@ -28,7 +27,14 @@ const Footer = ({ title, height, bgColor, fColor, children }) => {
       bgColor={bgColor}
       fColor={fColor}
     >
-      <FooterItem>{title}</FooterItem>
+      <FooterItem>
+        <Text
+          content={title}
+          bgColor={"black"}
+          fColor={"white"}
+          fontSize={0.75}
+        ></Text>
+      </FooterItem>
     </FooterFlex>
   );
 };
