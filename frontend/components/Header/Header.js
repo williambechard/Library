@@ -17,16 +17,6 @@ const HeaderFlex = styled(Flex)`
 const HeaderItem = styled.div`
   display: inline-block;
   margin: auto 10px;
-  font-size: 1rem;
-  @media screen and (min-width: 300px) {
-    font-size: 1.5rem;
-  }
-  @media screen and (min-width: 800px) {
-    font-size: 2rem;
-  }
-  font-weight: bold;
-  color: ${colors.fColor};
-  font-family: Poppins, serif;
 `;
 const Header = ({
   title,
