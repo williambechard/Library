@@ -20,13 +20,7 @@ const FooterItem = styled.span`
   color: ${colors.fColor};
   font-family: Poppins, serif;
 `;
-const Footer = ({
-  title,
-  height,
-  bgColor = "white",
-  fColor = "black",
-  children,
-}) => {
+const Footer = ({ title, height, bgColor, fColor, children }) => {
   return (
     <FooterFlex
       data-testid={"footer-1"}
