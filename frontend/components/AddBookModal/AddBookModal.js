@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
 import {
   Banner,
@@ -10,10 +10,12 @@ import {
   SingleLineInput,
   MultiLineInput,
   Flex,
+  Toast,
 } from "../index";
 import { useForm } from "react-hook-form";
 import { useAddBook } from "../../api/books";
 import { useAddAuthor, useGetAuthors } from "../../api/authors";
+import useToast from "../../hooks/useToast";
 
 const StyledModal = styled.div`
   position: fixed;
@@ -23,14 +25,14 @@ const StyledModal = styled.div`
   width: 600px;
   max-width: 100%;
   max-height: 100%;
-  z-index: 2;
+  z-index: 4;
   background-color: white;
   border-radius: 15px;
 `;
 
 const StyledBG = styled.div`
   position: fixed;
-  z-index: 1;
+  z-index: 3;
   left: 0;
   top: 0;
   width: 100%;
@@ -46,9 +48,11 @@ const AddBookModal = ({ onClickHandler, onSubmit }) => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
   const { addBook } = useAddBook();
   const { addAuthor } = useAddAuthor();
   const { authors } = useGetAuthors();
+  const [, setToast] = useToast();
   const submitForm = async (data) => {
     console.log(data);
     const title = data.Title;
@@ -64,18 +68,32 @@ const AddBookModal = ({ onClickHandler, onSubmit }) => {
 
     if (findAuthor.length) targetAuthor = findAuthor[0];
     else {
-      targetAuthor = await addAuthor(fName, lName);
-      targetAuthor = targetAuthor.data.addAuthor;
+      await addAuthor(fName, lName).then(
+        (data) => (targetAuthor = data.data.addAuthor)
+      );
     }
 
-    const newBook = await addBook(
-      title,
-      targetAuthor.id,
-      "",
-      [""],
-      description
-    );
+    const newBook = await addBook(title, targetAuthor.id, "", [""], description)
+      .then((data) => {
+        setToast({
+          type: "success",
+          message:
+            "The Book " + title + " was succesfully added to the Library",
+        });
+      })
+      .catch((error) => {
+        setToast({
+          type: "error",
+          message:
+            "The Book " +
+            title +
+            "FAILED to added to the Library. ERROR: " +
+            error,
+        });
+      });
+
     await onSubmit();
+
     onClickHandler();
   };
 

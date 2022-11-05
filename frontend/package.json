@@ -33,6 +33,7 @@
     "webpack": "^5.74.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.16.12",
     "@testing-library/jest-dom": "^5.16.5",
     "eslint": "^8.25.0",
     "eslint-config-next": "12.3.1"

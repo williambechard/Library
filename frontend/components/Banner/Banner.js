@@ -19,6 +19,14 @@ const BannerFlex = styled(Flex)`
     position: fixed;
     bottom: 0;
   `}
+  ${(props) =>
+    props.position === "fixed" &&
+    `
+    position: fixed;
+    top: ${props.top};
+    left: ${props.left};
+    z-Index: ${props.zIndex};
+  `}
 `;
 
 const BannerItem = styled.div`
@@ -35,6 +43,10 @@ const Banner = ({
   alignContent = "center",
   margin = "auto 20px",
   borderRadius = "0px",
+  position,
+  top,
+  left,
+  zIndex,
   footer = false,
   children,
 }) => {
@@ -49,6 +61,10 @@ const Banner = ({
       alignContent={alignContent}
       borderRadius={borderRadius}
       footer={footer}
+      position={position}
+      top={top}
+      left={left}
+      zIndex={zIndex}
     >
       {React.Children.map(children, (component) => {
         return <BannerItem margin={margin}>{component}</BannerItem>;

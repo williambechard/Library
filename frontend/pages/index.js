@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Head from "next/head";
 import {
   Banner,
@@ -33,18 +33,43 @@ const Home = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Page>
-        <Banner margin={"auto 20px"}>
+      <Page bgColor={"#DFDFDF"}>
+        <Banner
+          margin={"auto 20px"}
+          position={"fixed"}
+          top={"0"}
+          left={"0"}
+          zIndex={"2"}
+        >
           <Image src={DULogo} width={50} height={50} />
-          <Text content={"William's Capstone"} fontSize={2} fontWeight={1000} />
+          <Text
+            content={"William's Capstone"}
+            fontSize={2}
+            fontWeight={"1000"}
+          />
         </Banner>
         <Section>
-          <Banner bgColor={"#dfdfdf"} justifyContent={"space-between"}>
+          <Banner
+            bgColor={"#dfdfdf"}
+            justifyContent={"space-between"}
+            position={"fixed"}
+            top={"100px"}
+            left={"0"}
+            zIndex={"2"}
+          >
             <Text content={"My Library"} bgColor={"#dfdfdf"} fontSize={1.5} />
             <Button content={"+ Add Book"} onClickHandler={triggerModal} />
           </Banner>
           {books.length > 0 ? (
-            <Flex justifyContent={"space-around"} alignContent={"center"}>
+            <Flex
+              justifyContent={"flex-start"}
+              alignContent={"center"}
+              style={{
+                flexWrap: "wrap",
+                zIndex: "0",
+                transform: "TranslateY(150px)",
+              }}
+            >
               {books.map((book, index) => {
                 return (
                   <Card key={index}>

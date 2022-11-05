@@ -5,9 +5,9 @@ import colors from "../colors";
 const TextItem = styled.div`
   user-select: ${(props) => (props.selectable ? props.selectable : "auto")};
   display: ${(props) => (props.display ? props.display : "inline-block")};
-  font-size: ${(props) => props.fontSize / 2.5}rem;
+  font-size: ${(props) => props.fontSize / 1.5}rem;
   @media screen and (min-width: 300px) {
-    font-size: ${(props) => props.fontSize / 1.5}rem;
+    font-size: ${(props) => props.fontSize / 1.25}rem;
   }
   @media screen and (min-width: 800px) {
     font-size: ${(props) => props.fontSize}rem;
@@ -17,6 +17,7 @@ const TextItem = styled.div`
   font-family: Poppins, serif;
   font-weight: ${(props) => (props.fontWeight ? props.fontWeight : "400")};
   margin: ${(props) => (props.margin ? props.margin : "0 0 0 0")};
+  overflow: hidden;
 `;
 const Text = ({
   content,

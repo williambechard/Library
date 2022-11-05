@@ -7,9 +7,11 @@ const StyledPage = styled.div`
     props.templateRows ? props.templateRows : "auto 1fr auto"};
   height: ${(props) => (props.height ? props.height : "100vh")};
   border-radius: ${(props) => (props.borderRadius ? props.borderRadius : "0")};
+  background-color: ${(props) => (props.bgColor ? props.bgColor : "white")};
 `;
 
 const Page = ({
+  bgColor = "white",
   children,
   templateRows = "auto 1fr auto",
   borderRadius = "0",
@@ -21,6 +23,7 @@ const Page = ({
       height={height}
       borderRadius={borderRadius}
       templateRows={templateRows}
+      bgColor={bgColor}
     >
       {children}
     </StyledPage>

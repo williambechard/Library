@@ -16,6 +16,7 @@ const useToast = () => {
   };
 
   const addToast = (incomingToast) => {
+    console.log("incomingToast ", incomingToast);
     if (!incomingToast) return;
 
     const {
@@ -24,6 +25,7 @@ const useToast = () => {
       persist = false,
     } = incomingToast || {};
     const newToast = { ...incomingToast, id, duration, persist };
+    console.log("newToast ", newToast);
 
     setToasts((previous) => {
       const existing = previous.findIndex((item) => item.id === id);

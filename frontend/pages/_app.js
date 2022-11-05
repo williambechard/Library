@@ -1,5 +1,6 @@
 import "../styles/global.css";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { ToastProvider } from "../providers";
 
 const client = new ApolloClient({
   uri: "http://localhost:4000/graphql/",
@@ -9,7 +10,9 @@ const client = new ApolloClient({
 const App = ({ Component, pageProps }) => {
   return (
     <ApolloProvider client={client}>
-      <Component {...pageProps} />
+      <ToastProvider>
+        <Component {...pageProps} />
+      </ToastProvider>
     </ApolloProvider>
   );
 };

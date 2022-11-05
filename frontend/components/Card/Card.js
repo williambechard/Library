@@ -5,6 +5,9 @@ const StyledCard = styled.div`
   padding: 20px 10px;
   margin: 10px;
   background-color: #bfbfbf;
+  width: 100px;
+  height: 150px;
+  box-shadow: 5px 5px 10px #a9a9a9;
 `;
 const Card = ({ children }) => {
   return <StyledCard>{children}</StyledCard>;
