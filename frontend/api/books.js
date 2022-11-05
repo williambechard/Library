@@ -1,5 +1,31 @@
 import { gql, useQuery, useMutation } from "@apollo/client";
 
+export const useGetBooksSimple = () => {
+  const query = gql`
+    query getBooks {
+      getBooks {
+        id
+        title
+        author {
+          firstName
+          lastName
+        }
+      }
+    }
+  `;
+
+  const { loading, error, data, refetch } = useQuery(query);
+
+  return {
+    booksLoading: loading,
+    booksError: error,
+    books: data?.getBooks || [],
+    update: refetch,
+  };
+};
+
+export default useGetBooksSimple;
+
 export const useGetBooks = () => {
   const query = gql`
     query getBooks {

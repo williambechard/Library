@@ -1,17 +1,28 @@
+import { useState, useEffect } from "react";
 import Head from "next/head";
-import { Header, Section, Footer } from "../components";
+import {
+  Banner,
+  Section,
+  Button,
+  Page,
+  AddBookModal,
+  Flex,
+  Card,
+} from "../components";
 import DULogo from "../public/DU-Logo-Mark.svg";
-import styled from "@emotion/styled";
-import Flex from "../components/Flex";
 import Text from "../components/Text/Text";
+import Image from "next/image";
 
-const FlexPage = styled.div`
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  height: 100vh;
-`;
+import { useGetBooksSimple } from "../api/books";
 
 const Home = () => {
+  const [modalStatus, setModalStatus] = useState(false);
+  const { books, update } = useGetBooksSimple();
+
+  const triggerModal = () => {
+    setModalStatus(!modalStatus);
+  };
+
   return (
     <>
       <Head>
@@ -22,17 +33,61 @@ const Home = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <FlexPage data-testid={"home-1"}>
-        <Header title={"William's Capstone"} icon={DULogo} height={"75px"} />
+      <Page>
+        <Banner margin={"auto 20px"}>
+          <Image src={DULogo} width={50} height={50} />
+          <Text content={"William's Capstone"} fontSize={2} fontWeight={1000} />
+        </Banner>
         <Section>
-          <Text content={"Hello World!"} bgColor="#dfdfdf" fontSize={1} />
+          <Banner bgColor={"#dfdfdf"} justifyContent={"space-between"}>
+            <Text content={"My Library"} bgColor={"#dfdfdf"} fontSize={1.5} />
+            <Button content={"+ Add Book"} onClickHandler={triggerModal} />
+          </Banner>
+          {books.length > 0 ? (
+            <Flex justifyContent={"space-around"} alignContent={"center"}>
+              {books.map((book, index) => {
+                return (
+                  <Card key={index}>
+                    <Text
+                      bgColor={"#BFBFBF"}
+                      fontSize={1}
+                      content={book.title}
+                      fontWeight={"900"}
+                      display={"block"}
+                    ></Text>
+                    <Text
+                      bgColor={"#BFBFBF"}
+                      fColor={"#303030"}
+                      fontSize={1}
+                      margin={"20px 0px"}
+                      display={"block"}
+                      content={
+                        book.author.firstName + " " + book.author.lastName
+                      }
+                    ></Text>
+                  </Card>
+                );
+              })}
+            </Flex>
+          ) : null}
+          {modalStatus ? (
+            <AddBookModal onSubmit={update} onClickHandler={triggerModal} />
+          ) : null}
         </Section>
-        <Footer
-          title={"@ 2022 Omni Federal - All Rights Reserved"}
+        <Banner
           bgColor={"black"}
-          fColor={"white"}
-        />
-      </FlexPage>
+          justifyContent={"center"}
+          height={"30px"}
+          footer={true}
+        >
+          <Text
+            content={"@ 2022 Omni Federal - All Rights Reserved"}
+            bgColor={"black"}
+            fColor={"white"}
+            fontSize={1}
+          />
+        </Banner>
+      </Page>
     </>
   );
 };
