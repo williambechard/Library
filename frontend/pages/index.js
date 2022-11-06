@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import {
   Banner,
@@ -13,12 +13,11 @@ import DULogo from "../public/DU-Logo-Mark.svg";
 import Text from "../components/Text/Text";
 import Image from "next/image";
 
-import { allBooksQueryBasic, useGetBooks } from "../api/books";
+import { allBooksQueryBasic, useGetBook, useGetBooks } from "../api/books";
 
 const Home = () => {
   const [modalStatus, setModalStatus] = useState(false);
   const { books, update } = useGetBooks(allBooksQueryBasic);
-  //const { books, update } = useGetBooksSimple();
 
   const triggerModal = () => {
     setModalStatus(!modalStatus);
@@ -42,7 +41,7 @@ const Home = () => {
           left={"0"}
           zIndex={"2"}
         >
-          <Image src={DULogo} alt={"DULogo"} width={50} height={50} />
+          <Image src={DULogo} alt={"DULogo"} width={"50px"} height={"50px"} />
           <Text
             content={"William's Capstone"}
             fontSize={2}

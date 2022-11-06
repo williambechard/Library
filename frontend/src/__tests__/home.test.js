@@ -1,99 +1,45 @@
 import "@testing-library/jest-dom";
-import { render, screen, cleanup } from "@testing-library/react";
+import { render, screen, cleanup, findByText } from "@testing-library/react";
 import Home from "../../pages/index";
-import { MockedProvider } from "@apollo/client/testing";
-import { gql } from "@apollo/client";
-import { allBooksQueryBasic } from "../../api/books";
+import AutoMockedProvider from "../../utils/AutoMockedProvider";
+import { act } from "react-dom/test-utils";
+import preview from "jest-preview";
 
 afterEach(cleanup);
 
 jest.mock(
   "next/image",
   () =>
-    function Image({ src, alt }) {
+    function Image({ src, alt, width, height }) {
       // eslint-disable-next-line @next/next/no-img-element
-      return <img src={src} alt={alt} />;
+      return (
+        <img src={src} alt={alt} style={{ width: width, height: height }} />
+      );
     }
 );
 
-const simpleGetAllBooksMOCK = [
-  {
-    request: {
-      query: allBooksQueryBasic,
-      variables: {},
-    },
-    result: {
-      data: {
-        getBooks: [
-          {
-            id: "1",
-            title: "Harry Potter and the Chamber of Secrets",
-            author: {
-              firstName: "J.K.",
-              lastName: "Rowling",
-            },
-          },
-          {
-            id: "2",
-            title: "Harry Potter and the Prisoner of Azkaban",
-            author: {
-              firstName: "J.K.",
-              lastName: "Rowling",
-            },
-          },
-          {
-            id: "3",
-            title: "Harry Potter and the Goblet of Fire",
-            author: {
-              firstName: "J.K.",
-              lastName: "Rowling",
-            },
-          },
-          {
-            id: "4",
-            title: "C All in One Desk Reference For Dummies",
-            author: {
-              firstName: "Dan",
-              lastName: "Gookin",
-            },
-          },
-        ],
-      },
-    },
-  },
-];
-
 it("should render books", async () => {
-  render(
-    <MockedProvider mocks={simpleGetAllBooksMOCK} addTypename={false}>
-      <Home />
-    </MockedProvider>
-  );
+  await act(() => {
+    render(
+      <AutoMockedProvider>
+        <Home />
+      </AutoMockedProvider>
+    );
+  });
+
   const homeComponent = screen.getByTestId("page-1");
-  expect(homeComponent).toBeInTheDocument();
-
-  const foundBook = await screen.findByText(
-    "Harry Potter and the Chamber of Secrets"
+  const headerComponent = screen.getByText("William's Capstone");
+  const sectionComponent = screen.getByTestId("section-1");
+  const textComponent = screen.getByText("My Library");
+  const footerComponent = screen.getByText(
+    "@ 2022 Omni Federal - All Rights Reserved"
   );
+  const image = screen.getByAltText("DULogo");
 
-  expect(foundBook).toBeInTheDocument();
-});
+  expect(image).toBeInTheDocument();
 
-it("should render a Home component", () => {
-  render(
-    <MockedProvider mocks={mocks} addTypename={false}>
-      <Home />
-    </MockedProvider>
-  );
-  const homeComponent = screen.getByTestId("home-1");
-  // const headerComponent = screen.getByText("William's Capstone");
-  // const sectionComponent = screen.getByTestId("section-1");
-  // const textComponent = screen.getByText("Hello World!");
-  // const footerComponent = screen.getByText(
-  //   "@ 2022 Omni Federal - All Rights Reserved"
-  // );
   expect(homeComponent).toBeInTheDocument();
-  /*
+  expect(homeComponent).toBeInTheDocument();
   expect(headerComponent).toBeInTheDocument();
   expect(headerComponent).toHaveStyle("background-color:white");
   expect(headerComponent).toHaveStyle("color:black");
@@ -102,6 +48,8 @@ it("should render a Home component", () => {
 
   expect(textComponent).toBeInTheDocument();
   expect(textComponent).toHaveStyle("background-color:#dfdfdf");
-
-  expect(footerComponent).toBeInTheDocument();*/
+  expect(footerComponent).toBeInTheDocument();
+  //const book = await screen.findByText("Book 1");
+  //expect(book).toBeInTheDocument();
+  preview.debug();
 });
