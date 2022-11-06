@@ -5,5 +5,11 @@ it("should render a Page component", () => {
   render(<Page />);
   const flexComponent = screen.getByTestId("page-1");
   expect(flexComponent).toBeInTheDocument();
-  expect(flexComponent).toHaveStyle("width:100%", "display: flex");
+  expect(flexComponent).toHaveStyle(
+    "display: grid",
+    "grid-template-rows:auto 1fr auto",
+    "height: 100vh",
+    "border-radius: 0",
+    "background-color:white"
+  );
 });

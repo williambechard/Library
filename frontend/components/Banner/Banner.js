@@ -52,7 +52,7 @@ const Banner = ({
 }) => {
   return (
     <BannerFlex
-      data-testid={"header-1"}
+      data-testid={"banner-1"}
       height={height}
       bgColor={bgColor}
       fColor={fColor}

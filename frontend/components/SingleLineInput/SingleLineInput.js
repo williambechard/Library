@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 import Text from "../Text/Text";
-import { calculateVariablesFromProps } from "@apollo/client/react/hoc/hoc-utils";
 
 const StyledInput = styled.input`
   font-size: 1rem;

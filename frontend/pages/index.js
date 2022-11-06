@@ -13,11 +13,12 @@ import DULogo from "../public/DU-Logo-Mark.svg";
 import Text from "../components/Text/Text";
 import Image from "next/image";
 
-import { useGetBooksSimple } from "../api/books";
+import { allBooksQueryBasic, useGetBooks } from "../api/books";
 
 const Home = () => {
   const [modalStatus, setModalStatus] = useState(false);
-  const { books, update } = useGetBooksSimple();
+  const { books, update } = useGetBooks(allBooksQueryBasic);
+  //const { books, update } = useGetBooksSimple();
 
   const triggerModal = () => {
     setModalStatus(!modalStatus);
@@ -41,7 +42,7 @@ const Home = () => {
           left={"0"}
           zIndex={"2"}
         >
-          <Image src={DULogo} width={50} height={50} />
+          <Image src={DULogo} alt={"DULogo"} width={50} height={50} />
           <Text
             content={"William's Capstone"}
             fontSize={2}
