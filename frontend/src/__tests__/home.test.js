@@ -5,7 +5,7 @@ import { MockedProvider } from "@apollo/client/testing";
 import { allBooksQueryBasic } from "../../api/books";
 import preview from "jest-preview";
 import { act } from "react-dom/test-utils";
-import AddBookModal from "../../components/AddBookForm";
+import AddBookForm from "../../components/AddBookForm";
 import { gql } from "@apollo/client";
 
 afterEach(cleanup);
@@ -16,6 +16,7 @@ jest.mock(
     function Image({ src, alt, width, height }) {
       // eslint-disable-next-line @next/next/no-img-element
       return (
+        // eslint-disable-next-line
         <img src={src} alt={alt} style={{ width: width, height: height }} />
       );
     }
@@ -126,7 +127,7 @@ describe("should display the main web page", () => {
 
     preview.debug();
   });
-  it("should open AddBookModal on + Add Book button click", async () => {
+  it("should open AddBookForm on + Add Book button click", async () => {
     render(
       <MockedProvider mocks={simpleGetAllBooksMOCK} addTypename={false}>
         <Home />
@@ -139,7 +140,7 @@ describe("should display the main web page", () => {
         .dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
 
-    expect(screen.getByText("Add New Book")).toBeInTheDocument();
+    expect(screen.getByText("Add Book")).toBeInTheDocument();
     preview.debug();
   });
 
@@ -155,7 +156,7 @@ describe("should display the main web page", () => {
         .dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
 
-    expect(screen.getByText("Add New Book")).toBeInTheDocument();
+    expect(screen.getByText("Add Book")).toBeInTheDocument();
     await act(() => {
       screen
         .getByText("Cancel")
@@ -177,7 +178,7 @@ describe("should display the main web page", () => {
         .dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
 
-    expect(screen.getByText("Add New Book")).toBeInTheDocument();
+    expect(screen.getByText("Add Book")).toBeInTheDocument();
     await act(() => {
       screen
         .getByText("X")
@@ -199,7 +200,7 @@ describe("should display the main web page", () => {
         .dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
 
-    expect(screen.getByText("Add New Book")).toBeInTheDocument();
+    expect(screen.getByText("Add Book")).toBeInTheDocument();
     await act(() => {
       screen
         .getByText("Add Book")
@@ -215,12 +216,12 @@ describe("should display the main web page", () => {
     await act(() => {
       render(
         <MockedProvider mocks={simpleGetAllBooksMOCK} addTypename={false}>
-          <AddBookModal onClickHandler={jest.fn()} onSubmit={submitFunc} />
+          <AddBookForm onClickHandler={jest.fn()} onSubmit={submitFunc} />
         </MockedProvider>
       );
     });
 
-    expect(screen.getByText("Add New Book")).toBeInTheDocument();
+    expect(screen.getByText("Add Book")).toBeInTheDocument();
 
     fireEvent.change(document.querySelector('input[name="Title"]'), {
       target: { value: "Book 2" },

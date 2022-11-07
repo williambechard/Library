@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { render, screen, cleanup } from "@testing-library/react";
-import AddBookModal from "../../components/AddBookForm";
+import AddBookForm from "../../components/AddBookForm";
 import { MockedProvider } from "@apollo/client/testing";
 import { allBooksQueryBasic } from "../../api/books";
 import preview from "jest-preview";
@@ -53,15 +53,15 @@ const simpleGetAllBooksMOCK = [
     },
   },
 ];
-describe("should display the AddBookModal", () => {
-  it("AddBookModal should be visible", async () => {
+describe("should display the AddBookForm", () => {
+  it("AddBookForm should be visible", async () => {
     render(
       <MockedProvider mocks={simpleGetAllBooksMOCK} addTypename={false}>
-        <AddBookModal />
+        <AddBookForm />
       </MockedProvider>
     );
 
-    expect(await screen.findByText("Add New Book")).toBeInTheDocument();
+    expect(await screen.findByText("Add Book")).toBeInTheDocument();
 
     preview.debug();
   });

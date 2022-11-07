@@ -40,7 +40,7 @@ const StyledBG = styled.div`
 const Modal = ({ children, title, onClickHandler }) => {
   return (
     <StyledBG>
-      <StyledModal>
+      <StyledModal data-testid={"modal-1"}>
         <Page
           borderRadius={"15px 15px 15px 15px"}
           templateRows={"auto"}
