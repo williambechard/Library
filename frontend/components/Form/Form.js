@@ -9,7 +9,7 @@ const StyledForm = styled.form`
 
 const Form = ({ children, onHandleSubmit }) => {
   return (
-    <StyledForm onSubmit={onHandleSubmit}>
+    <StyledForm data-testid="form-1" onSubmit={onHandleSubmit}>
       <Flex direction={"column"} justifyContent={"center"}>
         {children}
       </Flex>

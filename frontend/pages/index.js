@@ -23,6 +23,30 @@ const Home = () => {
     setModalStatus(!modalStatus);
   };
 
+  const displayBooks = () => {
+    return books.map((book, index) => {
+      return (
+        <Card key={index}>
+          <Text
+            bgColor={"#BFBFBF"}
+            fontSize={1}
+            content={book.title}
+            fontWeight={"900"}
+            display={"block"}
+          ></Text>
+          <Text
+            bgColor={"#BFBFBF"}
+            fColor={"#303030"}
+            fontSize={1}
+            margin={"20px 0px"}
+            display={"block"}
+            content={book.author.firstName + " " + book.author.lastName}
+          ></Text>
+        </Card>
+      );
+    });
+  };
+
   return (
     <>
       <Head>
@@ -70,29 +94,7 @@ const Home = () => {
                 transform: "TranslateY(150px)",
               }}
             >
-              {books.map((book, index) => {
-                return (
-                  <Card key={index}>
-                    <Text
-                      bgColor={"#BFBFBF"}
-                      fontSize={1}
-                      content={book.title}
-                      fontWeight={"900"}
-                      display={"block"}
-                    ></Text>
-                    <Text
-                      bgColor={"#BFBFBF"}
-                      fColor={"#303030"}
-                      fontSize={1}
-                      margin={"20px 0px"}
-                      display={"block"}
-                      content={
-                        book.author.firstName + " " + book.author.lastName
-                      }
-                    ></Text>
-                  </Card>
-                );
-              })}
+              {displayBooks()}
             </Flex>
           ) : null}
           {modalStatus ? (

@@ -10,7 +10,7 @@ const StyledCard = styled.div`
   box-shadow: 5px 5px 10px #a9a9a9;
 `;
 const Card = ({ children }) => {
-  return <StyledCard>{children}</StyledCard>;
+  return <StyledCard data-testid={"card-1"}>{children}</StyledCard>;
 };
 
 export default Card;

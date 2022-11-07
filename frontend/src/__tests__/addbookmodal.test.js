@@ -4,7 +4,6 @@ import AddBookModal from "../../components/AddBookModal";
 import { MockedProvider } from "@apollo/client/testing";
 import { allBooksQueryBasic } from "../../api/books";
 import preview from "jest-preview";
-import { act } from "react-dom/test-utils";
 
 afterEach(cleanup);
 
