@@ -1,32 +1,40 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import {
   Banner,
   Section,
   Button,
   Page,
-  AddBookModal,
+  AddBookForm,
+  ViewBookPage,
   Flex,
   Card,
+  Modal,
 } from "../components";
 import DULogo from "../public/DU-Logo-Mark.svg";
 import Text from "../components/Text/Text";
 import Image from "next/image";
-
-import { allBooksQueryBasic, useGetBooks } from "../api/books";
+import { allBooksQueryBasic, useGetBook, useGetBooks } from "../api/books";
 
 const Home = () => {
-  const [modalStatus, setModalStatus] = useState(false);
+  const [showAddBookModal, setAddBookModal] = useState(false);
+  const [showViewBookModal, setShowViewBookModal] = useState(false);
   const { books, update } = useGetBooks(allBooksQueryBasic);
+  const [bookId, setBookId] = useState("0");
 
-  const triggerModal = () => {
-    setModalStatus(!modalStatus);
+  const triggerModal = (setModal, ModalValue) => {
+    setModal(!ModalValue);
+  };
+
+  const showBook = (id) => {
+    setBookId(id);
+    setShowViewBookModal(!showViewBookModal);
   };
 
   const displayBooks = () => {
-    return books.map((book, index) => {
+    return books.map((book) => {
       return (
-        <Card key={index}>
+        <Card key={book.id} onClick={() => showBook(book.id)}>
           <Text
             bgColor={"#BFBFBF"}
             fontSize={1}
@@ -82,7 +90,12 @@ const Home = () => {
             zIndex={"2"}
           >
             <Text content={"My Library"} bgColor={"#dfdfdf"} fontSize={1.5} />
-            <Button content={"+ Add Book"} onClickHandler={triggerModal} />
+            <Button
+              content={"+ Add Book"}
+              onClickHandler={() =>
+                triggerModal(setAddBookModal, showAddBookModal)
+              }
+            />
           </Banner>
           {books.length > 0 ? (
             <Flex
@@ -97,8 +110,33 @@ const Home = () => {
               {displayBooks()}
             </Flex>
           ) : null}
-          {modalStatus ? (
-            <AddBookModal onSubmit={update} onClickHandler={triggerModal} />
+          {showAddBookModal ? (
+            <Modal
+              onClickHandler={() =>
+                triggerModal(setAddBookModal, showAddBookModal)
+              }
+              title={"Add New Book"}
+            >
+              <AddBookForm
+                onSubmit={update}
+                onClickHandler={() =>
+                  triggerModal(setAddBookModal, showAddBookModal)
+                }
+              />
+            </Modal>
+          ) : null}
+          {showViewBookModal ? (
+            <Modal
+              onClickHandler={() =>
+                triggerModal(setShowViewBookModal, showViewBookModal)
+              }
+              title={"View Book"}
+            >
+              <ViewBookPage
+                bookId={bookId}
+                onClickClose={() => setShowViewBookModal(!showViewBookModal)}
+              ></ViewBookPage>
+            </Modal>
           ) : null}
         </Section>
         <Banner

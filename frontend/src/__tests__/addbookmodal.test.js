@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { render, screen, cleanup } from "@testing-library/react";
-import AddBookModal from "../../components/AddBookModal";
+import AddBookModal from "../../components/AddBookForm";
 import { MockedProvider } from "@apollo/client/testing";
 import { allBooksQueryBasic } from "../../api/books";
 import preview from "jest-preview";

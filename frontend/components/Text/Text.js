@@ -12,12 +12,26 @@ const TextItem = styled.div`
   @media screen and (min-width: 800px) {
     font-size: ${(props) => props.fontSize}rem;
   }
+  ${(props) =>
+    props.onClick &&
+    `
+    text-decoration:underline dotted;
+    cursor: pointer;
+     &:hover {
+        text-decoration:underline;
+        color:blue;
+        text-weight:bold
+      }
+    
+  `}
+  text-align: left;
   background-color: ${(props) => (props.bgColor ? props.bgColor : "white")};
   color: ${(props) => (props.fColor ? props.fColor : "black")};
   font-family: Poppins, serif;
   font-weight: ${(props) => (props.fontWeight ? props.fontWeight : "400")};
   margin: ${(props) => (props.margin ? props.margin : "0 0 0 0")};
-  overflow: hidden;
+  overflow: ${(props) => (props.overflow ? props.overflow : "hidden")};
+  max-height: ${(props) => (props.maxHeight ? props.maxHeight : "40vh")}; ;
 `;
 const Text = ({
   content,
@@ -28,6 +42,9 @@ const Text = ({
   fontWeight = "400",
   selectable = "auto",
   display = "inline-block",
+  overflow = "hidden",
+  maxHeight,
+  onClick,
 }) => {
   return (
     <TextItem
@@ -39,6 +56,9 @@ const Text = ({
       margin={margin}
       display={display}
       selectable={selectable}
+      overflow={overflow}
+      onClick={onClick}
+      maxHeight={maxHeight}
     >
       {content}
     </TextItem>
