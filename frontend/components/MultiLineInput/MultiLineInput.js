@@ -37,6 +37,7 @@ const MultiLineInput = ({
         rows={rows}
         resize={resize}
         name={labelText}
+        label={labelText}
         {...register(labelText, {
           required: "Required",
           minLength: 1,

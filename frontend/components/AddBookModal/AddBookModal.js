@@ -53,8 +53,8 @@ const AddBookModal = ({ onClickHandler, onSubmit }) => {
   const { addAuthor } = useAddAuthor();
   const { authors } = useGetAuthors();
   const [, setToast] = useToast();
+
   const submitForm = async (data) => {
-    console.log(data);
     const title = data.Title;
     const description = data.Description;
     const fName = data["First Name"];

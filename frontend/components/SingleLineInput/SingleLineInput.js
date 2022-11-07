@@ -40,6 +40,7 @@ const SingleLineInput = ({
         type={"text"}
         rows={rows}
         resize={resize}
+        label={labelText}
         name={labelText}
         width={width}
         {...register(labelText, {

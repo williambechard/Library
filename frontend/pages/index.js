@@ -18,7 +18,6 @@ import { allBooksQueryBasic, useGetBooks } from "../api/books";
 const Home = () => {
   const [modalStatus, setModalStatus] = useState(false);
   const { books, update } = useGetBooks(allBooksQueryBasic);
-  //const { books, update } = useGetBooksSimple();
 
   const triggerModal = () => {
     setModalStatus(!modalStatus);
