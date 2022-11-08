@@ -28,6 +28,10 @@ const Home = () => {
   const [showViewBookModal, setShowViewBookModal] = useState(false); //Determines if ViewBook Modal is shown or not
   const [bookId, setBookId] = useState("0"); //Keeps track of selected book ID so the correct book can be loaded into the ViewBook Modal
 
+  //Apollo acts as state management <- look into to remove bookId etc
+
+  //books will show new value once its been updated
+
   /**
    * Hook for query to get all books, so that they can be displayed on the page
    * allBooksQueryBasic is a gql query which is crafted to only pull the data we want for the books
@@ -43,7 +47,7 @@ const Home = () => {
    * @param ModalValue -The current value of the state
    */
   const triggerModal = (setModal, ModalValue) => {
-    setModal(!ModalValue);
+    setModal(!ModalValue); //Look into react state batching and how to get most current state
   };
 
   /**

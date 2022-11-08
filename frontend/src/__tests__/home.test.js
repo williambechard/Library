@@ -134,6 +134,9 @@ describe("should display the main web page", () => {
       </MockedProvider>
     );
 
+    //act shouldnt be used, alredy included in jest testing
+    // look into user event <- and why that instead of fireEvent
+    // await shouldnt be needed either
     await act(() => {
       screen
         .getByText("+ Add Book")

@@ -57,6 +57,8 @@ const AddBookForm = ({ onClickHandler, onSubmit }) => {
     const fName = data["First Name"];
     const lName = data["Last Name"];
 
+    //move to outside function so it isnt called every time as it is only needed once the component is loaded
+    // filter returns array rather than one object, find another way
     const findAuthor = await authors.filter(
       (author) => author.firstName === fName && author.lastName === lName
     );
@@ -64,11 +66,13 @@ const AddBookForm = ({ onClickHandler, onSubmit }) => {
     let targetAuthor = {};
 
     if (findAuthor.length) targetAuthor = findAuthor[0];
+    //no need to mix await and then
     else
       await addAuthor(fName, lName).then(
         (data) => (targetAuthor = data.data.addAuthor)
       );
 
+    //look into await for error handling, only continues if successfull
     const newBook = await addBook(title, targetAuthor.id, "", [""], description)
       .then((data) => {
         setToast({

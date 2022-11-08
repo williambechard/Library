@@ -6,7 +6,11 @@ import { allBooksQueryBasic } from "../../api/books";
 import preview from "jest-preview";
 
 afterEach(cleanup);
+//describe add book form
+// then ifs with different states
+// look into aftereach nesting?
 
+//change to way mocked in viewbookpage
 const simpleGetAllBooksMOCK = [
   {
     request: {
@@ -61,6 +65,7 @@ describe("should display the AddBookForm", () => {
       </MockedProvider>
     );
 
+    //findbytext should not be necessary
     expect(await screen.findByText("Add Book")).toBeInTheDocument();
 
     preview.debug();
