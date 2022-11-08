@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import colors from "../colors";
+import Colors from "../colors";
 
 const TextItem = styled.div`
   user-select: ${(props) => (props.selectable ? props.selectable : "auto")};
@@ -19,48 +19,26 @@ const TextItem = styled.div`
     cursor: pointer;
      &:hover {
         text-decoration:underline;
-        color:blue;
+        color:${Colors.Bright[2]};
         text-weight:bold
       }
     
   `}
   text-align: left;
-  background-color: ${(props) => (props.bgColor ? props.bgColor : "white")};
-  color: ${(props) => (props.fColor ? props.fColor : "black")};
+  background-color: ${(props) =>
+    props.bgColor ? props.bgColor : Colors.Mono[0]};
+  color: ${(props) =>
+    props.fColor ? props.fColor : Colors.Mono[Colors.Mono.length - 1]};
   font-family: Poppins, serif;
   font-weight: ${(props) => (props.fontWeight ? props.fontWeight : "400")};
   margin: ${(props) => (props.margin ? props.margin : "0 0 0 0")};
   overflow: ${(props) => (props.overflow ? props.overflow : "hidden")};
   max-height: ${(props) => (props.maxHeight ? props.maxHeight : "40vh")}; ;
 `;
-const Text = ({
-  content,
-  bgColor,
-  fColor,
-  fontSize,
-  margin = "0 0 0 0",
-  fontWeight = "400",
-  selectable = "auto",
-  display = "inline-block",
-  overflow = "hidden",
-  maxHeight,
-  onClick,
-}) => {
+const Text = ({ ...props }) => {
   return (
-    <TextItem
-      data-testid={"text-1"}
-      bgColor={bgColor}
-      fColor={fColor}
-      fontSize={fontSize}
-      fontWeight={fontWeight}
-      margin={margin}
-      display={display}
-      selectable={selectable}
-      overflow={overflow}
-      onClick={onClick}
-      maxHeight={maxHeight}
-    >
-      {content}
+    <TextItem data-testid={"text-1"} {...props}>
+      {props.content}
     </TextItem>
   );
 };

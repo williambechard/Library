@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
+import Colors from "../colors";
 
 const StyledCard = styled.div`
   padding: 20px 10px;
@@ -14,8 +15,8 @@ const StyledCard = styled.div`
     `
     cursor: pointer;
     &:hover {
-        border:.2rem solid black;
-        box-shadow: 5px 10px 20px #a9a9a9;
+        border:.2rem solid ${Colors.Mono[Colors.Mono.length - 1]};
+        box-shadow: 5px 10px 20px ${Colors.Mono[3]};
       }
   `}
 `;

@@ -2,6 +2,12 @@ import styled from "@emotion/styled";
 
 const StyledFlex = styled.div`
   display: flex;
+  ${(props) =>
+    props.gap &&
+    `
+      gap:${props.gap};
+  `}
+  flex-wrap: ${(props) => (props.wrap ? props.wrap : "nowrap")};
   margin: ${(props) => (props.margin ? props.margin : "0")};
   width: ${(props) => (props.width ? props.width : "100%")};
   height: ${(props) => (props.height ? props.height : "100%")};

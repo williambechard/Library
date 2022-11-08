@@ -1,16 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
-import {
-  Banner,
-  Button,
-  Flex,
-  Form,
-  MultiLineInput,
-  Page,
-  Section,
-  SingleLineInput,
-  Text,
-} from "../index";
+import { Banner, Button, Page, Section, Text } from "../index";
+import Colors from "../colors";
 
 const StyledModal = styled.div`
   position: fixed;
@@ -47,24 +38,26 @@ const Modal = ({ children, title, onClickHandler }) => {
           height={"unset"}
         >
           <Banner
-            bgColor={"white"}
+            bgColor={Colors.Mono[0]}
             justifyContent={"space-between"}
             borderRadius={"15px 15px 0px 0px"}
             height={"75px"}
           >
             <Text
               content={title}
-              bgColor={"white"}
+              bgColor={Colors.Mono[0]}
               fontSize={1.5}
               fontWeight={"1000"}
+              margin={"auto 35px"}
             />
             <Button
+              margin={"auto 10px"}
               content={"X"}
               onClickHandler={onClickHandler}
               fontWeight={"1000"}
             />
           </Banner>
-          <Section bgColor={"white"} borderRadius={"0 0 15px 15px"}>
+          <Section bgColor={Colors.Mono[0]} borderRadius={"0 0 15px 15px"}>
             {children}
           </Section>
         </Page>

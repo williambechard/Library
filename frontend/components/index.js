@@ -21,3 +21,4 @@ export { default as MultiLineInput } from "./MultiLineInput";
 export { default as Flex } from "./Flex";
 export { default as Card } from "./Card";
 export { default as ViewBookPage } from "./ViewBookPage";
+export { default as Colors } from "./colors";

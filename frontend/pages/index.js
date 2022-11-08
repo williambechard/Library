@@ -14,7 +14,8 @@ import {
 import DULogo from "../public/DU-Logo-Mark.svg";
 import Text from "../components/Text/Text";
 import Image from "next/image";
-import { allBooksQueryBasic, useGetBook, useGetBooks } from "../api/books";
+import { allBooksQueryBasic, useGetBooks } from "../api/books";
+import Colors from "../components/colors";
 
 const Home = () => {
   const [showAddBookModal, setAddBookModal] = useState(false);
@@ -36,15 +37,15 @@ const Home = () => {
       return (
         <Card key={book.id} onClick={() => showBook(book.id)}>
           <Text
-            bgColor={"#BFBFBF"}
+            bgColor={Colors.Mono[2]}
             fontSize={1}
             content={book.title}
             fontWeight={"900"}
             display={"block"}
           ></Text>
           <Text
-            bgColor={"#BFBFBF"}
-            fColor={"#303030"}
+            bgColor={Colors.Mono[2]}
+            fColor={Colors.Mono[Colors.Mono.length - 2]}
             fontSize={1}
             margin={"20px 0px"}
             display={"block"}
@@ -65,36 +66,39 @@ const Home = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Page bgColor={"#DFDFDF"}>
-        <Banner
-          margin={"auto 20px"}
-          position={"fixed"}
-          top={"0"}
-          left={"0"}
-          zIndex={"2"}
-        >
-          <Image src={DULogo} alt={"DULogo"} width={50} height={50} />
+      <Page bgColor={Colors.Mono[1]}>
+        <Banner position={"fixed"} top={"0"} left={"0"} zIndex={"2"}>
+          <div style={{ margin: "auto 20px" }}>
+            <Image src={DULogo} alt={"DULogo"} width={"50px"} height={"50px"} />
+          </div>
           <Text
             content={"William's Capstone"}
             fontSize={2}
             fontWeight={"1000"}
+            margin={"auto 10px"}
           />
         </Banner>
         <Section>
           <Banner
-            bgColor={"#dfdfdf"}
+            bgColor={Colors.Mono[1]}
             justifyContent={"space-between"}
             position={"fixed"}
             top={"100px"}
             left={"0"}
             zIndex={"2"}
           >
-            <Text content={"My Library"} bgColor={"#dfdfdf"} fontSize={1.5} />
+            <Text
+              content={"My Library"}
+              bgColor={Colors.Mono[1]}
+              fontSize={1.5}
+              margin={"auto 20px"}
+            />
             <Button
               content={"+ Add Book"}
               onClickHandler={() =>
                 triggerModal(setAddBookModal, showAddBookModal)
               }
+              margin={"auto 10px"}
             />
           </Banner>
           {books.length > 0 ? (
@@ -140,16 +144,17 @@ const Home = () => {
           ) : null}
         </Section>
         <Banner
-          bgColor={"black"}
+          bgColor={Colors.Mono[Colors.Mono.length - 1]}
           justifyContent={"center"}
           height={"30px"}
           footer={true}
         >
           <Text
             content={"@ 2022 Omni Federal - All Rights Reserved"}
-            bgColor={"black"}
-            fColor={"white"}
+            bgColor={Colors.Mono[Colors.Mono.length - 1]}
+            fColor={Colors.Mono[0]}
             fontSize={1}
+            margin={"auto 10px"}
           />
         </Banner>
       </Page>

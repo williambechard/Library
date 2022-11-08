@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import Flex from "../Flex";
+import Colors from "../colors";
 
 const BannerFlex = styled(Flex)`
   flex-wrap: ${(props) => (props.flexWrap ? props.flexWrap : "nowrap")};
@@ -9,8 +10,9 @@ const BannerFlex = styled(Flex)`
   align-content: ${(props) =>
     props.alignContent ? props.alignContent : "center"};
   height: ${(props) => (props.height ? props.height : "100px;")};
-  background-color: ${(props) => (props.bgColor ? props.bgColor : "grey")};
-  color: ${(props) => (props.fColor ? props.fColor : "white")};
+  background-color: ${(props) =>
+    props.bgColor ? props.bgColor : Colors.Mono[0]};
+  color: ${(props) => (props.fColor ? props.fColor : Colors.Mono[0])};
   border-radius: ${(props) =>
     props.borderRadius ? props.borderRadius : "0px"};
   ${(props) =>
@@ -29,46 +31,10 @@ const BannerFlex = styled(Flex)`
   `}
 `;
 
-const BannerItem = styled.div`
-  display: inline-block;
-  margin: ${(props) => (props.margin ? props.margin : "auto 10px")};
-`;
-
-const Banner = ({
-  height,
-  bgColor = "white",
-  fColor = "black",
-  flexWrap = "nowrap",
-  justifyContent = "flex-start",
-  alignContent = "center",
-  margin = "auto 20px",
-  borderRadius = "0px",
-  position,
-  top,
-  left,
-  zIndex,
-  footer = false,
-  children,
-}) => {
+const Banner = ({ children, ...props }) => {
   return (
-    <BannerFlex
-      data-testid={"banner-1"}
-      height={height}
-      bgColor={bgColor}
-      fColor={fColor}
-      flexWrap={flexWrap}
-      justifyContent={justifyContent}
-      alignContent={alignContent}
-      borderRadius={borderRadius}
-      footer={footer}
-      position={position}
-      top={top}
-      left={left}
-      zIndex={zIndex}
-    >
-      {React.Children.map(children, (component) => {
-        return <BannerItem margin={margin}>{component}</BannerItem>;
-      })}
+    <BannerFlex data-testid={"banner-1"} {...props}>
+      {children}
     </BannerFlex>
   );
 };

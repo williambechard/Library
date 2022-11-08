@@ -12,6 +12,7 @@ import { useForm } from "react-hook-form";
 import { useAddBook } from "../../api/books";
 import { useAddAuthor, useGetAuthors } from "../../api/authors";
 import useToast from "../../hooks/useToast";
+import Colors from "../colors";
 
 const StyledModal = styled.div`
   position: fixed;
@@ -63,11 +64,10 @@ const AddBookForm = ({ onClickHandler, onSubmit }) => {
     let targetAuthor = {};
 
     if (findAuthor.length) targetAuthor = findAuthor[0];
-    else {
+    else
       await addAuthor(fName, lName).then(
         (data) => (targetAuthor = data.data.addAuthor)
       );
-    }
 
     const newBook = await addBook(title, targetAuthor.id, "", [""], description)
       .then((data) => {
@@ -89,7 +89,6 @@ const AddBookForm = ({ onClickHandler, onSubmit }) => {
       });
 
     await onSubmit();
-
     onClickHandler();
   };
 
@@ -101,7 +100,7 @@ const AddBookForm = ({ onClickHandler, onSubmit }) => {
         errors={errors}
         width={"100%"}
       />
-      <Flex direction={"column"} justifyContent={"flex-start"}>
+      <Flex direction={"row"} justifyContent={"flex-start"} gap={"10px"}>
         <SingleLineInput
           labelText={"First Name"}
           register={register}
@@ -135,15 +134,15 @@ const AddBookForm = ({ onClickHandler, onSubmit }) => {
         padding={"30px 0px 0px 0px"}
       >
         <Button
-          fColor={"red"}
-          borderColor={"red"}
+          fColor={Colors.Bright[1]}
+          borderColor={Colors.Bright[1]}
           content={"Cancel"}
           onClickHandler={onClickHandler}
         />
-        <Text content={"_"} fColor={"white"} selectable={"none"} />
+        <Text content={"_"} fColor={Colors.Mono[0]} selectable={"none"} />
         <Button
-          fColor={"green"}
-          borderColor={"green"}
+          fColor={Colors.Bright[0]}
+          borderColor={Colors.Bright[0]}
           content={"Add Book"}
           btnType={"Submit"}
         />

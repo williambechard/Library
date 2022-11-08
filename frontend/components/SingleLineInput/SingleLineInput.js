@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 import Text from "../Text/Text";
+import Colors from "../colors";
 
 const StyledInput = styled.input`
+  color: ${(props) =>
+    props.fColor ? props.fColor : Colors.Mono[Colors.Mono.length - 1]};
   font-size: 1rem;
   height: 2rem;
   border-radius: 6px;
-  border: 1px solid grey;
+  border: 1px solid ${Colors.Mono[4]};
   padding-left: 0.5rem;
   width: ${(props) => (props.width ? props.width : "unset")};
   box-sizing: border-box;
@@ -17,44 +20,40 @@ const StyledDiv = styled.div`
   width: ${(props) => (props.width ? props.width : "unset")};
 `;
 
-const SingleLineInput = ({
-  children,
-  labelText,
-  rows = "1",
-  resize = "none",
-  register,
-  width = "unset",
-  errors,
-}) => {
-  const [errorState, setErrorState] = useState(errors);
+const SingleLineInput = ({ children, ...props }) => {
+  const [errorState, setErrorState] = useState(props.errors);
+  const register = props.register;
   return (
-    <StyledDiv width={width}>
+    <StyledDiv {...props}>
       <Text
-        content={labelText}
-        fontSize={1}
+        content={props.labelText}
         fontWeight={"1000"}
-        fColor={errors?.[labelText] ? "red" : "black"}
-        display={"block"}
+        fontSize={1}
+        fColor={
+          props.errors?.[props.labelText]
+            ? Colors.Bright[1]
+            : Colors.Mono[Colors.Mono.length - 1]
+        }
+        {...props}
       />
       <StyledInput
         type={"text"}
-        rows={rows}
-        resize={resize}
-        label={labelText}
-        name={labelText}
-        width={width}
-        {...register(labelText, {
+        name={props.labelText}
+        label={props.labelText}
+        {...register(props.labelText, {
           required: "Required",
           minLength: 1,
           maxLength: 110,
         })}
+        {...props}
       />
-      {errors?.[labelText] && (
+      {props.errors?.[props.labelText] && (
         <Text
           content={"Input not valid!"}
           fontWeight={"1000"}
           fontSize={1}
-          fColor={"red"}
+          fColor={Colors.Bright[1]}
+          {...props}
         />
       )}
     </StyledDiv>

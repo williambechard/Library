@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import Colors from "../colors";
 
 const StyledSection = styled.section`
   display: flex;
@@ -6,7 +7,7 @@ const StyledSection = styled.section`
   align-items: flex-start;
   flex: 1;
   padding: 3rem 2rem;
-  background: ${(props) => (props.bgColor ? props.bgColor : "#DFDFDF")};
+  background: ${(props) => (props.bgColor ? props.bgColor : Colors.Mono[1])};
   border-radius: ${(props) =>
     props.borderRadius ? props.borderRadius : "0 0 0 0"};
   margin: 0;
@@ -20,17 +21,9 @@ const Container = styled.div`
   gap: 1rem;
 `;
 
-const Section = ({
-  children,
-  borderRadius = "0 0 0 0",
-  bgColor = "#DFDFDF",
-}) => {
+const Section = ({ children, ...props }) => {
   return (
-    <StyledSection
-      data-testid={"section-1"}
-      bgColor={bgColor}
-      borderRadius={borderRadius}
-    >
+    <StyledSection data-testid={"section-1"} {...props}>
       <Container>{children}</Container>
     </StyledSection>
   );

@@ -1,11 +1,13 @@
 import React from "react";
 import styled from "@emotion/styled";
 import Flex from "../Flex/Flex";
+import Colors from "../colors";
 
 const StyledButton = styled.button`
   display: inline-block;
   margin:${(props) => (props.margin ? props.margin : "unset")};
-  color:${(props) => (props.fColor ? props.fColor : "black")};
+  color:${(props) =>
+    props.fColor ? props.fColor : Colors.Mono[Colors.Mono.length - 1]};
   padding: 5px 10px;
   border-radius: 10px;
   font-size: ${(props) => props.fontSize / 2}rem;
@@ -21,35 +23,16 @@ const StyledButton = styled.button`
     font-size: ${(props) => props.fontSize}rem;
   }
   &:hover {
-    background-color: #BEBEBE;
+    background-color: ${Colors.Mono[2]};
     cursor: pointer;
   }
   }
 `;
-const Button = ({
-  fontWeight = "400",
-  content,
-  fontSize = "1",
-  bgColor = "black",
-  fColor = "black",
-  borderColor,
-  margin = "unset",
-  btnType = "button",
-  onClickHandler,
-}) => {
+const Button = ({ onClickHandler, ...props }) => {
   return (
     <Flex alignContent={"center"} justifyContent={"flex-end"} width={"unset"}>
-      <StyledButton
-        bgColor={bgColor}
-        fColor={fColor}
-        borderColor={borderColor}
-        fontSize={fontSize}
-        onClick={onClickHandler}
-        fontWeight={fontWeight}
-        margin={margin}
-        type={btnType}
-      >
-        {content}
+      <StyledButton onClick={onClickHandler} type={props.btnType} {...props}>
+        {props.content}
       </StyledButton>
     </Flex>
   );
