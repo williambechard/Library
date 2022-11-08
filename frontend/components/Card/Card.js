@@ -2,6 +2,9 @@ import React from "react";
 import styled from "@emotion/styled";
 import Colors from "../colors";
 
+/**
+ * Style component based on a div element
+ */
 const StyledCard = styled.div`
   padding: 20px 10px;
   margin: 10px;
@@ -20,9 +23,10 @@ const StyledCard = styled.div`
       }
   `}
 `;
-const Card = ({ children, onClick }) => {
+
+const Card = ({ children, ...props }) => {
   return (
-    <StyledCard data-testid={"card-1"} onClick={onClick}>
+    <StyledCard data-testid={"card-1"} onClick={props.onClick}>
       {children}
     </StyledCard>
   );

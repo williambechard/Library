@@ -3,6 +3,9 @@ import styled from "@emotion/styled";
 import Text from "../Text/Text";
 import Colors from "../colors";
 
+/**
+ * Style component based on the input element
+ */
 const StyledInput = styled.input`
   color: ${(props) =>
     props.fColor ? props.fColor : Colors.Mono[Colors.Mono.length - 1]};
@@ -15,14 +18,23 @@ const StyledInput = styled.input`
   box-sizing: border-box;
 `;
 
+/**
+ * Style component based on a div element
+ * Styling for label part of the input
+ */
 const StyledDiv = styled.div`
   margin-bottom: 20px;
   width: ${(props) => (props.width ? props.width : "unset")};
 `;
 
 const SingleLineInput = ({ children, ...props }) => {
+  /**
+   * A way for the parent to let this component know if there was an error or not
+   */
   const [errorState, setErrorState] = useState(props.errors);
+  //Used for the same purpose as above - required for react-hook-form to use the hook useForm
   const register = props.register;
+
   return (
     <StyledDiv {...props}>
       <Text

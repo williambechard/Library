@@ -1,6 +1,9 @@
 import styled from "@emotion/styled";
 import Colors from "../colors";
 
+/**
+ * Style component based on a section element
+ */
 const StyledSection = styled.section`
   display: flex;
   flex-direction: column;
@@ -13,6 +16,10 @@ const StyledSection = styled.section`
   margin: 0;
 `;
 
+/**
+ * Style component based on a div element
+ * Styling for the wrapper within the section
+ */
 const Container = styled.div`
   display: flex;
   flex-direction: column;

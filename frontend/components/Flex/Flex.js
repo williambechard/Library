@@ -1,5 +1,8 @@
 import styled from "@emotion/styled";
 
+/**
+ * Style component based on a div element
+ */
 const StyledFlex = styled.div`
   display: flex;
   ${(props) =>
@@ -22,25 +25,9 @@ const StyledFlex = styled.div`
   ${({ direction }) => `flex-direction: ${direction};`}
 `;
 
-const Flex = ({
-  children,
-  direction = "row",
-  height = "100%",
-  width = "100%",
-  margin = "0",
-  padding = "0",
-  ...props
-}) => {
+const Flex = ({ children, ...props }) => {
   return (
-    <StyledFlex
-      direction={direction}
-      data-testid={"flex-1"}
-      height={height}
-      width={width}
-      margin={margin}
-      padding={padding}
-      {...props}
-    >
+    <StyledFlex data-testid={"flex-1"} {...props}>
       {children}
     </StyledFlex>
   );

@@ -2,6 +2,9 @@ import React from "react";
 import styled from "@emotion/styled";
 import Colors from "../colors";
 
+/**
+ * Style component based on a div element
+ */
 const TextItem = styled.div`
   user-select: ${(props) => (props.selectable ? props.selectable : "auto")};
   display: ${(props) => (props.display ? props.display : "inline-block")};

@@ -3,6 +3,9 @@ import styled from "@emotion/styled";
 import Flex from "../Flex/Flex";
 import Colors from "../colors";
 
+/**
+ * Styling based on button element
+ */
 const StyledButton = styled.button`
   display: inline-block;
   margin:${(props) => (props.margin ? props.margin : "unset")};
@@ -28,10 +31,15 @@ const StyledButton = styled.button`
   }
   }
 `;
-const Button = ({ onClickHandler, ...props }) => {
+
+const Button = ({ ...props }) => {
   return (
     <Flex alignContent={"center"} justifyContent={"flex-end"} width={"unset"}>
-      <StyledButton onClick={onClickHandler} type={props.btnType} {...props}>
+      <StyledButton
+        onClick={props.onClickHandler}
+        type={props.btnType}
+        {...props}
+      >
         {props.content}
       </StyledButton>
     </Flex>

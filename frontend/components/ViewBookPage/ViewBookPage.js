@@ -1,42 +1,19 @@
 import React from "react";
-import styled from "@emotion/styled";
-import {
-  Button,
-  Text,
-  Page,
-  SingleLineInput,
-  MultiLineInput,
-  Flex,
-} from "../index";
+import { Text, Page, Flex } from "../index";
 import { useGetBook } from "../../api/books";
 
-const StyledModal = styled.div`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 600px;
-  max-width: 100%;
-  max-height: 100%;
-  z-index: 4;
-  background-color: white;
-  border-radius: 15px;
-`;
+/**
+ * Component which is responsible for the inside of the Modal which shows the Book Info
+ * @param bookId - Id of the book we want to view
+ * @param onClickClose - function to be called when close is clicked
+ * @returns {JSX.Element}
+ */
+const ViewBookPage = ({ ...props }) => {
+  /**
+   * Hook for getting info from a book based on a bookId
+   */
+  const { bookLoading, bookError, book } = useGetBook(props.bookId);
 
-const StyledBG = styled.div`
-  position: fixed;
-  z-index: 3;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgb(0, 0, 0);
-  background-color: rgba(0, 0, 0, 0.4);
-`;
-
-const ViewBookPage = ({ bookId, onClickClose }) => {
-  const { bookLoading, bookError, book } = useGetBook(bookId);
   return (
     <Page height={"60vh"}>
       {!bookLoading && !bookError ? (
@@ -60,7 +37,7 @@ const ViewBookPage = ({ bookId, onClickClose }) => {
             <Text
               content={book.title}
               display={"inline-block"}
-              onClick={onClickClose}
+              onClick={props.onClickClose}
               fontSize={0.75}
             />
           </Flex>

@@ -2,6 +2,9 @@ import React from "react";
 import styled from "@emotion/styled";
 import Colors from "../colors";
 
+/**
+ * Style component based on a div element
+ */
 const StyledPage = styled.div`
   display: grid;
   grid-template-rows: ${(props) =>

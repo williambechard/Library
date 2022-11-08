@@ -3,6 +3,10 @@ import styled from "@emotion/styled";
 import Flex from "../Flex";
 import Colors from "../colors";
 
+/**
+ * Styling for container as a Flex component
+ * Ensures items are spaced uniformly in a batter component
+ */
 const BannerFlex = styled(Flex)`
   flex-wrap: ${(props) => (props.flexWrap ? props.flexWrap : "nowrap")};
   justify-content: ${(props) =>
@@ -31,10 +35,10 @@ const BannerFlex = styled(Flex)`
   `}
 `;
 
-const Banner = ({ children, ...props }) => {
+const Banner = ({ ...props }) => {
   return (
     <BannerFlex data-testid={"banner-1"} {...props}>
-      {children}
+      {props.children}
     </BannerFlex>
   );
 };

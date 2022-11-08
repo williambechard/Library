@@ -3,6 +3,9 @@ import styled from "@emotion/styled";
 import Text from "../Text/Text";
 import Colors from "../colors";
 
+/**
+ * Style component based on a textarea
+ */
 const StyledInput = styled.textarea`
   width: inherit;
   resize: ${(props) => (props.resize ? props.resize : "none")};
@@ -13,6 +16,10 @@ const StyledInput = styled.textarea`
   box-sizing: border-box;
 `;
 
+/**
+ * Style component based on a label element
+ * Styling used for the label part of the input element
+ */
 const StyledLabel = styled.label`
   width: inherit;
 `;
