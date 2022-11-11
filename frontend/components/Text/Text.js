@@ -6,15 +6,22 @@ import Colors from "../colors";
  * Style component based on a div element
  */
 const TextItem = styled.div`
-  user-select: ${(props) => (props.selectable ? props.selectable : "auto")};
-  display: ${(props) => (props.display ? props.display : "inline-block")};
-  font-size: ${(props) => props.fontSize / 1.5}rem;
+  ${(props) => `
+  display: ${props.display};
+  font-size: ${props.fontSize / 1.5}rem;
+  background-color: ${props.bgColor};
+  color: ${props.fColor};
+  font-weight: ${props.fontWeight};
+  margin:${props.margin};
+  overflow: ${props.overflow};
+  max-height: ${props.maxHeight}; 
   @media screen and (min-width: 300px) {
-    font-size: ${(props) => props.fontSize / 1.25}rem;
+    font-size: ${props.fontSize / 1.25}rem;
   }
   @media screen and (min-width: 800px) {
-    font-size: ${(props) => props.fontSize}rem;
+    font-size: ${props.fontSize}rem;
   }
+  `}
   ${(props) =>
     props.onClick &&
     `
@@ -25,23 +32,34 @@ const TextItem = styled.div`
         color:${Colors.Bright[2]};
         text-weight:bold
       }
-    
   `}
   text-align: left;
-  background-color: ${(props) =>
-    props.bgColor ? props.bgColor : Colors.Mono[0]};
-  color: ${(props) =>
-    props.fColor ? props.fColor : Colors.Mono[Colors.Mono.length - 1]};
   font-family: Poppins, serif;
-  font-weight: ${(props) => (props.fontWeight ? props.fontWeight : "400")};
-  margin: ${(props) => (props.margin ? props.margin : "0 0 0 0")};
-  overflow: ${(props) => (props.overflow ? props.overflow : "hidden")};
-  max-height: ${(props) => (props.maxHeight ? props.maxHeight : "40vh")}; ;
 `;
-const Text = ({ ...props }) => {
+const Text = ({
+  display = "inline-block",
+  content = "test",
+  fontSize = "1",
+  bgColor = Colors.Mono[0],
+  fColor = Colors.Mono[Colors.Mono.length - 1],
+  fontWeight = "400",
+  margin = "0",
+  overflow = "hidden",
+  maxHeight = "40vh",
+}) => {
   return (
-    <TextItem data-testid={"text-1"} {...props}>
-      {props.content}
+    <TextItem
+      data-testid={"text-1"}
+      display={display}
+      fontSize={fontSize}
+      bgColor={bgColor}
+      fColor={fColor}
+      fontWeight={fontWeight}
+      margin={margin}
+      overflow={overflow}
+      maxHeight={maxHeight}
+    >
+      {content}
     </TextItem>
   );
 };

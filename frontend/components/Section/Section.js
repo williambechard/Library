@@ -1,38 +1,44 @@
+import React from "react";
 import styled from "@emotion/styled";
 import Colors from "../colors";
 
 /**
- * Style component based on a section element
- */
-const StyledSection = styled.section`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  flex: 1;
-  padding: 3rem 2rem;
-  background: ${(props) => (props.bgColor ? props.bgColor : Colors.Mono[1])};
-  border-radius: ${(props) =>
-    props.borderRadius ? props.borderRadius : "0 0 0 0"};
-  margin: 0;
-`;
-
-/**
  * Style component based on a div element
- * Styling for the wrapper within the section
  */
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  margin: 0;
-  gap: 1rem;
+const StyledPage = styled.div`
+  ${(props) =>
+    `
+      background-color:${props.bgColor};
+      grid-template-rows:${props.templateRows};
+      border-radius:${props.borderRadius};
+      height:${props.height};
+      margin:${props.margin};
+      width:${props.width};
+  `}
+  display: grid;
 `;
 
-const Section = ({ children, ...props }) => {
+const Section = ({
+  bgColor = Colors.Mono[0],
+  children,
+  templateRows = "auto 1fr auto",
+  borderRadius = "0",
+  height = "100vh",
+  margin = "0",
+  width = "auto",
+}) => {
   return (
-    <StyledSection data-testid={"section-1"} {...props}>
-      <Container>{children}</Container>
-    </StyledSection>
+    <StyledPage
+      data-testid={"section-1"}
+      templateRows={templateRows}
+      height={height}
+      borderRadius={borderRadius}
+      bgColor={bgColor}
+      margin={margin}
+      width={width}
+    >
+      {children}
+    </StyledPage>
   );
 };
 

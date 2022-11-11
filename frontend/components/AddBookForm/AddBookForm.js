@@ -1,18 +1,19 @@
 import React from "react";
 import styled from "@emotion/styled";
-import {
-  Button,
-  Text,
-  Form,
-  SingleLineInput,
-  MultiLineInput,
-  Flex,
-} from "../index";
+import { Button, SingleLineInput, MultiLineInput, Flex } from "../index";
 import { useForm } from "react-hook-form";
 import { useAddBook } from "../../api/books";
 import { useAddAuthor, useGetAuthors } from "../../api/authors";
 import useToast from "../../hooks/useToast";
 import Colors from "../colors";
+
+/**
+ * Style component based on a form
+ */
+const StyledForm = styled.form`
+  width: 100%;
+  height: 100%;
+`;
 
 const StyledModal = styled.div`
   position: fixed;
@@ -39,7 +40,7 @@ const StyledBG = styled.div`
   background-color: rgba(0, 0, 0, 0.4);
 `;
 
-const AddBookForm = ({ onClickHandler, onSubmit }) => {
+const AddBookForm = ({ onClick, onSubmit }) => {
   const {
     register,
     handleSubmit,
@@ -93,65 +94,75 @@ const AddBookForm = ({ onClickHandler, onSubmit }) => {
       });
 
     await onSubmit();
-    onClickHandler();
+    onClick();
   };
 
   return (
-    <Form onHandleSubmit={handleSubmit(submitForm)}>
-      <SingleLineInput
-        labelText={"Title"}
-        register={register}
-        errors={errors}
-        width={"100%"}
-      />
-      <Flex direction={"row"} justifyContent={"flex-start"} gap={"10px"}>
-        <SingleLineInput
-          labelText={"First Name"}
-          register={register}
-          errors={errors}
-          width={"100%"}
-        />
-        <SingleLineInput
-          labelText={"Last Name"}
-          register={register}
-          errors={errors}
-          width={"100%"}
-        />
-      </Flex>
+    <StyledForm onSubmit={handleSubmit(submitForm)}>
       <Flex
-        height={"200px"}
         direction={"column"}
-        justifyContent={"flex-end"}
-        alignContent={"flex-end"}
+        wrap={"nowrap"}
+        justifyContent={"center"}
+        borderRadius={"15px"}
       >
-        <MultiLineInput
-          labelText={"Description"}
-          rows={5}
+        <SingleLineInput
+          labelText={"Title"}
           register={register}
           errors={errors}
+          width={"100%"}
         />
+        <Flex
+          direction={"row"}
+          justifyContent={"flex-start"}
+          wrap={"nowrap"}
+          gap={"10px"}
+        >
+          <SingleLineInput
+            labelText={"First Name"}
+            register={register}
+            errors={errors}
+          />
+          <SingleLineInput
+            labelText={"Last Name"}
+            register={register}
+            errors={errors}
+          />
+        </Flex>
+        <Flex
+          height={"200px"}
+          direction={"column"}
+          justifyContent={"flex-end"}
+          alignContent={"flex-end"}
+        >
+          <MultiLineInput
+            labelText={"Description"}
+            rows={5}
+            register={register}
+            errors={errors}
+          />
+        </Flex>
+        <Flex
+          justifyContent={"flex-end"}
+          alignContent={"flex-end"}
+          height={"50px"}
+          padding={"30px 0px 0px 0px"}
+          gap={"10px"}
+        >
+          <Button
+            fColor={Colors.Bright[1]}
+            borderColor={Colors.Bright[1]}
+            content={"Cancel"}
+            onClick={onClick}
+          />
+          <Button
+            fColor={Colors.Bright[0]}
+            borderColor={Colors.Bright[0]}
+            content={"Add Book"}
+            btnType={"Submit"}
+          />
+        </Flex>
       </Flex>
-      <Flex
-        justifyContent={"flex-end"}
-        alignContent={"flex-end"}
-        height={"50px"}
-        padding={"30px 0px 0px 0px"}
-      >
-        <Button
-          fColor={Colors.Bright[1]}
-          borderColor={Colors.Bright[1]}
-          content={"Cancel"}
-          onClickHandler={onClickHandler}
-        />
-        <Text content={"_"} fColor={Colors.Mono[0]} selectable={"none"} />
-        <Button
-          fColor={Colors.Bright[0]}
-          borderColor={Colors.Bright[0]}
-          content={"Add Book"}
-          btnType={"Submit"}
-        />
-      </Flex>
-    </Form>
+    </StyledForm>
   );
 };
 

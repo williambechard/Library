@@ -13,20 +13,16 @@ const StyledCard = styled.div`
   height: 150px;
   border: 0.2rem solid transparent;
   box-shadow: 5px 5px 10px #a9a9a9;
-  ${(props) =>
-    props.onClick &&
-    `
-    cursor: pointer;
-    &:hover {
-        border:.2rem solid ${Colors.Mono[Colors.Mono.length - 1]};
-        box-shadow: 5px 10px 20px ${Colors.Mono[3]};
-      }
-  `}
+  cursor: pointer;
+  &:hover {
+    border: 0.2rem solid ${Colors.Mono[Colors.Mono.length - 1]};
+    box-shadow: 5px 10px 20px ${Colors.Mono[3]};
+  }
 `;
 
-const Card = ({ children, ...props }) => {
+const Card = ({ children, onClick }) => {
   return (
-    <StyledCard data-testid={"card-1"} onClick={props.onClick}>
+    <StyledCard data-testid={"card-1"} onClick={onClick}>
       {children}
     </StyledCard>
   );

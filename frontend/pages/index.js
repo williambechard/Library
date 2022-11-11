@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import Head from "next/head";
 import {
-  Banner,
-  Section,
-  Button,
-  Page,
   AddBookForm,
-  ViewBookPage,
-  Flex,
+  Banner,
+  Button,
   Card,
+  Flex,
   Modal,
+  Section,
+  ViewBookPage,
 } from "../components";
 import DULogo from "../public/DU-Logo-Mark.svg";
 import Text from "../components/Text/Text";
@@ -63,7 +62,6 @@ const Home = () => {
 
   /**
    * Function which coverts loaded books data to JSX (Card Components)
-   * @returns {*} - returns JSX of all books that have been loaded from the hook
    */
   const displayBooks = () => {
     return books.map((book) => {
@@ -104,26 +102,38 @@ const Home = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Page bgColor={Colors.Mono[1]}>
-        <Banner position={"fixed"} top={"0"} left={"0"} zIndex={"2"}>
-          <div style={{ margin: "auto 20px" }}>
+      <Section bgColor={Colors.Mono[1]} height={"100%"}>
+        <Flex
+          position={"fixed"}
+          top={"0"}
+          left={"0"}
+          zIndex={"2"}
+          justifyContent={"flex-start"}
+          alignContent={"flex-start"}
+          gap={"15px"}
+          height={"70px"}
+          wrap={"wrap"}
+        >
+          <div style={{ margin: "10px", display: "inline-block" }}>
             <Image src={DULogo} alt={"DULogo"} width={"50px"} height={"50px"} />
           </div>
           <Text
             content={"William's Capstone"}
-            fontSize={2}
+            fontSize={"1.70"}
             fontWeight={"1000"}
             margin={"auto 10px"}
+            height={"100%"}
           />
-        </Banner>
-        <Section>
-          <Banner
+        </Flex>
+        <Section height={"100vh"} bgColor={Colors.Mono[1]}>
+          <Flex
             bgColor={Colors.Mono[1]}
             justifyContent={"space-between"}
             position={"fixed"}
-            top={"100px"}
+            top={"70px"}
             left={"0"}
             zIndex={"2"}
+            height={"70px"}
           >
             <Text
               content={"My Library"}
@@ -133,59 +143,53 @@ const Home = () => {
             />
             <Button
               content={"+ Add Book"}
-              onClickHandler={() =>
-                triggerModal(setAddBookModal, showAddBookModal)
-              }
+              onClick={() => triggerModal(setAddBookModal, showAddBookModal)}
               margin={"auto 10px"}
             />
-          </Banner>
+          </Flex>
           {books.length > 0 ? (
             <Flex
               justifyContent={"flex-start"}
               alignContent={"center"}
-              style={{
-                flexWrap: "wrap",
-                zIndex: "0",
-                transform: "TranslateY(150px)",
-              }}
+              bgColor={Colors.Mono[1]}
+              wrap={"wrap"}
+              zIndex={"0"}
+              transform={"TranslateY(150px)"}
             >
               {displayBooks()}
             </Flex>
           ) : null}
           {showAddBookModal ? (
             <Modal
-              onClickHandler={() =>
-                triggerModal(setAddBookModal, showAddBookModal)
-              }
+              onClick={() => triggerModal(setAddBookModal, showAddBookModal)}
               title={"Add New Book"}
             >
               <AddBookForm
                 onSubmit={update}
-                onClickHandler={() =>
-                  triggerModal(setAddBookModal, showAddBookModal)
-                }
+                onClick={() => triggerModal(setAddBookModal, showAddBookModal)}
               />
             </Modal>
           ) : null}
           {showViewBookModal ? (
             <Modal
-              onClickHandler={() =>
+              onClick={() =>
                 triggerModal(setShowViewBookModal, showViewBookModal)
               }
               title={"View Book"}
             >
               <ViewBookPage
                 bookId={bookId}
-                onClickClose={() => setShowViewBookModal(!showViewBookModal)}
+                onClick={() => setShowViewBookModal(!showViewBookModal)}
               ></ViewBookPage>
             </Modal>
           ) : null}
         </Section>
-        <Banner
+        <Flex
           bgColor={Colors.Mono[Colors.Mono.length - 1]}
           justifyContent={"center"}
           height={"30px"}
-          footer={true}
+          position={"fixed"}
+          bottom={"0"}
         >
           <Text
             content={"@ 2022 Omni Federal - All Rights Reserved"}
@@ -194,8 +198,8 @@ const Home = () => {
             fontSize={1}
             margin={"auto 10px"}
           />
-        </Banner>
-      </Page>
+        </Flex>
+      </Section>
     </>
   );
 };

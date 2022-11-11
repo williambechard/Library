@@ -1,11 +1,11 @@
 import React from "react";
-import { Text, Page, Flex } from "../index";
+import { Text, Section, Flex } from "../index";
 import { useGetBook } from "../../api/books";
 
 /**
  * Component which is responsible for the inside of the Modal which shows the Book Info
  * @param bookId - Id of the book we want to view
- * @param onClickClose - function to be called when close is clicked
+ * @param onClick - function to be called when close is clicked
  * @returns {JSX.Element}
  */
 const ViewBookPage = ({ ...props }) => {
@@ -15,12 +15,13 @@ const ViewBookPage = ({ ...props }) => {
   const { bookLoading, bookError, book } = useGetBook(props.bookId);
 
   return (
-    <Page height={"60vh"}>
+    <Section height={"60vh"} width={"100%"}>
       {!bookLoading && !bookError ? (
         <Flex
           direction={"column"}
           justifyContent={"flex-start"}
           alignContent={"center"}
+          width={"100%"}
         >
           <Flex
             direction={"row"}
@@ -37,7 +38,7 @@ const ViewBookPage = ({ ...props }) => {
             <Text
               content={book.title}
               display={"inline-block"}
-              onClick={props.onClickClose}
+              onClick={props.onClick}
               fontSize={0.75}
             />
           </Flex>
@@ -71,7 +72,7 @@ const ViewBookPage = ({ ...props }) => {
       ) : (
         <Text content={"Loading..."} />
       )}
-    </Page>
+    </Section>
   );
 };
 

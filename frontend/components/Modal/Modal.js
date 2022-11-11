@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { Banner, Button, Page, Section, Text } from "../index";
+import { Banner, Button, Page, Section, Text, Flex } from "../index";
 import Colors from "../colors";
 
 /**
@@ -40,12 +40,13 @@ const Modal = ({ children, ...props }) => {
   return (
     <StyledBG>
       <StyledModal data-testid={"modal-1"}>
-        <Page
+        <Section
           borderRadius={"15px 15px 15px 15px"}
           templateRows={"auto"}
           height={"unset"}
+          margin={"15px"}
         >
-          <Banner
+          <Flex
             bgColor={Colors.Mono[0]}
             justifyContent={"space-between"}
             borderRadius={"15px 15px 0px 0px"}
@@ -54,21 +55,21 @@ const Modal = ({ children, ...props }) => {
             <Text
               content={props.title}
               bgColor={Colors.Mono[0]}
-              fontSize={1.5}
+              fontSize={2}
               fontWeight={"1000"}
-              margin={"auto 35px"}
+              margin={"auto 25px auto 0px"}
             />
             <Button
               margin={"auto 10px"}
               content={"X"}
-              onClickHandler={props.onClickHandler}
+              onClick={props.onClick}
               fontWeight={"1000"}
             />
-          </Banner>
-          <Section bgColor={Colors.Mono[0]} borderRadius={"0 0 15px 15px"}>
+          </Flex>
+          <Flex bgColor={Colors.Mono[0]} borderRadius={"0 0 15px 15px"}>
             {children}
-          </Section>
-        </Page>
+          </Flex>
+        </Section>
       </StyledModal>
     </StyledBG>
   );
