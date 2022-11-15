@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { SingleLineInput, MultiLineInput } from "../../components";
 import Colors from "../../components/colors";
 import { debug } from "jest-preview";
@@ -8,9 +8,10 @@ describe("Single and MultiLine Text Input Component Tests", () => {
   describe("Single Line Text Input Component Tests", () => {
     it("should render a default Single Line Input component", () => {
       render(<SingleLineInput register={jest.fn()} errors={jest.fn()} />);
+
       const textInputComponent = screen.getByRole("textbox");
       expect(textInputComponent).toBeInTheDocument();
-      expect(screen.getByLabelText("Label")).toHaveTextContent("Label");
+      expect(screen.getByText("Label")).toBeInTheDocument();
       expect(textInputComponent).toHaveStyle(
         `color:${Colors.Mono[Colors.Mono.length - 1]}`,
         "font-size: 1rem",
@@ -22,7 +23,7 @@ describe("Single and MultiLine Text Input Component Tests", () => {
         "width:100%"
       );
       expect(screen.getByTestId("div-1")).toHaveStyle("margin-bottom:20px");
-      expect(screen.getByLabelText("Label")).toHaveStyle(
+      expect(screen.getByText("Label")).toHaveStyle(
         `color:${Colors.Mono[Colors.Mono.length - 1]}`
       );
     });
@@ -40,9 +41,20 @@ describe("Single and MultiLine Text Input Component Tests", () => {
       expect(textInputComponent).toHaveStyle("width:50%");
     });
 
-    it("should render with red and different style with errors present", () => {
+    it("should have a label that correctly point to its input", () => {
+      render(<SingleLineInput register={jest.fn()} errors={jest.fn()} />);
+      debug();
+      const InputNode = screen.getByLabelText("Label");
+      expect(InputNode.getAttribute("name")).toBe("Label");
+    });
+
+    it("should render with a specific style on required type error", () => {
       const mockError = () => {
-        return { TestInput: true };
+        return {
+          TestInput: {
+            type: "required",
+          },
+        };
       };
 
       render(
@@ -52,14 +64,44 @@ describe("Single and MultiLine Text Input Component Tests", () => {
           errors={mockError()}
         />
       );
-
+      debug();
       const textInputComponent = screen.getByRole("textbox");
       expect(textInputComponent).toBeInTheDocument();
-      expect(screen.getByLabelText("TestInput")).toHaveStyle(
+      expect(screen.getByText("TestInput")).toHaveStyle(
         `color:${Colors.Bright[1]}`
       );
-      expect(screen.getByText("Input not valid!")).toBeInTheDocument();
-      expect(screen.getByText("Input not valid!")).toHaveStyle(
+      expect(screen.getByText("Input is Required")).toBeInTheDocument();
+      expect(screen.getByText("Input is Required")).toHaveStyle(
+        "font-weight:1000",
+        "font-size:1",
+        `color:${Colors.Bright[1]}`
+      );
+    });
+
+    it("should render with a specific style on maxLength type error", () => {
+      const mockError = () => {
+        return {
+          TestInput: {
+            type: "maxLength",
+          },
+        };
+      };
+
+      render(
+        <SingleLineInput
+          labelText={"TestInput"}
+          register={jest.fn()}
+          errors={mockError()}
+        />
+      );
+      debug();
+      const textInputComponent = screen.getByRole("textbox");
+      expect(textInputComponent).toBeInTheDocument();
+      expect(screen.getByText("TestInput")).toHaveStyle(
+        `color:${Colors.Bright[1]}`
+      );
+      expect(screen.getByText("Max length exceeded")).toBeInTheDocument();
+      expect(screen.getByText("Max length exceeded")).toHaveStyle(
         "font-weight:1000",
         "font-size:1",
         `color:${Colors.Bright[1]}`
@@ -107,18 +149,52 @@ describe("Single and MultiLine Text Input Component Tests", () => {
       );
     });
 
-    it("should show red colored text with error passed in Label Multi Line Input component", () => {
+    it("should have a label that correctly point to its input", () => {
+      render(<MultiLineInput register={jest.fn()} errors={jest.fn()} />);
+      debug();
+      const InputNode = screen.getByLabelText("Label");
+      expect(InputNode.getAttribute("name")).toBe("Label");
+    });
+
+    it("should show style with required error", () => {
       const mockError = () => {
-        return { Label: true };
+        return {
+          Label: {
+            type: "required",
+          },
+        };
       };
-      debug();
+
       render(<MultiLineInput register={jest.fn()} errors={mockError()} />);
-      debug();
+
       const labelComponent = screen.getByText("Label");
       expect(labelComponent).toBeInTheDocument();
       expect(labelComponent).toHaveStyle(`color:${Colors.Bright[1]}`);
-      expect(screen.getByText("Input not valid!")).toBeInTheDocument();
-      expect(screen.getByText("Input not valid!")).toHaveStyle(
+      expect(screen.getByText("Input is Required")).toBeInTheDocument();
+      expect(screen.getByText("Input is Required")).toHaveStyle(
+        "font-weight:1000",
+        "font-size:1",
+        `color:${Colors.Bright[1]}`
+      );
+      const textInputComponent = screen.getByRole("textbox");
+      expect(textInputComponent).toBeInTheDocument();
+    });
+    it("should show style with maxLength error", () => {
+      const mockError = () => {
+        return {
+          Label: {
+            type: "maxLength",
+          },
+        };
+      };
+
+      render(<MultiLineInput register={jest.fn()} errors={mockError()} />);
+
+      const labelComponent = screen.getByText("Label");
+      expect(labelComponent).toBeInTheDocument();
+      expect(labelComponent).toHaveStyle(`color:${Colors.Bright[1]}`);
+      expect(screen.getByText("Max length exceeded")).toBeInTheDocument();
+      expect(screen.getByText("Max length exceeded")).toHaveStyle(
         "font-weight:1000",
         "font-size:1",
         `color:${Colors.Bright[1]}`

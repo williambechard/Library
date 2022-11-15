@@ -20,9 +20,9 @@ const StyledCard = styled.div`
   }
 `;
 
-const Card = ({ children, onClick }) => {
+const Card = ({ children, label = "Moby Dick", onClick }) => {
   return (
-    <StyledCard data-testid={"card-1"} onClick={onClick}>
+    <StyledCard aria-label={"Book Card " + label} onClick={onClick}>
       {children}
     </StyledCard>
   );

@@ -40,7 +40,7 @@ const StyledBG = styled.div`
   background-color: rgba(0, 0, 0, 0.4);
 `;
 
-const AddBookForm = ({ onClick, onSubmit }) => {
+const AddBookForm = ({ onClick }) => {
   const {
     register,
     handleSubmit,
@@ -52,35 +52,40 @@ const AddBookForm = ({ onClick, onSubmit }) => {
   const { authors } = useGetAuthors();
   const [, setToast] = useToast();
 
+  const findAuthor = (fName, lName) => {
+    return authors.find(
+      (author) => author.firstName === fName && author.lastName === lName
+    );
+  };
+
   const submitForm = async (data) => {
     const title = data.Title;
     const description = data.Description;
     const fName = data["First Name"];
     const lName = data["Last Name"];
 
-    //move to outside function so it isnt called every time as it is only needed once the component is loaded
-    // filter returns array rather than one object, find another way
-    const findAuthor = await authors.filter(
-      (author) => author.firstName === fName && author.lastName === lName
-    );
-
     let targetAuthor = {};
 
-    if (findAuthor.length) targetAuthor = findAuthor[0];
-    //no need to mix await and then
-    else
-      await addAuthor(fName, lName).then(
-        (data) => (targetAuthor = data.data.addAuthor)
-      );
+    targetAuthor = findAuthor(fName, lName);
 
-    //look into await for error handling, only continues if successfull
-    const newBook = await addBook(title, targetAuthor.id, "", [""], description)
+    if (typeof targetAuthor === "undefined") {
+      targetAuthor = await addAuthor(fName, lName).catch((err) => {
+        console.log("error ", err);
+        return false;
+      });
+
+      targetAuthor = targetAuthor.data.addAuthor;
+    }
+
+    const newBook = addBook(title, targetAuthor.id, "", [""], description)
       .then((data) => {
         setToast({
           type: "success",
           message:
             "The Book " + title + " was succesfully added to the Library",
         });
+        //I want the form to close after submit, so make sure this happens
+        onClick();
       })
       .catch((error) => {
         setToast({
@@ -92,13 +97,10 @@ const AddBookForm = ({ onClick, onSubmit }) => {
             error,
         });
       });
-
-    await onSubmit();
-    onClick();
   };
 
   return (
-    <StyledForm onSubmit={handleSubmit(submitForm)}>
+    <StyledForm onSubmit={handleSubmit(submitForm)} data-testid={"form-1"}>
       <Flex
         direction={"column"}
         wrap={"nowrap"}
@@ -158,7 +160,7 @@ const AddBookForm = ({ onClick, onSubmit }) => {
             fColor={Colors.Bright[0]}
             borderColor={Colors.Bright[0]}
             content={"Add Book"}
-            btnType={"Submit"}
+            btnType={"submit"}
           />
         </Flex>
       </Flex>

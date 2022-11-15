@@ -12,6 +12,7 @@ const StyledButton = styled.button`
   color:${props.fColor};
   border-color:${props.borderColor};
   margin:${props.margin};
+  font-weight:${props.fontWeight};
  `}
   display: inline-block;
   padding: 5px 10px;
@@ -32,7 +33,7 @@ const StyledButton = styled.button`
 
 const Button = ({
   fontWeight = "400",
-  content,
+  content = "Test",
   fontSize = "1",
   bgColor = Colors.Mono[0],
   fColor = Colors.Mono[Colors.Mono.length - 1],
@@ -44,6 +45,7 @@ const Button = ({
   return (
     <StyledButton
       data-testid={"button-1"}
+      aria-label={content}
       type={btnType}
       onClick={onClick}
       margin={margin}
@@ -51,6 +53,7 @@ const Button = ({
       fColor={fColor}
       bgColor={bgColor}
       fontSize={fontSize}
+      fontWeight={fontWeight}
     >
       {content}
     </StyledButton>

@@ -16,6 +16,7 @@ export default function Document() {
         />
       </Head>
       <body>
+        <div id="ModalArea"></div>
         <Main />
         <NextScript />
       </body>

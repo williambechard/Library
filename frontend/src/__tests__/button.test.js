@@ -7,7 +7,7 @@ import Colors from "../../components/colors";
 describe("Button  Component Tests", () => {
   it("should render a default Button component", () => {
     render(<Button />);
-    const buttonComponent = screen.getByTestId("button-1");
+    const buttonComponent = screen.getByLabelText("Test");
     expect(buttonComponent).toBeInTheDocument();
     expect(buttonComponent).toHaveStyle(
       "fontWeight:400",

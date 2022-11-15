@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { Banner, Button, Page, Section, Text, Flex } from "../index";
+import { Button, Section, Text, Flex } from "../index";
+import { createPortal } from "react-dom";
 import Colors from "../colors";
 
 /**
@@ -36,10 +37,10 @@ const StyledModal = styled.div`
   border-radius: 15px;
 `;
 
-const Modal = ({ children, ...props }) => {
-  return (
+const Modal = ({ children, title = "Test Modal", onClick }) => {
+  return createPortal(
     <StyledBG>
-      <StyledModal data-testid={"modal-1"}>
+      <StyledModal data-testid={"modal-1"} aria-modal={true}>
         <Section
           borderRadius={"15px 15px 15px 15px"}
           templateRows={"auto"}
@@ -53,16 +54,16 @@ const Modal = ({ children, ...props }) => {
             height={"75px"}
           >
             <Text
-              content={props.title}
+              content={title}
               bgColor={Colors.Mono[0]}
-              fontSize={2}
+              fontSize={"2"}
               fontWeight={"1000"}
               margin={"auto 25px auto 0px"}
             />
             <Button
               margin={"auto 10px"}
               content={"X"}
-              onClick={props.onClick}
+              onClick={onClick}
               fontWeight={"1000"}
             />
           </Flex>
@@ -71,7 +72,8 @@ const Modal = ({ children, ...props }) => {
           </Flex>
         </Section>
       </StyledModal>
-    </StyledBG>
+    </StyledBG>,
+    document.querySelector("#ModalArea")
   );
 };
 

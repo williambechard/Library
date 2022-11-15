@@ -34,34 +34,47 @@ const SingleLineInput = ({
   width = "100%",
 }) => {
   return (
-    <StyledDiv labelText={labelText} data-testid={"div-1"}>
-      <Text
-        aria-label={labelText}
-        content={labelText}
-        fontWeight={"1000"}
-        fontSize={1}
-        fColor={
-          errors?.[labelText]
-            ? Colors.Bright[1]
-            : Colors.Mono[Colors.Mono.length - 1]
-        }
-      />
+    <StyledDiv data-testid={"div-1"}>
+      <label htmlFor={labelText}>
+        <Text
+          content={labelText}
+          fontWeight={"1000"}
+          fontSize={"1"}
+          fColor={
+            errors?.[labelText]
+              ? Colors.Bright[1]
+              : Colors.Mono[Colors.Mono.length - 1]
+          }
+        />
+      </label>
       <StyledInput
         type={"text"}
         name={labelText}
-        label={labelText}
+        title={labelText}
+        id={labelText}
         width={width}
+        aria-invalid={errors?.[labelText] ? "true" : "false"}
         {...register(labelText, {
           required: "Required",
           minLength: 1,
           maxLength: 110,
         })}
       />
-      {errors?.[labelText] && (
+      {errors?.[labelText] && errors?.[labelText].type === "required" && (
         <Text
-          content={"Input not valid!"}
+          role={"alert"}
+          content={"Input is Required"}
           fontWeight={"1000"}
-          fontSize={1}
+          fontSize={"1"}
+          fColor={Colors.Bright[1]}
+        />
+      )}
+      {errors?.[labelText] && errors?.[labelText].type === "maxLength" && (
+        <Text
+          role={"alert"}
+          content={"Max length exceeded"}
+          fontWeight={"1000"}
+          fontSize={"1"}
           fColor={Colors.Bright[1]}
         />
       )}

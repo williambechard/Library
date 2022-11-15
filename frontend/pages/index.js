@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Head from "next/head";
 import {
   AddBookForm,
-  Banner,
   Button,
   Card,
   Flex,
@@ -15,6 +14,7 @@ import Text from "../components/Text/Text";
 import Image from "next/image";
 import { allBooksQueryBasic, useGetBooks } from "../api/books";
 import Colors from "../components/colors";
+import { useForm } from "react-hook-form";
 
 /**
  * Main landing page of the application
@@ -35,7 +35,7 @@ const Home = () => {
    * Hook for query to get all books, so that they can be displayed on the page
    * allBooksQueryBasic is a gql query which is crafted to only pull the data we want for the books
    */
-  const { books, update } = useGetBooks(allBooksQueryBasic);
+  const { books } = useGetBooks(allBooksQueryBasic);
 
   //? Any advantage writing a function this way over function(){}
   /**
@@ -68,7 +68,11 @@ const Home = () => {
       //loop through all books
       return (
         //for each book return JSX of a Card Component
-        <Card key={book.id} onClick={() => showBook(book.id)}>
+        <Card
+          key={book.id}
+          label={book.title}
+          onClick={() => showBook(book.id)}
+        >
           <Text
             bgColor={Colors.Mono[2]}
             fontSize={1}
@@ -165,7 +169,6 @@ const Home = () => {
               title={"Add New Book"}
             >
               <AddBookForm
-                onSubmit={update}
                 onClick={() => triggerModal(setAddBookModal, showAddBookModal)}
               />
             </Modal>

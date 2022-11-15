@@ -6,7 +6,7 @@ import userEvent from "@testing-library/user-event";
 describe("Card Component Tests", () => {
   it("should render a default Card component", () => {
     render(<Card />);
-    const cardComponent = screen.getByTestId("card-1");
+    const cardComponent = screen.getByLabelText("Book Card Moby Dick");
     expect(cardComponent).toBeInTheDocument();
     expect(cardComponent).toHaveStyle(
       "padding: 20px 10px",
@@ -21,9 +21,9 @@ describe("Card Component Tests", () => {
   it("should respond to a user click event", async () => {
     const mockCallBack = jest.fn();
 
-    render(<Card onClick={mockCallBack} />);
+    render(<Card onClick={mockCallBack} label={"Of Mice And Men"} />);
 
-    const cardComponent = screen.getByTestId("card-1");
+    const cardComponent = screen.getByLabelText("Book Card Of Mice And Men");
     expect(cardComponent).toBeInTheDocument();
     await userEvent.click(cardComponent);
 

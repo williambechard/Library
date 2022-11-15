@@ -34,34 +34,48 @@ const MultiLineInput = ({
 }) => {
   return (
     <StyledLabel>
-      <Text
-        aria-label={labelText}
-        content={labelText}
-        fontSize={1}
-        fontWeight={"1000"}
-        fColor={
-          errors?.[labelText]
-            ? Colors.Bright[1]
-            : Colors.Mono[Colors.Mono.length - 1]
-        }
-      />
+      <label htmlFor={labelText}>
+        <Text
+          content={labelText}
+          fontSize={1}
+          fontWeight={"1000"}
+          fColor={
+            errors?.[labelText]
+              ? Colors.Bright[1]
+              : Colors.Mono[Colors.Mono.length - 1]
+          }
+        />
+      </label>
       <StyledInput
         type={"text"}
+        aria-label={labelText}
+        id={labelText}
+        title={labelText}
         rows={rows}
         resize={resize}
         name={labelText}
-        label={labelText}
+        aria-invalid={errors?.[labelText] ? "true" : "false"}
         {...register(labelText, {
           required: "Required",
           minLength: 1,
           maxLength: 800,
         })}
       />
-      {errors?.[labelText] && (
+      {errors?.[labelText] && errors?.[labelText].type === "required" && (
         <Text
-          content={"Input not valid!"}
+          role={"alert"}
+          content={"Input is Required"}
           fontWeight={"1000"}
-          fontSize={1}
+          fontSize={"1"}
+          fColor={Colors.Bright[1]}
+        />
+      )}
+      {errors?.[labelText] && errors?.[labelText].type === "maxLength" && (
+        <Text
+          role={"alert"}
+          content={"Max length exceeded"}
+          fontWeight={"1000"}
+          fontSize={"1"}
           fColor={Colors.Bright[1]}
         />
       )}

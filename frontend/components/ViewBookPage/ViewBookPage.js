@@ -8,11 +8,11 @@ import { useGetBook } from "../../api/books";
  * @param onClick - function to be called when close is clicked
  * @returns {JSX.Element}
  */
-const ViewBookPage = ({ ...props }) => {
+const ViewBookPage = ({ bookId, onClick }) => {
   /**
    * Hook for getting info from a book based on a bookId
    */
-  const { bookLoading, bookError, book } = useGetBook(props.bookId);
+  const { bookLoading, bookError, book } = useGetBook(bookId);
 
   return (
     <Section height={"60vh"} width={"100%"}>
@@ -33,37 +33,38 @@ const ViewBookPage = ({ ...props }) => {
             <Text
               content={"My Library / "}
               display={"inline-block"}
-              fontSize={0.75}
+              fontSize={"0.75"}
             />
             <Text
-              content={book.title}
+              content={book.title + "/"}
               display={"inline-block"}
-              onClick={props.onClick}
-              fontSize={0.75}
+              aria-label={"return"}
+              onClick={onClick}
+              fontSize={"0.75"}
             />
           </Flex>
           <Text
             content={book.title}
-            fontSize={1.5}
+            fontSize={"1.5"}
             fontWeight={"600"}
             margin={"20px 0 20px 0"}
           />
           <Text
             content={book.author.firstName + " " + book.author.lastName}
-            fontSize={1}
+            fontSize={"1"}
             fontWeight={"100"}
             margin={"10px  0 10px 0"}
           />
           <Text
             content={"Description"}
             margin={"10px  0 10px 0"}
-            fontSize={1.15}
+            fontSize={"1.15"}
             fontWeight={"200"}
           />
           <Text
             content={book.description}
             margin={"20px  0 10px 0"}
-            fontSize={1}
+            fontSize={"1"}
             fontWeight={"400"}
             maxHeight={"35vh"}
             overflow={"auto"}
