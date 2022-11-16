@@ -15,31 +15,6 @@ const StyledForm = styled.form`
   height: 100%;
 `;
 
-const StyledModal = styled.div`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 600px;
-  max-width: 100%;
-  max-height: 100%;
-  z-index: 4;
-  background-color: white;
-  border-radius: 15px;
-`;
-
-const StyledBG = styled.div`
-  position: fixed;
-  z-index: 3;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgb(0, 0, 0);
-  background-color: rgba(0, 0, 0, 0.4);
-`;
-
 const AddBookForm = ({ onClick }) => {
   const {
     register,
@@ -53,12 +28,14 @@ const AddBookForm = ({ onClick }) => {
   const [, setToast] = useToast();
 
   const findAuthor = (fName, lName) => {
+    console.log(fName, lName);
     return authors.find(
       (author) => author.firstName === fName && author.lastName === lName
     );
   };
 
   const submitForm = async (data) => {
+    console.log("submit form ", data);
     const title = data.Title;
     const description = data.Description;
     const fName = data["First Name"];
@@ -67,7 +44,7 @@ const AddBookForm = ({ onClick }) => {
     let targetAuthor = {};
 
     targetAuthor = findAuthor(fName, lName);
-
+    console.log("targetAuthor ", targetAuthor);
     if (typeof targetAuthor === "undefined") {
       targetAuthor = await addAuthor(fName, lName).catch((err) => {
         console.log("error ", err);
@@ -100,7 +77,18 @@ const AddBookForm = ({ onClick }) => {
   };
 
   return (
-    <StyledForm onSubmit={handleSubmit(submitForm)} data-testid={"form-1"}>
+    <StyledForm
+      onSubmit={handleSubmit((data) => {
+        try {
+          console.log("try");
+          submitForm(data);
+        } catch (e) {
+          // handle your error state here
+          console.error(e);
+        }
+      })}
+      data-testid={"form-1"}
+    >
       <Flex
         direction={"column"}
         wrap={"nowrap"}
