@@ -17,6 +17,10 @@ const StyledInput = styled.textarea`
   box-sizing: border-box;
 `;
 
+const StyledAlert = styled.span`
+  color: ${Colors.Bright[1]};
+  font-family: Poppins;
+`;
 /**
  * Style component based on a label element
  * Styling used for the label part of the input element
@@ -62,22 +66,10 @@ const MultiLineInput = ({
         })}
       />
       {errors?.[labelText] && errors?.[labelText].type === "required" && (
-        <Text
-          role={"alert"}
-          content={"Input is Required"}
-          fontWeight={"1000"}
-          fontSize={"1"}
-          fColor={Colors.Bright[1]}
-        />
+        <StyledAlert role={"alert"}>Input is Required</StyledAlert>
       )}
       {errors?.[labelText] && errors?.[labelText].type === "maxLength" && (
-        <Text
-          role={"alert"}
-          content={"Max length exceeded"}
-          fontWeight={"1000"}
-          fontSize={"1"}
-          fColor={Colors.Bright[1]}
-        />
+        <StyledAlert role={"alert"}>Max length exceeded</StyledAlert>
       )}
     </StyledLabel>
   );

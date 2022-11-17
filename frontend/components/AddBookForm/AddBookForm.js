@@ -28,14 +28,12 @@ const AddBookForm = ({ onClick }) => {
   const [, setToast] = useToast();
 
   const findAuthor = (fName, lName) => {
-    console.log(fName, lName);
     return authors.find(
       (author) => author.firstName === fName && author.lastName === lName
     );
   };
 
   const submitForm = async (data) => {
-    console.log("submit form ", data);
     const title = data.Title;
     const description = data.Description;
     const fName = data["First Name"];
@@ -44,18 +42,17 @@ const AddBookForm = ({ onClick }) => {
     let targetAuthor = {};
 
     targetAuthor = findAuthor(fName, lName);
-    console.log("targetAuthor ", targetAuthor);
     if (typeof targetAuthor === "undefined") {
       targetAuthor = await addAuthor(fName, lName).catch((err) => {
-        console.log("error ", err);
+        console.error(err);
         return false;
       });
 
       targetAuthor = targetAuthor.data.addAuthor;
     }
 
-    const newBook = addBook(title, targetAuthor.id, "", [""], description)
-      .then((data) => {
+    addBook(title, targetAuthor.id, "", [""], description)
+      .then(() => {
         setToast({
           type: "success",
           message:
@@ -77,18 +74,7 @@ const AddBookForm = ({ onClick }) => {
   };
 
   return (
-    <StyledForm
-      onSubmit={handleSubmit((data) => {
-        try {
-          console.log("try");
-          submitForm(data);
-        } catch (e) {
-          // handle your error state here
-          console.error(e);
-        }
-      })}
-      data-testid={"form-1"}
-    >
+    <StyledForm onSubmit={handleSubmit(submitForm)} data-testid={"form-1"}>
       <Flex
         direction={"column"}
         wrap={"nowrap"}

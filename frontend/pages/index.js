@@ -14,7 +14,6 @@ import Text from "../components/Text/Text";
 import Image from "next/image";
 import { allBooksQueryBasic, useGetBooks } from "../api/books";
 import Colors from "../components/colors";
-import { useForm } from "react-hook-form";
 
 /**
  * Main landing page of the application
@@ -27,17 +26,13 @@ const Home = () => {
   const [showViewBookModal, setShowViewBookModal] = useState(false); //Determines if ViewBook Modal is shown or not
   const [bookId, setBookId] = useState("0"); //Keeps track of selected book ID so the correct book can be loaded into the ViewBook Modal
 
-  //Apollo acts as state management <- look into to remove bookId etc
-
-  //books will show new value once its been updated
-
   /**
    * Hook for query to get all books, so that they can be displayed on the page
    * allBooksQueryBasic is a gql query which is crafted to only pull the data we want for the books
    */
   const { books } = useGetBooks(allBooksQueryBasic);
 
-  //? Any advantage writing a function this way over function(){}
+  //weird lint error saying modalValue not used, but it is in the function...
   /**
    * Function for showing a modal.
    * Uses passed parameters so that ANY Modal state
@@ -45,8 +40,10 @@ const Home = () => {
    * @param setModal -The Function which sets the State's value
    * @param ModalValue -The current value of the state
    */
+  /* eslint-disable no-unused-vars*/
   const triggerModal = (setModal, ModalValue) => {
-    setModal(!ModalValue); //Look into react state batching and how to get most current state
+    /* eslint-disable no-unused-vars*/
+    setModal((ModalValue) => !ModalValue); //uses arrow function to make sure current value is used and not stale data
   };
 
   /**
@@ -182,8 +179,10 @@ const Home = () => {
             >
               <ViewBookPage
                 bookId={bookId}
-                onClick={() => setShowViewBookModal(!showViewBookModal)}
-              ></ViewBookPage>
+                onClick={() =>
+                  triggerModal(setShowViewBookModal, showViewBookModal)
+                }
+              />
             </Modal>
           ) : null}
         </Section>

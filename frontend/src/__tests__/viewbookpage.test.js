@@ -38,7 +38,7 @@ describe("View Book Page Component Tests", () => {
     expect(viewBookPage).toBeInTheDocument();
   });
 
-  it("should render a ViewBookPage component and respond to a click on the book title breadcrumb", async () => {
+  it("should render a ViewBookPage component and respond to a click on the My Library breadcrumb", async () => {
     mockUseGetBook.mockReturnValue({
       bookLoading: false,
       bookError: false,
@@ -54,7 +54,7 @@ describe("View Book Page Component Tests", () => {
     const mockCallBack = jest.fn();
     render(<ViewBookPage onClick={mockCallBack()} />);
     debug();
-    const bookLink = screen.getByText("Hello/");
+    const bookLink = screen.getByText("My Library");
     expect(bookLink).toBeInTheDocument();
 
     await userEvent.click(bookLink);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 import Text from "../Text/Text";
 import Colors from "../colors";
@@ -17,6 +17,11 @@ const StyledInput = styled.input`
   width: ${props.width};
   box-sizing: border-box;
 `};
+`;
+
+const StyledAlert = styled.span`
+  color: ${Colors.Bright[1]};
+  font-family: Poppins;
 `;
 
 /**
@@ -61,22 +66,10 @@ const SingleLineInput = ({
         })}
       />
       {errors?.[labelText] && errors?.[labelText].type === "required" && (
-        <Text
-          role={"alert"}
-          content={"Input is Required"}
-          fontWeight={"1000"}
-          fontSize={"1"}
-          fColor={Colors.Bright[1]}
-        />
+        <StyledAlert role={"alert"}>Input is Required</StyledAlert>
       )}
       {errors?.[labelText] && errors?.[labelText].type === "maxLength" && (
-        <Text
-          role={"alert"}
-          content={"Max length exceeded"}
-          fontWeight={"1000"}
-          fontSize={"1"}
-          fColor={Colors.Bright[1]}
-        />
+        <StyledAlert role={"alert"}>Max length exceeded</StyledAlert>
       )}
     </StyledDiv>
   );

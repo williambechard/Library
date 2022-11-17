@@ -1,20 +1,20 @@
 import "@testing-library/jest-dom";
 import ReactDOM from "react-dom";
 import { render, screen } from "@testing-library/react";
-import { debug } from "jest-preview";
 import { Modal } from "../../components";
 import userEvent from "@testing-library/user-event";
 
+const mockCallBack = jest.fn();
+
+beforeEach(() => {
+  ReactDOM.createPortal = jest.fn((element) => {
+    return element;
+  });
+});
+
 describe("Modal Component Tests", () => {
   it("Should render a default Modal", () => {
-    ReactDOM.createPortal = jest.fn((element, node) => {
-      return element;
-    });
-
     render(<Modal />);
-
-    debug();
-
     const modalComponent = screen.getByTestId("modal-1");
     expect(modalComponent).toBeInTheDocument();
     expect(modalComponent).toHaveTextContent("Test Modal");
@@ -34,28 +34,13 @@ describe("Modal Component Tests", () => {
   });
 
   it("Should render a custom Modal", () => {
-    ReactDOM.createPortal = jest.fn((element, node) => {
-      return element;
-    });
-
-    render(<Modal title={"Modal 1"} />);
-
-    debug();
-
+    render(<Modal title={"Modal 1"} onClick={mockCallBack} />);
     const modalComponent = screen.getByText("Modal 1");
     expect(modalComponent).toBeInTheDocument();
   });
 
   it("Should respond to a click on the X (close) button", async () => {
-    ReactDOM.createPortal = jest.fn((element, node) => {
-      return element;
-    });
-    const mockCallBack = jest.fn();
-
     render(<Modal title={"Modal 1"} onClick={mockCallBack} />);
-
-    debug();
-
     const closeModalButton = screen.getByRole("button");
     expect(closeModalButton).toBeInTheDocument();
 

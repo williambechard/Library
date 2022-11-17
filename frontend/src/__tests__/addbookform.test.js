@@ -1,23 +1,15 @@
 import "@testing-library/jest-dom";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import AddBookForm from "../../components/AddBookForm";
-import { debug } from "jest-preview";
-import { useAddBook, useGetBook } from "../../api/books";
+import { useAddBook } from "../../api/books";
 import { useAddAuthor, useGetAuthors } from "../../api/authors";
-import userEvent, { user } from "@testing-library/user-event";
-import { FormProvider, useForm } from "react-hook-form";
-
-//describe add book form
-// then ifs with different states
-// look into aftereach nesting?
+import userEvent from "@testing-library/user-event";
 
 jest.mock("../../api/books");
 jest.mock("../../api/authors");
-afterEach(() => {
-  jest.clearAllMocks();
-});
+
 describe("AddBookForm Component Tests", () => {
-  it("should display the default AddBookForm", async () => {
+  it("should display the default AddBookForm", () => {
     useAddBook.mockReturnValue({
       addBook: jest.fn(),
     });
@@ -27,9 +19,8 @@ describe("AddBookForm Component Tests", () => {
     useGetAuthors.mockReturnValue({
       authors: jest.fn(),
     });
-
-    render(<AddBookForm />);
-
+    const mockCall = jest.fn();
+    render(<AddBookForm onClick={mockCall} />);
     const addBookFormComponent = screen.getByTestId("form-1");
     expect(addBookFormComponent).toBeInTheDocument();
     expect(addBookFormComponent).toHaveStyle("width: 100%", "height: 100%");
@@ -53,9 +44,9 @@ describe("AddBookForm Component Tests", () => {
 
     expect(mockCallBack).toHaveBeenCalledTimes(1);
   });
-  it("should not submit with invalid (blank) input", async () => {
+  it("alerts should display if non valid (blank) input", async () => {
     const mockCallBack = jest.fn();
-    const addBookCallBack = useAddBook.mockReturnValue({
+    useAddBook.mockReturnValue({
       addBook: () => Promise.resolve({ data: true }),
     });
 
@@ -83,16 +74,15 @@ describe("AddBookForm Component Tests", () => {
 
     await userEvent.click(submitButton);
 
-    expect(mockCallBack).not.toHaveBeenCalled();
-    debug();
+    expect(await screen.findAllByRole("alert")).toHaveLength(4);
   });
 
-  it("should add the author if the author doesnt already exist", async () => {
+  it("should call addBook when form is submitted", async () => {
     const addBookCallBack = useAddBook.mockReturnValue({
       addBook: () => Promise.resolve({ data: true }),
     });
 
-    const addAuthCallBack = useAddAuthor.mockReturnValue({
+    useAddAuthor.mockReturnValue({
       addAuthor: (fName, lName) =>
         Promise.resolve({
           data: {
@@ -113,36 +103,28 @@ describe("AddBookForm Component Tests", () => {
 
     const Title = screen.getByRole("textbox", { name: /title/i });
     expect(Title).toBeInTheDocument();
-    fireEvent.change(Title, { target: { value: "hello" } });
-    await waitFor(() => {
-      expect(Title).toHaveValue("hello");
-    });
+    await userEvent.type(Title, "hello");
+
+    expect(Title).toHaveValue("hello");
 
     const FirstName = screen.getByRole("textbox", { name: /first name/i });
-    fireEvent.change(FirstName, { target: { value: "Will" } });
-    await waitFor(() => {
-      expect(FirstName).toHaveValue("Will");
-    });
+    await userEvent.type(FirstName, "Will");
+
+    expect(FirstName).toHaveValue("Will");
 
     const LastName = screen.getByRole("textbox", { name: /last name/i });
-    fireEvent.change(LastName, { target: { value: "Smith" } });
-    await waitFor(() => {
-      expect(LastName).toHaveValue("Smith");
-    });
+    await userEvent.type(LastName, "Smith");
+
+    expect(LastName).toHaveValue("Smith");
 
     const Description = screen.getByRole("textbox", { name: /description/i });
-    fireEvent.change(Description, { target: { value: "Hello World" } });
-    await waitFor(() => {
-      expect(Description).toHaveValue("Hello World");
-    });
+    await userEvent.type(Description, "Hello World");
+
+    expect(Description).toHaveValue("Hello World");
+
     const submitButton = screen.getByLabelText("Add Book");
-
-    expect(submitButton).toBeInTheDocument();
-
     await userEvent.click(submitButton);
 
     expect(addBookCallBack).toHaveBeenCalledTimes(1);
-
-    debug();
   });
 });

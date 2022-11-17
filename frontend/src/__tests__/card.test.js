@@ -17,7 +17,6 @@ describe("Card Component Tests", () => {
       "box-shadow: 5px 5px 10px #a9a9a9"
     );
   });
-
   it("should respond to a user click event", async () => {
     const mockCallBack = jest.fn();
 

@@ -23,7 +23,7 @@ const TextItem = styled.div`
   }
   `}
   ${(props) =>
-    props.onClick &&
+    props.clickable &&
     `
     text-decoration:underline dotted;
     cursor: pointer;
@@ -46,6 +46,8 @@ const Text = ({
   margin = "0",
   overflow = "hidden",
   maxHeight = "40vh",
+  clickable = false,
+  onClick,
 }) => {
   return (
     <TextItem
@@ -58,6 +60,8 @@ const Text = ({
       margin={margin}
       overflow={overflow}
       maxHeight={maxHeight}
+      clickable={clickable}
+      onClick={onClick}
     >
       {content}
     </TextItem>

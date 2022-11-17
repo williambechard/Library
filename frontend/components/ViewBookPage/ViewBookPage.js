@@ -31,15 +31,16 @@ const ViewBookPage = ({ bookId, onClick }) => {
             height={"1.25rem"}
           >
             <Text
-              content={"My Library / "}
+              content={"My Library "}
+              clickable={true}
+              onClick={onClick}
               display={"inline-block"}
               fontSize={"0.75"}
             />
             <Text
-              content={book.title + "/"}
+              content={"/" + book.title}
               display={"inline-block"}
               aria-label={"return"}
-              onClick={onClick}
               fontSize={"0.75"}
             />
           </Flex>

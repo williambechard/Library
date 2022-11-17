@@ -22,7 +22,11 @@ const StyledCard = styled.div`
 
 const Card = ({ children, label = "Moby Dick", onClick }) => {
   return (
-    <StyledCard aria-label={"Book Card " + label} onClick={onClick}>
+    <StyledCard
+      aria-label={"Book Card " + label}
+      onClick={onClick}
+      data-testid={"card-1"}
+    >
       {children}
     </StyledCard>
   );
