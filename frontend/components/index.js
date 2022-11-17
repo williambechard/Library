@@ -10,12 +10,9 @@ export { default as RemoveBookModal } from "./RemoveBookModal";*/
 export { default as Modal } from "./Modal";
 export { default as Button } from "./Button";
 export { default as Text } from "./Text";
-export { default as Banner } from "./Banner";
-export { default as Section } from "./Section";
 export { default as Toast } from "./Toast";
-export { default as Page } from "./Page";
+export { default as Section } from "./Section";
 export { default as AddBookForm } from "./AddBookForm";
-export { default as Form } from "./Form";
 export { default as SingleLineInput } from "./SingleLineInput";
 export { default as MultiLineInput } from "./MultiLineInput";
 export { default as Flex } from "./Flex";

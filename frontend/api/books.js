@@ -29,13 +29,12 @@ export const allBooksQuery = gql`
 `;
 
 export const useGetBooks = (query) => {
-  const { loading, error, data, refetch } = useQuery(query);
+  const { loading, error, data } = useQuery(query);
 
   return {
     booksLoading: loading,
     booksError: error,
     books: data?.getBooks || [],
-    update: refetch,
   };
 };
 
@@ -101,6 +100,7 @@ export const useAddBook = (
   `;
   const [add, { loading, error, data }] = useMutation(mutation, {
     variables: { title, authorId, coverImage, categoryIds, description },
+    refetchQueries: [allBooksQueryBasic],
   });
   return {
     addBook: (title, authorId, coverImage, categoryIds, description) =>

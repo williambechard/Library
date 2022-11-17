@@ -1,33 +1,76 @@
 import styled from "@emotion/styled";
+import Colors from "../colors";
 
 /**
  * Style component based on a div element
  */
 const StyledFlex = styled.div`
   display: flex;
-  ${(props) =>
-    props.gap &&
-    `
+  ${(props) => `
+      z-index:${props.zIndex};
+      transform:${props.transform};
+      background-color:${props.bgColor};
       gap:${props.gap};
+      flex-wrap: ${props.wrap};
+      margin: ${props.margin};
+      width: ${props.width};
+      height: ${props.height};
+      padding: ${props.padding};
+      justify-content: ${props.justifyContent};
+      align-content: ${props.alignContent};
+      flex-direction: ${props.direction};
+      border-radius:${props.borderRadius};
+      position:${props.position};
+      top:${props.top};
+      left:${props.left};
+      bottom:${props.bottom};
+      @media screen and (max-width: 410px) {
+        flex-direction: column;
+      }
   `}
-  flex-wrap: ${(props) => (props.wrap ? props.wrap : "nowrap")};
-  margin: ${(props) => (props.margin ? props.margin : "0")};
-  width: ${(props) => (props.width ? props.width : "100%")};
-  height: ${(props) => (props.height ? props.height : "100%")};
-  padding: ${(props) => (props.padding ? props.padding : "0")};
-  justify-content: ${(props) =>
-    props.justifyContent ? props.justifyContent : "center"};
-  align-content: ${(props) =>
-    props.alignContent ? props.alignContent : "center"};
-  @media screen and (max-width: 410px) {
-    flex-direction: column;
-  }
-  ${({ direction }) => `flex-direction: ${direction};`}
 `;
 
-const Flex = ({ children, ...props }) => {
+const Flex = ({
+  children,
+  bgColor = Colors.Mono[0],
+  gap = "unset",
+  wrap = "wrap",
+  margin = "0",
+  width = "100%",
+  height = "100%",
+  padding = "0",
+  justifyContent = "center",
+  alignContent = "center",
+  direction = "initial",
+  zIndex = "0",
+  transform = "inherit",
+  borderRadius = "0",
+  top = "unset",
+  bottom = "unset",
+  left = "unset",
+  position = "unset",
+}) => {
   return (
-    <StyledFlex data-testid={"flex-1"} {...props}>
+    <StyledFlex
+      data-testid={"flex-1"}
+      bgColor={bgColor}
+      gap={gap}
+      wrap={wrap}
+      margin={margin}
+      width={width}
+      height={height}
+      padding={padding}
+      justifyContent={justifyContent}
+      alignContent={alignContent}
+      direction={direction}
+      zIndex={zIndex}
+      transform={transform}
+      borderRadius={borderRadius}
+      position={position}
+      top={top}
+      left={left}
+      bottom={bottom}
+    >
       {children}
     </StyledFlex>
   );
