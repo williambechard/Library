@@ -12,7 +12,7 @@ import {
 import DULogo from "../public/DU-Logo-Mark.svg";
 import Text from "../components/Text/Text";
 import Image from "next/image";
-import { allBooksQueryBasic, useGetBooks } from "../api/books";
+import { useGetBooks } from "../api/books";
 import Colors from "../components/colors";
 
 /**
@@ -30,7 +30,7 @@ const Home = () => {
    * Hook for query to get all books, so that they can be displayed on the page
    * allBooksQueryBasic is a gql query which is crafted to only pull the data we want for the books
    */
-  const { books } = useGetBooks(allBooksQueryBasic);
+  const { books } = useGetBooks();
 
   //weird lint error saying modalValue not used, but it is in the function...
   /**
@@ -54,7 +54,7 @@ const Home = () => {
    */
   const showBook = (id) => {
     setBookId(id); //set the bookId state to the current book id
-    setShowViewBookModal(!showViewBookModal); //set the viewBook modal state to the opposite, therefor showing the modal
+    setShowViewBookModal((visibleStatus)=>!visibleStatus); //set the viewBook modal state to the opposite, therefor showing the modal
   };
 
   /**
@@ -72,7 +72,7 @@ const Home = () => {
         >
           <Text
             bgColor={Colors.Mono[2]}
-            fontSize={1}
+            fontSize={'1'}
             content={book.title}
             fontWeight={"900"}
             display={"block"}
@@ -160,7 +160,7 @@ const Home = () => {
               {displayBooks()}
             </Flex>
           ) : null}
-          {showAddBookModal ? (
+          {showAddBookModal && (
             <Modal
               onClick={() => triggerModal(setAddBookModal, showAddBookModal)}
               title={"Add New Book"}
@@ -169,13 +169,13 @@ const Home = () => {
                 onClick={() => triggerModal(setAddBookModal, showAddBookModal)}
               />
             </Modal>
-          ) : null}
-          {showViewBookModal ? (
+          )}
+          {showViewBookModal && (
             <Modal
               onClick={() =>
                 triggerModal(setShowViewBookModal, showViewBookModal)
               }
-              title={"View Book"}
+              title={"Book Info"}
             >
               <ViewBookPage
                 bookId={bookId}
@@ -184,7 +184,7 @@ const Home = () => {
                 }
               />
             </Modal>
-          ) : null}
+          )}
         </Section>
         <Flex
           bgColor={Colors.Mono[Colors.Mono.length - 1]}

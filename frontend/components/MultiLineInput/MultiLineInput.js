@@ -21,6 +21,7 @@ const StyledAlert = styled.span`
   color: ${Colors.Bright[1]};
   font-family: Poppins;
 `;
+
 /**
  * Style component based on a label element
  * Styling used for the label part of the input element

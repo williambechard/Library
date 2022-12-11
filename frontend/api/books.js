@@ -1,35 +1,21 @@
 import { gql, useQuery, useMutation } from "@apollo/client";
 
-export const allBooksQueryBasic = gql`
-  query getBooks {
-    getBooks {
-      id
-      title
-      author {
-        firstName
-        lastName
-      }
-    }
-  }
-`;
-
-export const allBooksQuery = gql`
-  query getBooks {
-    getBooks {
-      id
-      title
-      coverImage
-      author {
+export const useGetBooks = ( ) => {
+  const allBooksQuery = gql`
+    query getBooks {
+      getBooks {
         id
-        firstName
-        lastName
+        title
+        coverImage
+        author {
+          id
+          firstName
+          lastName
+        }
       }
     }
-  }
-`;
-
-export const useGetBooks = (query) => {
-  const { loading, error, data } = useQuery(query);
+  `;
+  const { loading, error, data } = useQuery(allBooksQuery);
 
   return {
     booksLoading: loading,
@@ -100,7 +86,7 @@ export const useAddBook = (
   `;
   const [add, { loading, error, data }] = useMutation(mutation, {
     variables: { title, authorId, coverImage, categoryIds, description },
-    refetchQueries: [allBooksQueryBasic],
+    refetchQueries: ['getBooks'],
   });
   return {
     addBook: (title, authorId, coverImage, categoryIds, description) =>

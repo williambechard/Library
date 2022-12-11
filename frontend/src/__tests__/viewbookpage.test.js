@@ -7,7 +7,7 @@ import userEvent from "@testing-library/user-event";
 
 jest.mock("../../api/books");
 const mockUseGetBook = useGetBook;
-describe("View Book Page Component Tests", () => {
+describe("Book Info Page Component Tests", () => {
   it("should render a default ViewBookPage component with text Loading... as long as bookLoading=true and bookError=false", () => {
     mockUseGetBook.mockReturnValue({
       bookLoading: true,
