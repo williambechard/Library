@@ -1,13 +1,12 @@
-import "@testing-library/jest-dom";
-import { render, screen } from "@testing-library/react";
-import Home from "../../pages/index";
+import '@testing-library/jest-dom';
+import { render, screen } from '@testing-library/react';
+import Home from '../../pages/index';
+import { useGetBooks } from '../../api/books';
 
-import { useGetBooks } from "../../api/books";
-
-jest.mock("../../api/books");
-jest.mock("../../api/authors");
+jest.mock('../../api/books');
+jest.mock('../../api/authors');
 jest.mock(
-  "next/image",
+  'next/image',
   () =>
     function Image({ src, alt, width, height }) {
       // eslint-disable-next-line @next/next/no-img-element
@@ -18,63 +17,55 @@ jest.mock(
     }
 );
 
-describe("should display the main web page", () => {
-  it("should render books from My Library", async () => {
+describe('should display the main web page', () => {
+  it('should display the page', () => {
     const mockUseGetBooks = useGetBooks;
     mockUseGetBooks.mockReturnValue({
       bookLoading: false,
       bookError: false,
-      books: [
-        {
-          id: "1",
-          title: "Hello",
-          author: {
-            firstName: "Jim",
-            lastName: "Bob",
-          },
-          description: "Hello World",
-        },
-      ],
+      books: []
     });
     render(<Home />);
 
     expect(screen.getByText("William's Capstone")).toBeInTheDocument();
-    expect(screen.getAllByTestId("section-1")[0]).toHaveStyle(
-      "background-color:#DFDFDF"
+    expect(screen.getAllByTestId('section-1')[0]).toHaveStyle(
+      'background-color:#DFDFDF'
     );
-    expect(screen.getByText("My Library")).toHaveStyle("color:black");
+    expect(screen.getByText('My Library')).toHaveStyle('color:black');
     expect(
-      screen.getByText("@ 2022 Omni Federal - All Rights Reserved")
+      screen.getByText('@ 2022 Omni Federal - All Rights Reserved')
     ).toBeInTheDocument();
   });
-  it("should show no book Cards if no books loaded", () => {
+  it('should show no book Cards if no books loaded', () => {
     const mockUseGetBooks = useGetBooks;
     mockUseGetBooks.mockReturnValue({
       bookLoading: false,
       bookError: false,
-      books: [],
+      books: []
     });
     render(<Home />);
-    expect(screen.queryByTestId(/card-1/i)).toBeNull();
+    expect(screen.getByText('No Books Found...')).toBeInTheDocument();
+    //expect(screen.queryByTestId(/card-1/i)).toBeNull();
   });
-  it("should show book a book Card for each book loaded (1x)", () => {
+  it('should show book a book Card for each book loaded (1x)', () => {
     const mockUseGetBooks = useGetBooks;
     mockUseGetBooks.mockReturnValue({
       bookLoading: false,
       bookError: false,
       books: [
         {
-          id: "1",
-          title: "Hello",
+          id: '1',
+          title: 'Hello',
           author: {
-            firstName: "Jim",
-            lastName: "Bob",
+            firstName: 'Jim',
+            lastName: 'Bob'
           },
-          description: "Hello World",
-        },
-      ],
+          description: 'Hello World'
+        }
+      ]
     });
     render(<Home />);
-    expect(screen.getByText("Hello")).toBeInTheDocument();
+    expect(screen.queryByText('No Books Found...')).not.toBeInTheDocument();
+    expect(screen.getByText('Hello')).toBeInTheDocument();
   });
 });

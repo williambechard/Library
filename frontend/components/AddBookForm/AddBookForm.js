@@ -127,13 +127,13 @@ const AddBookForm = ({ onClick }) => {
           <Button
             fColor={Colors.Bright[1]}
             borderColor={Colors.Bright[1]}
-            content={"Cancel"}
+            label={"Cancel"}
             onClick={onClick}
           />
           <Button
             fColor={Colors.Bright[0]}
             borderColor={Colors.Bright[0]}
-            content={"Add Book"}
+            label={"Add Book"}
             btnType={"submit"}
           />
         </Flex>

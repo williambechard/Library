@@ -1,8 +1,9 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { Button } from "../../components";
+import { Button } from "../../components/";
 import Colors from "../../components/colors";
+import React from "react";
 
 describe("Button  Component Tests", () => {
   it("should render a default Button component", () => {
@@ -18,8 +19,8 @@ describe("Button  Component Tests", () => {
       "margin:unset"
     );
   });
-  it("should render a Button with a set content", () => {
-    render(<Button content={"button"} />);
+  it("should render a Button with a custom label", () => {
+    render(<Button label={"button"} />);
     const buttonComponent = screen.getByText("button");
     expect(buttonComponent).toBeInTheDocument();
   });
@@ -48,7 +49,7 @@ describe("Button  Component Tests", () => {
   it("should respond to a user click event", async () => {
     const mockCallBack = jest.fn();
 
-    render(<Button content={"button"} onClick={mockCallBack} />);
+    render(<Button onClick={mockCallBack} />);
 
     const buttonComponent = screen.getByTestId("button-1");
     expect(buttonComponent).toBeInTheDocument();

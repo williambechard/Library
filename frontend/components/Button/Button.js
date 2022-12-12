@@ -33,7 +33,7 @@ const StyledButton = styled.button`
 
 const Button = ({
   fontWeight = "400",
-  content = "Test",
+  label = "Test",
   fontSize = "1",
   bgColor = Colors.Mono[0],
   fColor = Colors.Mono[Colors.Mono.length - 1],
@@ -45,7 +45,7 @@ const Button = ({
   return (
     <StyledButton
       data-testid={"button-1"}
-      aria-label={content}
+      aria-label={label}
       type={btnType}
       onClick={onClick}
       margin={margin}
@@ -55,7 +55,7 @@ const Button = ({
       fontSize={fontSize}
       fontWeight={fontWeight}
     >
-      {content}
+      {label}
     </StyledButton>
   );
 };

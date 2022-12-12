@@ -62,7 +62,7 @@ const Modal = ({ children, title = "Test Modal", onClick }) => {
             />
             <Button
               margin={"auto 10px"}
-              content={"X"}
+              label={"X"}
               onClick={onClick}
               fontWeight={"1000"}
             />

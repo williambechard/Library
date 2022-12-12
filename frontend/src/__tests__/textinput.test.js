@@ -26,7 +26,6 @@ describe("Single and MultiLine Text Input Component Tests", () => {
         `color:${Colors.Mono[Colors.Mono.length - 1]}`
       );
     });
-
     it("should render with a unique style", () => {
       render(
         <SingleLineInput
@@ -39,13 +38,11 @@ describe("Single and MultiLine Text Input Component Tests", () => {
       expect(textInputComponent).toBeInTheDocument();
       expect(textInputComponent).toHaveStyle("width:50%");
     });
-
-    it("should have a label that correctly point to its input", () => {
+    it("should have a label that correctly points to its input", () => {
       render(<SingleLineInput register={jest.fn()} errors={jest.fn()} />);
       const InputNode = screen.getByLabelText("Label");
       expect(InputNode.getAttribute("name")).toBe("Label");
     });
-
     it("should render with a specific style on required type error", () => {
       const mockError = () => {
         return {
@@ -73,7 +70,6 @@ describe("Single and MultiLine Text Input Component Tests", () => {
         `color:${Colors.Bright[1]}`
       );
     });
-
     it("should render with a specific style on maxLength type error", () => {
       const mockError = () => {
         return {
@@ -119,7 +115,6 @@ describe("Single and MultiLine Text Input Component Tests", () => {
         "box-sizing: border-box"
       );
     });
-
     it("should render a unique styled w/ Label Multi Line Input component", () => {
       render(<MultiLineInput register={jest.fn()} errors={jest.fn()} />);
 
@@ -142,14 +137,12 @@ describe("Single and MultiLine Text Input Component Tests", () => {
         "box-sizing: border-box"
       );
     });
-
-    it("should have a label that correctly point to its input", () => {
+    it("should have a label that correctly points to its input", () => {
       render(<MultiLineInput register={jest.fn()} errors={jest.fn()} />);
 
       const InputNode = screen.getByLabelText("Label");
       expect(InputNode.getAttribute("name")).toBe("Label");
     });
-
     it("should show style with required error", () => {
       const mockError = () => {
         return {

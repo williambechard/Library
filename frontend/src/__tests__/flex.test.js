@@ -24,7 +24,6 @@ describe("Flex Component Tests", () => {
       "border-radius:0"
     );
   });
-
   it("should render a Flex component with specified unique style", () => {
     render(
       <Flex

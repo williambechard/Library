@@ -17,13 +17,24 @@ describe("Card Component Tests", () => {
       "box-shadow: 5px 5px 10px #a9a9a9"
     );
   });
+
+  if (
+    ("should label the Card with Book Card + label correctly",
+    () => {
+      render(<Card label={"Of Mice And Men"} />);
+
+      const cardComponent = screen.getByLabelText("Book Card Of Mice And Men");
+      expect(cardComponent).toBeInTheDocument();
+    })
+  );
+
   it("should respond to a user click event", async () => {
     const mockCallBack = jest.fn();
 
-    render(<Card onClick={mockCallBack} label={"Of Mice And Men"} />);
+    render(<Card onClick={mockCallBack} />);
 
-    const cardComponent = screen.getByLabelText("Book Card Of Mice And Men");
-    expect(cardComponent).toBeInTheDocument();
+    const cardComponent = screen.getByLabelText("Book Card Moby Dick");
+
     await userEvent.click(cardComponent);
 
     expect(mockCallBack).toHaveBeenCalledTimes(1);

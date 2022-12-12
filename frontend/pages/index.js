@@ -54,7 +54,7 @@ const Home = () => {
    */
   const showBook = (id) => {
     setBookId(id); //set the bookId state to the current book id
-    setShowViewBookModal((visibleStatus)=>!visibleStatus); //set the viewBook modal state to the opposite, therefor showing the modal
+    setShowViewBookModal((visibleStatus) => !visibleStatus); //set the viewBook modal state to the opposite, therefor showing the modal
   };
 
   /**
@@ -72,7 +72,7 @@ const Home = () => {
         >
           <Text
             bgColor={Colors.Mono[2]}
-            fontSize={'1'}
+            fontSize={"1"}
             content={book.title}
             fontWeight={"900"}
             display={"block"}
@@ -143,7 +143,7 @@ const Home = () => {
               margin={"auto 20px"}
             />
             <Button
-              content={"+ Add Book"}
+              label={"+ Add Book"}
               onClick={() => triggerModal(setAddBookModal, showAddBookModal)}
               margin={"auto 10px"}
             />
@@ -159,7 +159,9 @@ const Home = () => {
             >
               {displayBooks()}
             </Flex>
-          ) : null}
+          ) : (
+            <Text content={"No Books Found..."} />
+          )}
           {showAddBookModal && (
             <Modal
               onClick={() => triggerModal(setAddBookModal, showAddBookModal)}
