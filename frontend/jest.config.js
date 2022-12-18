@@ -4,11 +4,15 @@ module.exports = {
   testTimeout: 30000,
   slowTestThreshold: 30,
   testMatch: ['**/__tests__/**/*.test.[jt]s?(x)'],
+  coveragePathIgnorePatterns: [
+    'frontend/hooks/useToast.js',
+    'frontend/components/ToastManager/ToastManager.js'
+  ],
   coverageThreshold: {
     global: {
       branches: 0,
       functions: 0,
-      lines: 80,
+      lines: 90,
       statements: 0
     }
   },

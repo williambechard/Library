@@ -1,60 +1,58 @@
-import { gql, useQuery, useMutation } from "@apollo/client";
-
-export const useGetAuthors = () => {
-  const query = gql`
-    query getAuthors {
-      getAuthors {
-        id
-        firstName
-        lastName
-      }
+import { gql, useQuery, useMutation } from '@apollo/client';
+export const allAuthorsQuery = gql`
+  query getAuthors {
+    getAuthors {
+      id
+      firstName
+      lastName
     }
-  `;
-  const { loading, error, data } = useQuery(query);
+  }
+`;
+export const useGetAuthors = () => {
+  const { loading, error, data } = useQuery(allAuthorsQuery);
   return {
     authorsLoading: loading,
     authorsError: error,
-    authors: data?.getAuthors || [],
+    authors: data?.getAuthors || []
   };
 };
 
-export const useGetAuthor = (id) => {
-  const query = gql`
-    query getAuthor($id: ID!) {
-      getAuthor(id: $id) {
+export const anAuthorQuery = gql`
+  query getAuthor($id: ID!) {
+    getAuthor(id: $id) {
+      id
+      firstName
+      lastName
+      books {
         id
-        firstName
-        lastName
-        books {
-          id
-          title
-        }
+        title
       }
     }
-  `;
-  const { loading, error, data } = useQuery(query, {
-    variables: { id },
+  }
+`;
+export const useGetAuthor = id => {
+  const { loading, error, data } = useQuery(anAuthorQuery, {
+    variables: { id }
   });
   return {
     authorLoading: loading,
     authorError: error,
-    author: data?.getAuthor || [],
+    author: data?.getAuthor || []
   };
 };
 
-export const useAddAuthor = (firstName, lastName) => {
-  const mutation = gql`
-    mutation addAuthor($firstName: String!, $lastName: String!) {
-      addAuthor(firstName: $firstName, lastName: $lastName) {
-        id
-        firstName
-        lastName
-      }
+export const addAuthorMutation = gql`
+  mutation addAuthor($firstName: String!, $lastName: String!) {
+    addAuthor(firstName: $firstName, lastName: $lastName) {
+      id
+      firstName
+      lastName
     }
-  `;
-
-  const [add, { loading, error, data }] = useMutation(mutation, {
-    variables: { firstName, lastName },
+  }
+`;
+export const useAddAuthor = (firstName, lastName) => {
+  const [add, { loading, error, data }] = useMutation(addAuthorMutation, {
+    variables: { firstName, lastName }
   });
 
   return {
@@ -62,6 +60,6 @@ export const useAddAuthor = (firstName, lastName) => {
       add({ variables: { firstName, lastName } }),
     addAuthorLoading: loading,
     addAuthorError: error,
-    addAuthorData: data,
+    addAuthorData: data
   };
 };

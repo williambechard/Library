@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import ReactDOM from 'react-dom';
 import { render, screen } from '@testing-library/react';
-import { Modal } from '../../components';
+import { Modal } from '../../../components';
 import userEvent from '@testing-library/user-event';
 
 const mockCallBack = jest.fn();

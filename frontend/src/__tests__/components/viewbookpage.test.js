@@ -1,10 +1,10 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-import { ViewBookPage } from '../../components';
-import { useGetBook } from '../../api/books';
+import { ViewBookPage } from '../../../components';
+import { useGetBook } from '../../../api/books';
 import userEvent from '@testing-library/user-event';
 
-jest.mock('../../api/books');
+jest.mock('../../../api/books');
 const mockUseGetBook = useGetBook;
 describe('Book Info Page Component Tests', () => {
   it('should render a default ViewBookPage component with text Loading... as long as bookLoading=true and bookError=false', () => {
