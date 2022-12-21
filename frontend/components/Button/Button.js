@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import COLORS from '../../helper/COLORS';
+import colors from '../../theme/colors';
 
 /**
  * Styling based on button element
@@ -26,7 +26,7 @@ const StyledButton = styled.button`
     font-size: ${props => props.fontSize}rem;
   }
   &:hover {
-    background-color: ${COLORS.MONO[2]};
+    background-color: ${colors.mono[2]};
     cursor: pointer;
   }
 `;
@@ -35,17 +35,16 @@ const Button = ({
   fontWeight = '400',
   label = 'Test',
   fontSize = '1',
-  bgColor = COLORS.MONO[0],
-  fColor = COLORS.MONO[COLORS.MONO.length - 1],
-  borderColor = COLORS.MONO[COLORS.MONO.length - 1],
+  bgColor = colors.mono[0],
+  fColor = colors.mono[colors.mono.length - 1],
+  borderColor = colors.mono[colors.mono.length - 1],
   margin = 'unset',
   btnType = 'button',
-  text = 'Test',
+  children,
   onClick
 }) => {
   return (
     <StyledButton
-      data-testid={'button-1'}
       aria-label={label}
       type={btnType}
       onClick={onClick}
@@ -56,7 +55,7 @@ const Button = ({
       fontSize={fontSize}
       fontWeight={fontWeight}
     >
-      {text}
+      {children}
     </StyledButton>
   );
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import COLORS from '../../helper/COLORS';
+import colors from '../../theme/colors';
 
 /**
  * Style component based on a div element
@@ -29,7 +29,7 @@ const TextItem = styled.div`
     cursor: pointer;
      &:hover {
         text-decoration:underline;
-        color:${COLORS.BRIGHT[2]};
+        color:${colors.bright[2]};
         text-weight:bold
       }
   `}
@@ -38,20 +38,19 @@ const TextItem = styled.div`
 `;
 const Text = ({
   display = 'inline-block',
-  content = 'test',
   fontSize = '1',
-  bgColor = COLORS.MONO[0],
-  fColor = COLORS.MONO[COLORS.MONO.length - 1],
+  bgColor = colors.mono[0],
+  fColor = colors.mono[colors.mono.length - 1],
   fontWeight = '400',
   margin = '0',
   overflow = 'hidden',
   maxHeight = '40vh',
   clickable = false,
+  children,
   onClick
 }) => {
   return (
     <TextItem
-      aria-label={content}
       display={display}
       fontSize={fontSize}
       bgColor={bgColor}
@@ -63,7 +62,7 @@ const Text = ({
       clickable={clickable}
       onClick={onClick}
     >
-      {content}
+      {children}
     </TextItem>
   );
 };

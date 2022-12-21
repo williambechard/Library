@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import Text from '../Text/Text';
-import COLORS from '../../helper/COLORS';
+import colors from '../../theme/colors';
 
 /**
  * Style component based on a textarea
@@ -11,14 +11,14 @@ const StyledInput = styled.textarea`
   resize: ${props => props.resize};
   font-size: 1rem;
   border-radius: 6px;
-  color: ${COLORS.MONO[COLORS.MONO.length - 1]};
-  border: 1px solid ${COLORS.MONO[4]};
+  color: ${colors.mono[colors.mono.length - 1]};
+  border: 1px solid ${colors.mono[4]};
   padding-left: 0.5rem;
   box-sizing: border-box;
 `;
 
 const StyledAlert = styled.span`
-  color: ${COLORS.BRIGHT[1]};
+  color: ${colors.bright[1]};
   font-family: Poppins;
 `;
 
@@ -33,43 +33,45 @@ const StyledLabel = styled.label`
 const MultiLineInput = ({
   register,
   labelText = 'Label',
+  name = 'test',
   errors,
   rows,
   resize = 'none'
 }) => {
   return (
     <StyledLabel>
-      <label htmlFor={labelText}>
+      <label htmlFor={name}>
         <Text
-          content={labelText}
           fontSize={1}
           fontWeight={'1000'}
           fColor={
-            errors?.[labelText]
-              ? COLORS.BRIGHT[1]
-              : COLORS.MONO[COLORS.MONO.length - 1]
+            errors?.[name]
+              ? colors.bright[1]
+              : colors.mono[colors.mono.length - 1]
           }
-        />
+        >
+          <span>{labelText}</span>
+        </Text>
       </label>
       <StyledInput
         type={'text'}
-        aria-label={labelText}
-        id={labelText}
-        title={labelText}
+        aria-label={name}
+        id={name}
+        title={name}
         rows={rows}
         resize={resize}
-        name={labelText}
-        aria-invalid={errors?.[labelText] ? 'true' : 'false'}
-        {...register(labelText, {
+        name={name}
+        aria-invalid={errors?.[name] ? 'true' : 'false'}
+        {...register(name, {
           required: 'Required',
           minLength: 1,
           maxLength: 800
         })}
       />
-      {errors?.[labelText] && errors?.[labelText].type === 'required' && (
+      {errors?.[name] && errors?.[name].type === 'required' && (
         <StyledAlert role={'alert'}>Input is Required</StyledAlert>
       )}
-      {errors?.[labelText] && errors?.[labelText].type === 'maxLength' && (
+      {errors?.[name] && errors?.[name].type === 'maxLength' && (
         <StyledAlert role={'alert'}>Max length exceeded</StyledAlert>
       )}
     </StyledLabel>

@@ -13,7 +13,7 @@ import DULogo from '../public/DU-Logo-Mark.svg';
 import Text from '../components/Text/Text';
 import Image from 'next/image';
 import { useGetBooks } from '../api/books';
-import COLORS from '../helper/COLORS';
+import colors from '../theme/colors';
 
 /**
  * Main landing page of the application
@@ -69,20 +69,22 @@ const Home = () => {
           onClick={() => showBook(book.id)}
         >
           <Text
-            bgColor={COLORS.MONO[2]}
+            bgColor={colors.mono[2]}
             fontSize={'1'}
-            content={book.title}
             fontWeight={'900'}
             display={'block'}
-          ></Text>
+          >
+            <span>{book.title}</span>
+          </Text>
           <Text
-            bgColor={COLORS.MONO[2]}
-            fColor={COLORS.MONO[COLORS.MONO.length - 2]}
+            bgColor={colors.mono[2]}
+            fColor={colors.mono[colors.mono.length - 2]}
             fontSize={1}
             margin={'20px 0px'}
             display={'block'}
-            content={book.author.firstName + ' ' + book.author.lastName}
-          ></Text>
+          >
+            <span>{book.author.firstName + ' ' + book.author.lastName}</span>
+          </Text>
         </Card>
       );
     });
@@ -101,7 +103,7 @@ const Home = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Section bgColor={COLORS.MONO[1]} height={'100%'}>
+      <Section bgColor={colors.mono[1]} height={'100%'}>
         <Flex
           position={'fixed'}
           top={'0'}
@@ -117,16 +119,17 @@ const Home = () => {
             <Image src={DULogo} alt={'DULogo'} width={'50px'} height={'50px'} />
           </div>
           <Text
-            content={"William's Capstone"}
             fontSize={'1.70'}
             fontWeight={'1000'}
             margin={'auto 10px'}
             height={'100%'}
-          />
+          >
+            <span>William's Capstone</span>
+          </Text>
         </Flex>
-        <Section height={'100vh'} bgColor={COLORS.MONO[1]}>
+        <Section height={'100vh'} bgColor={colors.mono[1]}>
           <Flex
-            bgColor={COLORS.MONO[1]}
+            bgColor={colors.mono[1]}
             justifyContent={'space-between'}
             position={'fixed'}
             top={'70px'}
@@ -134,24 +137,22 @@ const Home = () => {
             zIndex={'2'}
             height={'70px'}
           >
-            <Text
-              content={'My Library'}
-              bgColor={COLORS.MONO[1]}
-              fontSize={1.5}
-              margin={'auto 20px'}
-            />
+            <Text bgColor={colors.mono[1]} fontSize={1.5} margin={'auto 20px'}>
+              <span>My Library</span>
+            </Text>
             <Button
               label={'addBook'}
-              text={'+ Add Book'}
               onClick={() => triggerModal(setAddBookModal, showAddBookModal)}
               margin={'auto 10px'}
-            />
+            >
+              + Add Book
+            </Button>
           </Flex>
           {books.length > 0 ? (
             <Flex
               justifyContent={'flex-start'}
               alignContent={'center'}
-              bgColor={COLORS.MONO[1]}
+              bgColor={colors.mono[1]}
               wrap={'wrap'}
               zIndex={'0'}
               transform={'TranslateY(150px)'}
@@ -159,7 +160,9 @@ const Home = () => {
               {displayBooks()}
             </Flex>
           ) : (
-            <Text content={'No Books Found...'} />
+            <Text>
+              <span>No Books Found...</span>
+            </Text>
           )}
           {showAddBookModal && (
             <Modal
@@ -188,19 +191,20 @@ const Home = () => {
           )}
         </Section>
         <Flex
-          bgColor={COLORS.MONO[COLORS.MONO.length - 1]}
+          bgColor={colors.mono[colors.mono.length - 1]}
           justifyContent={'center'}
           height={'30px'}
           position={'fixed'}
           bottom={'0'}
         >
           <Text
-            content={'@ 2022 Omni Federal - All Rights Reserved'}
-            bgColor={COLORS.MONO[COLORS.MONO.length - 1]}
-            fColor={COLORS.MONO[0]}
+            bgColor={colors.mono[colors.mono.length - 1]}
+            fColor={colors.mono[0]}
             fontSize={1}
             margin={'auto 10px'}
-          />
+          >
+            <span>@ 2022 Omni Federal - All Rights Reserved</span>
+          </Text>
         </Flex>
       </Section>
     </>

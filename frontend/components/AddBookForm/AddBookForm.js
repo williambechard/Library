@@ -6,7 +6,7 @@ import { useAddBook } from '../../api/books';
 import { useAddAuthor, useGetAuthors } from '../../api/authors';
 import useToast from '../../hooks/useToast';
 import convertSpaces from '../../helper/convertSpaces';
-import COLORS from '../../helper/COLORS';
+import colors from '../../theme/colors';
 
 /**
  * Style component based on a form
@@ -35,12 +35,7 @@ const AddBookForm = ({ onClick }) => {
   };
 
   const submitForm = async data => {
-    const {
-      First_Name: fName,
-      Last_Name: lName,
-      Title: title,
-      Description: description
-    } = data;
+    const { fName, lName, title, description } = data;
 
     const targetAuthor =
       findAuthor(fName, lName) ??
@@ -81,6 +76,7 @@ const AddBookForm = ({ onClick }) => {
       >
         <SingleLineInput
           labelText={'Title'}
+          name={'title'}
           register={register}
           errors={errors}
           width={'100%'}
@@ -92,13 +88,15 @@ const AddBookForm = ({ onClick }) => {
           gap={'10px'}
         >
           <SingleLineInput
-            labelText={convertSpaces('First Name')}
+            labelText={'First Name'}
+            name={'fName'}
             register={register}
             errors={errors}
           />
           <SingleLineInput
-            labelText={convertSpaces('Last Name')}
+            labelText={'Last Name'}
             register={register}
+            name={'lName'}
             errors={errors}
           />
         </Flex>
@@ -110,6 +108,7 @@ const AddBookForm = ({ onClick }) => {
         >
           <MultiLineInput
             labelText={'Description'}
+            name={'description'}
             rows={5}
             register={register}
             errors={errors}
@@ -123,19 +122,21 @@ const AddBookForm = ({ onClick }) => {
           gap={'10px'}
         >
           <Button
-            fColor={COLORS.BRIGHT[1]}
-            borderColor={COLORS.BRIGHT[1]}
+            fColor={colors.bright[1]}
+            borderColor={colors.bright[1]}
             label={'closeAddBookForm'}
-            text={'Cancel'}
             onClick={onClick}
-          />
+          >
+            Cancel
+          </Button>
           <Button
-            fColor={COLORS.BRIGHT[0]}
-            borderColor={COLORS.BRIGHT[0]}
+            fColor={colors.bright[0]}
+            borderColor={colors.bright[0]}
             label={'submitAddBookForm'}
-            text={'Add Book'}
             btnType={'submit'}
-          />
+          >
+            Add Book
+          </Button>
         </Flex>
       </Flex>
     </StyledForm>

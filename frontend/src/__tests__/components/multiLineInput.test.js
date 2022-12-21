@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { SingleLineInput, MultiLineInput } from '../../../components';
-import { COLORS } from '../../../components';
+import { colors } from '../../../components';
 
 describe('Multi Line Text Input Component Tests', () => {
   it('should render a default Multi Line Input component', () => {
@@ -13,8 +13,8 @@ describe('Multi Line Text Input Component Tests', () => {
       'resize: none',
       'font-size: 1rem',
       'border-radius: 6px',
-      `color: ${COLORS.MONO[COLORS.MONO.length - 1]}`,
-      `border: 1px solid ${COLORS.MONO[4]}`,
+      `color: black`,
+      `border: 1px solid grey`,
       'padding-left: 0.5rem',
       'box-sizing: border-box'
     );
@@ -24,7 +24,7 @@ describe('Multi Line Text Input Component Tests', () => {
 
     const div = screen.getByText('Label');
     expect(div).toBeInTheDocument();
-    expect(div).toHaveStyle(`color:${COLORS.MONO[COLORS.MONO.length - 1]}`);
+    expect(div).toHaveStyle(`color:${colors.mono[colors.mono.length - 1]}`);
 
     const textInputComponent = screen.getByRole('textbox');
     expect(textInputComponent).toBeInTheDocument();
@@ -33,8 +33,8 @@ describe('Multi Line Text Input Component Tests', () => {
       'resize: none',
       'font-size: 1rem',
       'border-radius: 6px',
-      `color: ${COLORS.MONO[COLORS.MONO.length - 1]}`,
-      `border: 1px solid ${COLORS.MONO[4]}`,
+      `color: black`,
+      `border: 1px solid grey`,
       'padding-left: 0.5rem',
       'box-sizing: border-box'
     );
@@ -61,10 +61,10 @@ describe('Multi Line Text Input Component Tests', () => {
 
     const div = screen.getByText('Label');
     expect(div).toBeInTheDocument();
-    expect(div).toHaveStyle(`color:${COLORS.BRIGHT[1]}`);
+    expect(div).toHaveStyle(`color:red`);
     const errorText = screen.getByText('Input is Required');
     expect(errorText).toBeInTheDocument();
-    expect(errorText).toHaveStyle(`color:${COLORS.BRIGHT[1]}`);
+    expect(errorText).toHaveStyle(`color:red`);
     const textInputComponent = screen.getByRole('textbox');
     expect(textInputComponent).toBeInTheDocument();
   });
@@ -81,10 +81,10 @@ describe('Multi Line Text Input Component Tests', () => {
 
     const labelComponent = screen.getByText('Label');
     expect(labelComponent).toBeInTheDocument();
-    expect(labelComponent).toHaveStyle(`color:${COLORS.BRIGHT[1]}`);
+    expect(labelComponent).toHaveStyle(`color:red`);
     const errorText = screen.getByText('Max length exceeded');
     expect(errorText).toBeInTheDocument();
-    expect(errorText).toHaveStyle(`color:${COLORS.BRIGHT[1]}`);
+    expect(errorText).toHaveStyle(`color:red`);
     const textInputComponent = screen.getByRole('textbox');
     expect(textInputComponent).toBeInTheDocument();
   });

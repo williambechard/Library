@@ -1,15 +1,15 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import Flex from '../../../components/Flex/Flex';
-import { COLORS } from '../../../components';
+import { colors } from '../../../components';
 
 describe('Flex Component Tests', () => {
   it('should render a default Flex component', () => {
-    render(<Flex />);
-    const flexComponent = screen.getByTestId('flex-1');
+    render(<Flex>flex-1</Flex>);
+    const flexComponent = screen.getByText('flex-1');
     expect(flexComponent).toBeInTheDocument();
     expect(flexComponent).toHaveStyle(
-      `background-color : ${COLORS.MONO[0]}`,
+      `background-color : white`,
       'gap:unset',
       'flex-wrap:wrap',
       'margin:0',
@@ -27,7 +27,7 @@ describe('Flex Component Tests', () => {
   it('should render a Flex component with specified unique style', () => {
     render(
       <Flex
-        bgColor={COLORS.MONO[1]}
+        bgColor={colors.mono[1]}
         gap={'10px'}
         wrap={'nowrap'}
         margin={'10'}
@@ -40,12 +40,14 @@ describe('Flex Component Tests', () => {
         zIndex={'1'}
         transform={'translateY(-10px)'}
         borderRadius={'15px'}
-      />
+      >
+        flex-1
+      </Flex>
     );
-    const flexComponent = screen.getByTestId('flex-1');
+    const flexComponent = screen.getByText('flex-1');
     expect(flexComponent).toBeInTheDocument();
     expect(flexComponent).toHaveStyle(
-      `background-color : ${COLORS.MONO[1]}`,
+      `background-color : #dfdfdf`,
       'gap:10px',
       'flex-wrap:nowrap',
       'margin:10',

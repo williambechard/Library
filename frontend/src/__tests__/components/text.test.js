@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import Text from '../../../components/Text/Text';
-import { COLORS } from '../../../components';
+import { colors } from '../../../components';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
@@ -22,8 +22,8 @@ describe('Text Component Tests', () => {
       }`,
       'font-weight: bold',
       'font-family: Poppins, serif',
-      `background-color:${COLORS.MONO[0]}`,
-      `color:${COLORS.MONO[COLORS.MONO.length - 1]}`,
+      `background-color:white`,
+      `color:black`,
       'font-weight:400',
       'margin:0',
       'overflow:hidden',
@@ -33,21 +33,22 @@ describe('Text Component Tests', () => {
   it('should render a uniquely styled Text component', () => {
     render(
       <Text
-        content={'test Content'}
         fontWeight={'200'}
-        bgColor={COLORS.MONO[1]}
-        fColor={COLORS.MONO[0]}
+        bgColor={colors.mono[1]}
+        fColor={colors.mono[0]}
         margin={'10'}
         overflow={'auto'}
         maxHeight={'20vh'}
-      />
+      >
+        <span>test Content</span>
+      </Text>
     );
     const textComponent = screen.getByText('test Content');
     expect(textComponent).toBeInTheDocument();
     expect(textComponent).toHaveStyle(
       'font-weight: 200',
-      `background-color:${COLORS.MONO[1]}`,
-      `color:${COLORS.MONO[0]}`,
+      `background-color:#dfdfdf`,
+      `color:white`,
       'margin:10',
       'overflow:auto',
       'maxHeight:20vh'
@@ -58,15 +59,16 @@ describe('Text Component Tests', () => {
 
     render(
       <Text
-        content={'test Content'}
         fontWeight={'200'}
-        bgColor={COLORS.MONO[1]}
-        fColor={COLORS.MONO[0]}
+        bgColor={colors.mono[1]}
+        fColor={colors.mono[0]}
         margin={'10'}
         overflow={'auto'}
         maxHeight={'20vh'}
         onClick={mockCallBack}
-      />
+      >
+        <span>test Content</span>
+      </Text>
     );
 
     const textComponent = screen.getByText('test Content');

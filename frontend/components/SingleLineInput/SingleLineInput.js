@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import Text from '../Text/Text';
-import COLORS from '../../helper/COLORS';
+import colors from '../../theme/colors';
 import { stringifyForDisplay } from '@apollo/client/utilities';
 
 /**
@@ -9,11 +9,11 @@ import { stringifyForDisplay } from '@apollo/client/utilities';
  */
 const StyledInput = styled.input`
   ${props => `
-  color: ${COLORS.MONO[COLORS.MONO.length - 1]};
+  color: ${colors.mono[colors.mono.length - 1]};
   font-size: 1rem;
   height: 2rem;
   border-radius: 6px;
-  border: 1px solid ${COLORS.MONO[4]};
+  border: 1px solid ${colors.mono[4]};
   padding-left: 0.5rem;
   width: ${props.width};
   box-sizing: border-box;
@@ -21,7 +21,7 @@ const StyledInput = styled.input`
 `;
 
 const StyledAlert = styled.span`
-  color: ${COLORS.BRIGHT[1]};
+  color: ${colors.bright[1]};
   font-family: Poppins;
 `;
 
@@ -35,41 +35,43 @@ const StyledDiv = styled.div`
 
 const SingleLineInput = ({
   labelText = 'Label',
+  name = 'test',
   errors,
   register,
   width = '100%'
 }) => {
   return (
-    <StyledDiv data-testid={'div-1'}>
-      <label htmlFor={labelText}>
+    <StyledDiv>
+      <label htmlFor={name}>
         <Text
-          content={labelText}
           fontWeight={'1000'}
           fontSize={'1'}
           fColor={
-            errors?.[labelText]
-              ? COLORS.BRIGHT[1]
-              : COLORS.MONO[COLORS.MONO.length - 1]
+            errors?.[name]
+              ? colors.bright[1]
+              : colors.mono[colors.mono.length - 1]
           }
-        />
+        >
+          <span>{labelText}</span>
+        </Text>
       </label>
       <StyledInput
         type={'text'}
-        name={labelText}
-        title={labelText}
-        id={labelText}
+        name={name}
+        title={name}
+        id={name}
         width={width}
-        aria-invalid={errors?.[labelText] ? 'true' : 'false'}
-        {...register(labelText, {
+        aria-invalid={errors?.[name] ? 'true' : 'false'}
+        {...register(name, {
           required: 'Required',
           minLength: 1,
           maxLength: 110
         })}
       />
-      {errors?.[labelText] && errors?.[labelText].type === 'required' && (
+      {errors?.[name] && errors?.[name].type === 'required' && (
         <StyledAlert role={'alert'}>Input is Required</StyledAlert>
       )}
-      {errors?.[labelText] && errors?.[labelText].type === 'maxLength' && (
+      {errors?.[name] && errors?.[name].type === 'maxLength' && (
         <StyledAlert role={'alert'}>Max length exceeded</StyledAlert>
       )}
     </StyledDiv>
