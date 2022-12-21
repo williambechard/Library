@@ -1,19 +1,7 @@
 import { gql, useQuery, useMutation } from '@apollo/client';
+const STATIC_ARRAY = [];
 
-export const allBooksQuery = gql`
-  query getBooks {
-    getBooks {
-      id
-      title
-      coverImage
-      author {
-        id
-        firstName
-        lastName
-      }
-    }
-  }
-`;
+//exportable quries
 export const aBookQuery = gql`
   query getBook($id: ID!) {
     getBook(id: $id) {
@@ -30,25 +18,20 @@ export const aBookQuery = gql`
   }
 `;
 
-export const useGetBooks = () => {
-  const { loading, error, data } = useQuery(allBooksQuery);
-
-  return {
-    booksLoading: loading,
-    booksError: error,
-    books: data?.getBooks || []
-  };
-};
-
-export const useGetBook = id => {
-  const { loading, error, data } = useQuery(aBookQuery, { variables: { id } });
-
-  return {
-    bookLoading: loading,
-    bookError: error,
-    book: data?.getBook || {}
-  };
-};
+export const allBooksQuery = gql`
+  query getBooks {
+    getBooks {
+      id
+      title
+      coverImage
+      author {
+        id
+        firstName
+        lastName
+      }
+    }
+  }
+`;
 
 export const addBookMutation = gql`
   mutation addBook(
@@ -77,6 +60,27 @@ export const addBookMutation = gql`
     }
   }
 `;
+
+export const useGetBooks = () => {
+  const { loading, error, data } = useQuery(allBooksQuery);
+
+  return {
+    booksLoading: loading,
+    booksError: error,
+    books: data?.getBooks || STATIC_ARRAY
+  };
+};
+
+export const useGetBook = id => {
+  const { loading, error, data } = useQuery(aBookQuery, { variables: { id } });
+
+  return {
+    bookLoading: loading,
+    bookError: error,
+    book: data?.getBook || {}
+  };
+};
+
 export const useAddBook = (
   title,
   authorId,
@@ -101,9 +105,10 @@ export const useAddBook = (
       }),
     addBookLoading: loading,
     addBookError: error,
-    addBookData: data
+    addBookData: data?.addBook || {}
   };
 };
+
 export const removeBookMutation = gql`
   mutation removeBook($id: ID!) {
     removeBook(id: $id)

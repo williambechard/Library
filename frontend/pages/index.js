@@ -13,7 +13,7 @@ import DULogo from '../public/DU-Logo-Mark.svg';
 import Text from '../components/Text/Text';
 import Image from 'next/image';
 import { useGetBooks } from '../api/books';
-import Colors from '../components/colors';
+import COLORS from '../helper/COLORS';
 
 /**
  * Main landing page of the application
@@ -38,13 +38,11 @@ const Home = () => {
    * Uses passed parameters so that ANY Modal state
    * can be set, and therefor shown with this function.
    * @param setModal -The Function which sets the State's value
-   * @param ModalValue -The current value of the state
+   * @param modalValue -The current value of the state
    */
-  /* eslint-disable no-unused-vars*/
-  function triggerModal(setModal, ModalValue) {
-    /* eslint-disable no-unused-vars*/
-    setModal(ModalValue => !ModalValue); //uses arrow function to make sure current value is used and not stale data
-  }
+  const triggerModal = (setModal, modalValue) => {
+    setModal(modalValue => !modalValue); //uses arrow function to make sure current value is used and not stale data
+  };
 
   /**
    * Function for setting the bookId state to the currently selected book
@@ -71,15 +69,15 @@ const Home = () => {
           onClick={() => showBook(book.id)}
         >
           <Text
-            bgColor={Colors.Mono[2]}
+            bgColor={COLORS.MONO[2]}
             fontSize={'1'}
             content={book.title}
             fontWeight={'900'}
             display={'block'}
           ></Text>
           <Text
-            bgColor={Colors.Mono[2]}
-            fColor={Colors.Mono[Colors.Mono.length - 2]}
+            bgColor={COLORS.MONO[2]}
+            fColor={COLORS.MONO[COLORS.MONO.length - 2]}
             fontSize={1}
             margin={'20px 0px'}
             display={'block'}
@@ -103,7 +101,7 @@ const Home = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Section bgColor={Colors.Mono[1]} height={'100%'}>
+      <Section bgColor={COLORS.MONO[1]} height={'100%'}>
         <Flex
           position={'fixed'}
           top={'0'}
@@ -126,9 +124,9 @@ const Home = () => {
             height={'100%'}
           />
         </Flex>
-        <Section height={'100vh'} bgColor={Colors.Mono[1]}>
+        <Section height={'100vh'} bgColor={COLORS.MONO[1]}>
           <Flex
-            bgColor={Colors.Mono[1]}
+            bgColor={COLORS.MONO[1]}
             justifyContent={'space-between'}
             position={'fixed'}
             top={'70px'}
@@ -138,12 +136,13 @@ const Home = () => {
           >
             <Text
               content={'My Library'}
-              bgColor={Colors.Mono[1]}
+              bgColor={COLORS.MONO[1]}
               fontSize={1.5}
               margin={'auto 20px'}
             />
             <Button
-              label={'+ Add Book'}
+              label={'addBook'}
+              text={'+ Add Book'}
               onClick={() => triggerModal(setAddBookModal, showAddBookModal)}
               margin={'auto 10px'}
             />
@@ -152,7 +151,7 @@ const Home = () => {
             <Flex
               justifyContent={'flex-start'}
               alignContent={'center'}
-              bgColor={Colors.Mono[1]}
+              bgColor={COLORS.MONO[1]}
               wrap={'wrap'}
               zIndex={'0'}
               transform={'TranslateY(150px)'}
@@ -189,7 +188,7 @@ const Home = () => {
           )}
         </Section>
         <Flex
-          bgColor={Colors.Mono[Colors.Mono.length - 1]}
+          bgColor={COLORS.MONO[COLORS.MONO.length - 1]}
           justifyContent={'center'}
           height={'30px'}
           position={'fixed'}
@@ -197,8 +196,8 @@ const Home = () => {
         >
           <Text
             content={'@ 2022 Omni Federal - All Rights Reserved'}
-            bgColor={Colors.Mono[Colors.Mono.length - 1]}
-            fColor={Colors.Mono[0]}
+            bgColor={COLORS.MONO[COLORS.MONO.length - 1]}
+            fColor={COLORS.MONO[0]}
             fontSize={1}
             margin={'auto 10px'}
           />

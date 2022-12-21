@@ -8,16 +8,6 @@ import {
   anAuthorQuery,
   addAuthorMutation
 } from '../../../api/authors';
-import {
-  aBookQuery,
-  addBookMutation,
-  allBooksQuery,
-  removeBookMutation,
-  useAddBook,
-  useGetBook,
-  useGetBooks,
-  useRemoveBook
-} from '../../../api/books';
 import { MockedProvider } from '@apollo/client/testing';
 
 describe('api Authors test', () => {
@@ -51,7 +41,9 @@ describe('api Authors test', () => {
     );
 
     const { result } = renderHook(() => useGetAuthors(), { wrapper });
+
     await waitFor(() => expect(result.current.authors.length).not.toBe(0));
+
     expect(result.current.authorsError).toBeFalsy();
     expect(result.current.authorsLoading).toBeFalsy();
   });
@@ -85,7 +77,19 @@ describe('api Authors test', () => {
 
     const { result } = renderHook(() => useGetAuthor('1'), { wrapper });
     await waitFor(() => expect(result.current.authorLoading).toBeFalsy());
-    expect(JSON.stringify(result.current.author)).not.toBe('{}');
+    expect(JSON.stringify(result.current.author)).toBe(
+      JSON.stringify({
+        id: '1',
+        firstName: 'J.K.',
+        lastName: 'Rowling',
+        books: [
+          {
+            id: '1',
+            title: 'Harry Potter'
+          }
+        ]
+      })
+    );
   });
   it('should add an author', async () => {
     const addAuthorMock = {
@@ -115,10 +119,10 @@ describe('api Authors test', () => {
     const { result } = renderHook(() => useAddAuthor(), { wrapper });
 
     await waitFor(() => expect(result.current.addAuthorLoading).toBe(false));
-    let authorInfo;
+
     await act(async () => {
-      authorInfo = await result.current.addAuthor('Jim', 'Bean');
+      const authorInfo = await result.current.addAuthor('Jim', 'Bean');
+      expect(authorInfo.data.addAuthor.id).toBe('1');
     });
-    expect(authorInfo.data.addAuthor.id).toBe('1');
   });
 });

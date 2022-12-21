@@ -5,7 +5,8 @@ import { useForm } from 'react-hook-form';
 import { useAddBook } from '../../api/books';
 import { useAddAuthor, useGetAuthors } from '../../api/authors';
 import useToast from '../../hooks/useToast';
-import Colors from '../colors';
+import convertSpaces from '../../helper/convertSpaces';
+import COLORS from '../../helper/COLORS';
 
 /**
  * Style component based on a form
@@ -34,20 +35,16 @@ const AddBookForm = ({ onClick }) => {
   };
 
   const submitForm = async data => {
-    const title = data.Title;
-    const description = data.Description;
-    const fName = data['First Name'];
-    const lName = data['Last Name'];
+    const {
+      First_Name: fName,
+      Last_Name: lName,
+      Title: title,
+      Description: description
+    } = data;
 
-    let targetAuthor = findAuthor(fName, lName);
-    if (typeof targetAuthor === 'undefined') {
-      targetAuthor = await addAuthor(fName, lName).catch(err => {
-        console.error(err);
-        return false;
-      });
-
-      targetAuthor = targetAuthor.data.addAuthor;
-    }
+    const targetAuthor =
+      findAuthor(fName, lName) ??
+      (await addAuthor(fName, lName).catch(err => false)).data.addAuthor;
 
     addBook(title, targetAuthor.id, '', [''], description)
       .then(() => {
@@ -71,7 +68,11 @@ const AddBookForm = ({ onClick }) => {
   };
 
   return (
-    <StyledForm onSubmit={handleSubmit(submitForm)} data-testid={'form-1'}>
+    <StyledForm
+      onSubmit={handleSubmit(submitForm)}
+      ariaLabel={'form'}
+      name={'form'}
+    >
       <Flex
         direction={'column'}
         wrap={'nowrap'}
@@ -91,12 +92,12 @@ const AddBookForm = ({ onClick }) => {
           gap={'10px'}
         >
           <SingleLineInput
-            labelText={'First Name'}
+            labelText={convertSpaces('First Name')}
             register={register}
             errors={errors}
           />
           <SingleLineInput
-            labelText={'Last Name'}
+            labelText={convertSpaces('Last Name')}
             register={register}
             errors={errors}
           />
@@ -122,15 +123,17 @@ const AddBookForm = ({ onClick }) => {
           gap={'10px'}
         >
           <Button
-            fColor={Colors.Bright[1]}
-            borderColor={Colors.Bright[1]}
-            label={'Cancel'}
+            fColor={COLORS.BRIGHT[1]}
+            borderColor={COLORS.BRIGHT[1]}
+            label={'closeAddBookForm'}
+            text={'Cancel'}
             onClick={onClick}
           />
           <Button
-            fColor={Colors.Bright[0]}
-            borderColor={Colors.Bright[0]}
-            label={'Add Book'}
+            fColor={COLORS.BRIGHT[0]}
+            borderColor={COLORS.BRIGHT[0]}
+            label={'submitAddBookForm'}
+            text={'Add Book'}
             btnType={'submit'}
           />
         </Flex>

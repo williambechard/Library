@@ -1,24 +1,24 @@
-import React from "react";
-import styled from "@emotion/styled";
-import Text from "../Text/Text";
-import Colors from "../colors";
+import React from 'react';
+import styled from '@emotion/styled';
+import Text from '../Text/Text';
+import COLORS from '../../helper/COLORS';
 
 /**
  * Style component based on a textarea
  */
 const StyledInput = styled.textarea`
   width: inherit;
-  resize: ${(props) => props.resize};
+  resize: ${props => props.resize};
   font-size: 1rem;
   border-radius: 6px;
-  color: ${Colors.Mono[Colors.Mono.length - 1]};
-  border: 1px solid ${Colors.Mono[4]};
+  color: ${COLORS.MONO[COLORS.MONO.length - 1]};
+  border: 1px solid ${COLORS.MONO[4]};
   padding-left: 0.5rem;
   box-sizing: border-box;
 `;
 
 const StyledAlert = styled.span`
-  color: ${Colors.Bright[1]};
+  color: ${COLORS.BRIGHT[1]};
   font-family: Poppins;
 `;
 
@@ -32,10 +32,10 @@ const StyledLabel = styled.label`
 
 const MultiLineInput = ({
   register,
-  labelText = "Label",
+  labelText = 'Label',
   errors,
   rows,
-  resize = "none",
+  resize = 'none'
 }) => {
   return (
     <StyledLabel>
@@ -43,34 +43,34 @@ const MultiLineInput = ({
         <Text
           content={labelText}
           fontSize={1}
-          fontWeight={"1000"}
+          fontWeight={'1000'}
           fColor={
             errors?.[labelText]
-              ? Colors.Bright[1]
-              : Colors.Mono[Colors.Mono.length - 1]
+              ? COLORS.BRIGHT[1]
+              : COLORS.MONO[COLORS.MONO.length - 1]
           }
         />
       </label>
       <StyledInput
-        type={"text"}
+        type={'text'}
         aria-label={labelText}
         id={labelText}
         title={labelText}
         rows={rows}
         resize={resize}
         name={labelText}
-        aria-invalid={errors?.[labelText] ? "true" : "false"}
+        aria-invalid={errors?.[labelText] ? 'true' : 'false'}
         {...register(labelText, {
-          required: "Required",
+          required: 'Required',
           minLength: 1,
-          maxLength: 800,
+          maxLength: 800
         })}
       />
-      {errors?.[labelText] && errors?.[labelText].type === "required" && (
-        <StyledAlert role={"alert"}>Input is Required</StyledAlert>
+      {errors?.[labelText] && errors?.[labelText].type === 'required' && (
+        <StyledAlert role={'alert'}>Input is Required</StyledAlert>
       )}
-      {errors?.[labelText] && errors?.[labelText].type === "maxLength" && (
-        <StyledAlert role={"alert"}>Max length exceeded</StyledAlert>
+      {errors?.[labelText] && errors?.[labelText].type === 'maxLength' && (
+        <StyledAlert role={'alert'}>Max length exceeded</StyledAlert>
       )}
     </StyledLabel>
   );

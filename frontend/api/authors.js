@@ -1,22 +1,6 @@
 import { gql, useQuery, useMutation } from '@apollo/client';
-export const allAuthorsQuery = gql`
-  query getAuthors {
-    getAuthors {
-      id
-      firstName
-      lastName
-    }
-  }
-`;
-export const useGetAuthors = () => {
-  const { loading, error, data } = useQuery(allAuthorsQuery);
-  return {
-    authorsLoading: loading,
-    authorsError: error,
-    authors: data?.getAuthors || []
-  };
-};
 
+//exportable queries
 export const anAuthorQuery = gql`
   query getAuthor($id: ID!) {
     getAuthor(id: $id) {
@@ -30,6 +14,36 @@ export const anAuthorQuery = gql`
     }
   }
 `;
+
+export const allAuthorsQuery = gql`
+  query getAuthors {
+    getAuthors {
+      id
+      firstName
+      lastName
+    }
+  }
+`;
+
+export const addAuthorMutation = gql`
+  mutation addAuthor($firstName: String!, $lastName: String!) {
+    addAuthor(firstName: $firstName, lastName: $lastName) {
+      id
+      firstName
+      lastName
+    }
+  }
+`;
+
+export const useGetAuthors = () => {
+  const { loading, error, data } = useQuery(allAuthorsQuery);
+  return {
+    authorsLoading: loading,
+    authorsError: error,
+    authors: data?.getAuthors || []
+  };
+};
+
 export const useGetAuthor = id => {
   const { loading, error, data } = useQuery(anAuthorQuery, {
     variables: { id }
@@ -41,15 +55,6 @@ export const useGetAuthor = id => {
   };
 };
 
-export const addAuthorMutation = gql`
-  mutation addAuthor($firstName: String!, $lastName: String!) {
-    addAuthor(firstName: $firstName, lastName: $lastName) {
-      id
-      firstName
-      lastName
-    }
-  }
-`;
 export const useAddAuthor = (firstName, lastName) => {
   const [add, { loading, error, data }] = useMutation(addAuthorMutation, {
     variables: { firstName, lastName }

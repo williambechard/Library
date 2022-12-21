@@ -1,8 +1,8 @@
-import React from "react";
-import styled from "@emotion/styled";
-import { Button, Section, Text, Flex } from "../index";
-import { createPortal } from "react-dom";
-import Colors from "../colors";
+import React from 'react';
+import styled from '@emotion/styled';
+import { Button, Section, Text, Flex } from '../index';
+import { createPortal } from 'react-dom';
+import COLORS from '../../helper/COLORS';
 
 /**
  * Style component based on a div element
@@ -37,43 +37,44 @@ const StyledModal = styled.div`
   border-radius: 15px;
 `;
 
-const Modal = ({ children, title = "Test Modal", onClick }) => {
+const Modal = ({ children, title = 'Test Modal', onClick }) => {
   return createPortal(
     <StyledBG>
-      <StyledModal data-testid={"modal-1"} aria-modal={true}>
+      <StyledModal data-testid={'modal-1'} aria-modal={true}>
         <Section
-          borderRadius={"15px 15px 15px 15px"}
-          templateRows={"auto"}
-          height={"unset"}
-          margin={"15px"}
+          borderRadius={'15px 15px 15px 15px'}
+          templateRows={'auto'}
+          height={'unset'}
+          margin={'15px'}
         >
           <Flex
-            bgColor={Colors.Mono[0]}
-            justifyContent={"space-between"}
-            borderRadius={"15px 15px 0px 0px"}
-            height={"75px"}
+            bgColor={COLORS.MONO[0]}
+            justifyContent={'space-between'}
+            borderRadius={'15px 15px 0px 0px'}
+            height={'75px'}
           >
             <Text
               content={title}
-              bgColor={Colors.Mono[0]}
-              fontSize={"2"}
-              fontWeight={"1000"}
-              margin={"auto 25px auto 0px"}
+              bgColor={COLORS.MONO[0]}
+              fontSize={'2'}
+              fontWeight={'1000'}
+              margin={'auto 25px auto 0px'}
             />
             <Button
-              margin={"auto 10px"}
-              label={"X"}
+              margin={'auto 10px'}
+              label={'closeModal'}
+              text={'X'}
               onClick={onClick}
-              fontWeight={"1000"}
+              fontWeight={'1000'}
             />
           </Flex>
-          <Flex bgColor={Colors.Mono[0]} borderRadius={"0 0 15px 15px"}>
+          <Flex bgColor={COLORS.MONO[0]} borderRadius={'0 0 15px 15px'}>
             {children}
           </Flex>
         </Section>
       </StyledModal>
     </StyledBG>,
-    document.querySelector("#ModalArea")
+    document.querySelector('#ModalArea')
   );
 };
 

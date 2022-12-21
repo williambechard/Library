@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import Flex from '../../../components/Flex/Flex';
-import Colors from '../../../components/colors';
+import { COLORS } from '../../../components';
 
 describe('Flex Component Tests', () => {
   it('should render a default Flex component', () => {
@@ -9,7 +9,7 @@ describe('Flex Component Tests', () => {
     const flexComponent = screen.getByTestId('flex-1');
     expect(flexComponent).toBeInTheDocument();
     expect(flexComponent).toHaveStyle(
-      `background-color : ${Colors.Mono[0]}`,
+      `background-color : ${COLORS.MONO[0]}`,
       'gap:unset',
       'flex-wrap:wrap',
       'margin:0',
@@ -27,7 +27,7 @@ describe('Flex Component Tests', () => {
   it('should render a Flex component with specified unique style', () => {
     render(
       <Flex
-        bgColor={Colors.Mono[1]}
+        bgColor={COLORS.MONO[1]}
         gap={'10px'}
         wrap={'nowrap'}
         margin={'10'}
@@ -45,7 +45,7 @@ describe('Flex Component Tests', () => {
     const flexComponent = screen.getByTestId('flex-1');
     expect(flexComponent).toBeInTheDocument();
     expect(flexComponent).toHaveStyle(
-      `background-color : ${Colors.Mono[1]}`,
+      `background-color : ${COLORS.MONO[1]}`,
       'gap:10px',
       'flex-wrap:nowrap',
       'margin:10',

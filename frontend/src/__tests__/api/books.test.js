@@ -12,7 +12,7 @@ import {
   useRemoveBook
 } from '../../../api/books';
 
-describe('should test the books api', () => {
+describe('books api test', () => {
   it('should get all books', async () => {
     const getBooksMOCK = {
       request: {

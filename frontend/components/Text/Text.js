@@ -1,12 +1,12 @@
-import React from "react";
-import styled from "@emotion/styled";
-import Colors from "../colors";
+import React from 'react';
+import styled from '@emotion/styled';
+import COLORS from '../../helper/COLORS';
 
 /**
  * Style component based on a div element
  */
 const TextItem = styled.div`
-  ${(props) => `
+  ${props => `
   display: ${props.display};
   font-size: ${props.fontSize / 1.5}rem;
   background-color: ${props.bgColor};
@@ -22,14 +22,14 @@ const TextItem = styled.div`
     font-size: ${props.fontSize}rem;
   }
   `}
-  ${(props) =>
+  ${props =>
     props.clickable &&
     `
     text-decoration:underline dotted;
     cursor: pointer;
      &:hover {
         text-decoration:underline;
-        color:${Colors.Bright[2]};
+        color:${COLORS.BRIGHT[2]};
         text-weight:bold
       }
   `}
@@ -37,21 +37,21 @@ const TextItem = styled.div`
   font-family: Poppins, serif;
 `;
 const Text = ({
-  display = "inline-block",
-  content = "test",
-  fontSize = "1",
-  bgColor = Colors.Mono[0],
-  fColor = Colors.Mono[Colors.Mono.length - 1],
-  fontWeight = "400",
-  margin = "0",
-  overflow = "hidden",
-  maxHeight = "40vh",
+  display = 'inline-block',
+  content = 'test',
+  fontSize = '1',
+  bgColor = COLORS.MONO[0],
+  fColor = COLORS.MONO[COLORS.MONO.length - 1],
+  fontWeight = '400',
+  margin = '0',
+  overflow = 'hidden',
+  maxHeight = '40vh',
   clickable = false,
-  onClick,
+  onClick
 }) => {
   return (
     <TextItem
-      data-testid={"text-1"}
+      aria-label={content}
       display={display}
       fontSize={fontSize}
       bgColor={bgColor}

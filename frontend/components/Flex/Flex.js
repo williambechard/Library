@@ -1,12 +1,12 @@
-import styled from "@emotion/styled";
-import Colors from "../colors";
+import styled from '@emotion/styled';
+import COLORS from '../../helper/COLORS';
 
 /**
  * Style component based on a div element
  */
 const StyledFlex = styled.div`
   display: flex;
-  ${(props) => `
+  ${props => `
       z-index:${props.zIndex};
       transform:${props.transform};
       background-color:${props.bgColor};
@@ -32,27 +32,27 @@ const StyledFlex = styled.div`
 
 const Flex = ({
   children,
-  bgColor = Colors.Mono[0],
-  gap = "unset",
-  wrap = "wrap",
-  margin = "0",
-  width = "100%",
-  height = "100%",
-  padding = "0",
-  justifyContent = "center",
-  alignContent = "center",
-  direction = "initial",
-  zIndex = "0",
-  transform = "inherit",
-  borderRadius = "0",
-  top = "unset",
-  bottom = "unset",
-  left = "unset",
-  position = "unset",
+  bgColor = COLORS.MONO[0],
+  gap = 'unset',
+  wrap = 'wrap',
+  margin = '0',
+  width = '100%',
+  height = '100%',
+  padding = '0',
+  justifyContent = 'center',
+  alignContent = 'center',
+  direction = 'initial',
+  zIndex = '0',
+  transform = 'inherit',
+  borderRadius = '0',
+  top = 'unset',
+  bottom = 'unset',
+  left = 'unset',
+  position = 'unset'
 }) => {
   return (
     <StyledFlex
-      data-testid={"flex-1"}
+      data-testid={'flex-1'}
       bgColor={bgColor}
       gap={gap}
       wrap={wrap}

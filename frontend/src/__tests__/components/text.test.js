@@ -1,14 +1,14 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import Text from '../../../components/Text/Text';
-import Colors from '../../../components/colors';
+import { COLORS } from '../../../components';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
 describe('Text Component Tests', () => {
   it('should render a default Text component', () => {
     render(<Text />);
-    const textComponent = screen.getByTestId('text-1');
+    const textComponent = screen.getByText('test');
     expect(textComponent).toBeInTheDocument();
     expect(textComponent).toHaveTextContent('test');
     expect(textComponent).toHaveStyle(
@@ -22,8 +22,8 @@ describe('Text Component Tests', () => {
       }`,
       'font-weight: bold',
       'font-family: Poppins, serif',
-      `background-color:${Colors.Mono[0]}`,
-      `color:${Colors.Mono[Colors.Mono.length - 1]}`,
+      `background-color:${COLORS.MONO[0]}`,
+      `color:${COLORS.MONO[COLORS.MONO.length - 1]}`,
       'font-weight:400',
       'margin:0',
       'overflow:hidden',
@@ -35,8 +35,8 @@ describe('Text Component Tests', () => {
       <Text
         content={'test Content'}
         fontWeight={'200'}
-        bgColor={Colors.Mono[1]}
-        fColor={Colors.Mono[0]}
+        bgColor={COLORS.MONO[1]}
+        fColor={COLORS.MONO[0]}
         margin={'10'}
         overflow={'auto'}
         maxHeight={'20vh'}
@@ -46,8 +46,8 @@ describe('Text Component Tests', () => {
     expect(textComponent).toBeInTheDocument();
     expect(textComponent).toHaveStyle(
       'font-weight: 200',
-      `background-color:${Colors.Mono[1]}`,
-      `color:${Colors.Mono[0]}`,
+      `background-color:${COLORS.MONO[1]}`,
+      `color:${COLORS.MONO[0]}`,
       'margin:10',
       'overflow:auto',
       'maxHeight:20vh'
@@ -60,8 +60,8 @@ describe('Text Component Tests', () => {
       <Text
         content={'test Content'}
         fontWeight={'200'}
-        bgColor={Colors.Mono[1]}
-        fColor={Colors.Mono[0]}
+        bgColor={COLORS.MONO[1]}
+        fColor={COLORS.MONO[0]}
         margin={'10'}
         overflow={'auto'}
         maxHeight={'20vh'}
