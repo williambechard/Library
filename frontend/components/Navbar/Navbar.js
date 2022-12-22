@@ -10,11 +10,11 @@ const Navbar = () => {
   }, []);
 
   return (
-    <>
+    <Flex width={'unset'} height={'unset'} direction={'row'}>
       <Link href="/">
         <Text
           clickable={true}
-          margin={'25px 5px 25px 5px'}
+          margin={'auto 5px auto 5px'}
           onClick={() => setCurrentPage('/')}
           display={'inline-block'}
           fontSize={'1'}
@@ -27,7 +27,7 @@ const Navbar = () => {
       <Link href="/authors">
         <Text
           clickable={true}
-          margin={'25px 5px 25px 5px'}
+          margin={'auto 5px auto 5px'}
           onClick={() => setCurrentPage('/authors')}
           display={'inline-block'}
           fontSize={'1'}
@@ -37,7 +37,7 @@ const Navbar = () => {
           Authors
         </Text>
       </Link>
-    </>
+    </Flex>
   );
 };
 

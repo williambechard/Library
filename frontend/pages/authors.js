@@ -1,19 +1,49 @@
-import React, { useContext } from 'react';
-import { Section, Flex, Card, Text } from '../components';
+import React, { useContext, useState } from 'react';
+import {
+  Section,
+  Flex,
+  Card,
+  Text,
+  ViewBookPage,
+  Modal,
+  Button
+} from '../components';
 import colors from '../theme/colors';
 import { BooksContext } from '../providers';
+import triggerModal from '../helper/triggerModal';
 
 const AuthorsPage = () => {
   const books = useContext(BooksContext);
-  const displayBooks = () => {
-    return books.map(book => {
-      //loop through all books
+  const [showViewBookModal, setShowViewBookModal] = useState(false); //Determines if ViewBook Modal is shown or not
+  const [bookId, setBookId] = useState('0'); //Keeps track of selected book ID so the correct book can be loaded into the ViewBook Modal
+
+  const showBook = id => {
+    setBookId(id); //set the bookId state to the current book id
+    setShowViewBookModal(visibleStatus => !visibleStatus); //set the viewBook modal state to the opposite, therefor showing the modal
+  };
+
+  //weird lint error saying modalValue not used, but it is in the function...
+  /**
+   * Function for showing a modal.
+   * Uses passed parameters so that ANY Modal state
+   * can be set, and therefor shown with this function.
+   * @param setModal -The Function which sets the State's value
+   * @param modalValue -The current value of the state
+   */
+  const triggerModal = (setModal, modalValue) => {
+    setModal(modalValue => !modalValue); //uses arrow function to make sure current value is used and not stale data
+  };
+
+  const displayBooksByAuthor = arr => {
+    return arr.map(item => {
       return (
-        //for each book return JSX of a Card Component
         <Card
-          key={book.id}
-          label={book.title}
-          onClick={() => showBook(book.id)}
+          key={item.id}
+          label={item.title}
+          onClick={() => {
+            setBookId(item.id);
+            triggerModal(setShowViewBookModal, showViewBookModal);
+          }}
         >
           <Text
             bgColor={colors.mono[2]}
@@ -21,51 +51,88 @@ const AuthorsPage = () => {
             fontWeight={'900'}
             display={'block'}
           >
-            <span>{book.title}</span>
-          </Text>
-          <Text
-            bgColor={colors.mono[2]}
-            fColor={colors.mono[colors.mono.length - 2]}
-            fontSize={1}
-            margin={'20px 0px'}
-            display={'block'}
-          >
-            <span>{book.author.firstName + ' ' + book.author.lastName}</span>
+            <span>{item.title}</span>
           </Text>
         </Card>
       );
     });
   };
 
+  const displayBooks = () => {
+    let allAuthors = {};
+
+    books.map(book => {
+      let id =
+        book.author.id +
+        '-' +
+        book.author.firstName +
+        ' ' +
+        book.author.lastName;
+
+      if (!allAuthors.hasOwnProperty(id)) allAuthors[id] = [];
+
+      allAuthors[id].push(book);
+    });
+
+    let jsxArray = [];
+    for (var key in allAuthors) {
+      jsxArray.push(
+        <Flex
+          height={'unset'}
+          margin={'20px'}
+          justifyContent={'flex-start'}
+          bgColor={colors.mono[1]}
+          key={key.split('-')[0]}
+        >
+          <Text
+            margin={'0px 0px 0px 20px'}
+            bgColor={colors.mono[1]}
+            fontSize={'2'}
+          >
+            {key.split('-')[1]}
+          </Text>
+          <Flex height={'unset'} bgColor={colors.mono[1]}>
+            {displayBooksByAuthor(allAuthors[key])}
+          </Flex>
+        </Flex>
+      );
+    }
+    return <>{jsxArray}</>;
+  };
+
   return (
     <>
-      <Section height={'100vh'} bgColor={colors.mono[1]}>
+      {books.length > 0 ? (
         <Flex
+          justifyContent={'flex-start'}
+          alignContent={'flex-start'}
           bgColor={colors.mono[1]}
-          justifyContent={'space-between'}
-          position={'fixed'}
-          top={'70px'}
-          left={'0'}
-          zIndex={'2'}
-          height={'70px'}
-        ></Flex>
-        {books.length > 0 ? (
-          <Flex
-            justifyContent={'flex-start'}
-            alignContent={'center'}
-            bgColor={colors.mono[1]}
-            wrap={'wrap'}
-            zIndex={'0'}
-            transform={'TranslateY(150px)'}
-          >
-            {displayBooks()}
-          </Flex>
-        ) : (
-          <Text>
-            <span>No Books Found...</span>
-          </Text>
-        )}
-      </Section>
+          wrap={'wrap'}
+          zIndex={'0'}
+          gap={'50px'}
+          transform={'translateY(80px)'}
+        >
+          {displayBooks()}
+        </Flex>
+      ) : (
+        <Text>
+          <span>No Books Found...</span>
+        </Text>
+      )}
+      {showViewBookModal && (
+        <Modal
+          onClick={() => triggerModal(setShowViewBookModal, showViewBookModal)}
+          title={'Book Info'}
+        >
+          <ViewBookPage
+            bookId={bookId}
+            returnPath={'Authors'}
+            onClick={() =>
+              triggerModal(setShowViewBookModal, showViewBookModal)
+            }
+          />
+        </Modal>
+      )}
     </>
   );
 };

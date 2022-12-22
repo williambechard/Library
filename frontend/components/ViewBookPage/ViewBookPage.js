@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { Text, Section, Flex } from '../index';
 import { useGetBook } from '../../api/books';
 
@@ -8,7 +9,7 @@ import { useGetBook } from '../../api/books';
  * @param onClick - function to be called when close is clicked
  * @returns {JSX.Element}
  */
-const ViewBookPage = ({ bookId, onClick }) => {
+const ViewBookPage = ({ bookId, onClick, returnPath }) => {
   /**
    * Hook for getting info from a book based on a bookId
    */
@@ -36,7 +37,7 @@ const ViewBookPage = ({ bookId, onClick }) => {
               display={'inline-block'}
               fontSize={'0.75'}
             >
-              <span>My Library </span>
+              <span>{returnPath} </span>
             </Text>
             <Text
               content={'/' + book.title}
