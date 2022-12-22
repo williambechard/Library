@@ -1,5 +1,6 @@
-import { Html, Head, Main, NextScript } from "next/document";
+import { Html, Head, Main, NextScript } from 'next/document';
 
+//only used to edit basic structure of html
 export default function Document() {
   return (
     <Html>

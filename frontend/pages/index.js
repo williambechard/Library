@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import Head from 'next/head';
+import React, { useState, useContext } from 'react';
 import {
   AddBookForm,
   Button,
@@ -9,12 +8,10 @@ import {
   Section,
   ViewBookPage
 } from '../components';
-import DULogo from '../public/DU-Logo-Mark.svg';
 import Text from '../components/Text/Text';
-import Image from 'next/image';
-import { useGetBooks } from '../api/books';
 import colors from '../theme/colors';
-
+import { useGetBooks } from '../api/books';
+import { BooksContext } from '../providers';
 /**
  * Main landing page of the application
  */
@@ -26,11 +23,7 @@ const Home = () => {
   const [showViewBookModal, setShowViewBookModal] = useState(false); //Determines if ViewBook Modal is shown or not
   const [bookId, setBookId] = useState('0'); //Keeps track of selected book ID so the correct book can be loaded into the ViewBook Modal
 
-  /**
-   * Hook for query to get all books, so that they can be displayed on the page
-   * allBooksQueryBasic is a gql query which is crafted to only pull the data we want for the books
-   */
-  const { books } = useGetBooks();
+  const books = useContext(BooksContext);
 
   //weird lint error saying modalValue not used, but it is in the function...
   /**
@@ -95,101 +88,68 @@ const Home = () => {
    */
   return (
     <>
-      <Head>
-        <title>DU Capstone</title>
-        <meta
-          name="description"
-          content="Capstone project for Digital University Dev Team"
-        />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <Section bgColor={colors.mono[1]} height={'100%'}>
+      <Section height={'100vh'} bgColor={colors.mono[1]}>
         <Flex
+          bgColor={colors.mono[1]}
+          justifyContent={'space-between'}
           position={'fixed'}
-          top={'0'}
+          top={'70px'}
           left={'0'}
           zIndex={'2'}
-          justifyContent={'flex-start'}
-          alignContent={'flex-start'}
-          gap={'15px'}
           height={'70px'}
-          wrap={'wrap'}
         >
-          <div style={{ margin: '10px', display: 'inline-block' }}>
-            <Image src={DULogo} alt={'DULogo'} width={'50px'} height={'50px'} />
-          </div>
-          <Text
-            fontSize={'1.70'}
-            fontWeight={'1000'}
-            margin={'auto 10px'}
-            height={'100%'}
-          >
-            <span>William's Capstone</span>
+          <Text bgColor={colors.mono[1]} fontSize={1.5} margin={'auto 20px'}>
+            <span>My Library</span>
           </Text>
-        </Flex>
-        <Section height={'100vh'} bgColor={colors.mono[1]}>
-          <Flex
-            bgColor={colors.mono[1]}
-            justifyContent={'space-between'}
-            position={'fixed'}
-            top={'70px'}
-            left={'0'}
-            zIndex={'2'}
-            height={'70px'}
+          <Button
+            label={'addBook'}
+            onClick={() => triggerModal(setAddBookModal, showAddBookModal)}
+            margin={'auto 10px'}
           >
-            <Text bgColor={colors.mono[1]} fontSize={1.5} margin={'auto 20px'}>
-              <span>My Library</span>
-            </Text>
-            <Button
-              label={'addBook'}
-              onClick={() => triggerModal(setAddBookModal, showAddBookModal)}
-              margin={'auto 10px'}
-            >
-              + Add Book
-            </Button>
+            + Add Book
+          </Button>
+        </Flex>
+        {books.length > 0 ? (
+          <Flex
+            justifyContent={'flex-start'}
+            alignContent={'center'}
+            bgColor={colors.mono[1]}
+            wrap={'wrap'}
+            zIndex={'0'}
+            transform={'TranslateY(150px)'}
+          >
+            {displayBooks()}
           </Flex>
-          {books.length > 0 ? (
-            <Flex
-              justifyContent={'flex-start'}
-              alignContent={'center'}
-              bgColor={colors.mono[1]}
-              wrap={'wrap'}
-              zIndex={'0'}
-              transform={'TranslateY(150px)'}
-            >
-              {displayBooks()}
-            </Flex>
-          ) : (
-            <Text>
-              <span>No Books Found...</span>
-            </Text>
-          )}
-          {showAddBookModal && (
-            <Modal
+        ) : (
+          <Text>
+            <span>No Books Found...</span>
+          </Text>
+        )}
+        {showAddBookModal && (
+          <Modal
+            onClick={() => triggerModal(setAddBookModal, showAddBookModal)}
+            title={'Add New Book'}
+          >
+            <AddBookForm
               onClick={() => triggerModal(setAddBookModal, showAddBookModal)}
-              title={'Add New Book'}
-            >
-              <AddBookForm
-                onClick={() => triggerModal(setAddBookModal, showAddBookModal)}
-              />
-            </Modal>
-          )}
-          {showViewBookModal && (
-            <Modal
+            />
+          </Modal>
+        )}
+        {showViewBookModal && (
+          <Modal
+            onClick={() =>
+              triggerModal(setShowViewBookModal, showViewBookModal)
+            }
+            title={'Book Info'}
+          >
+            <ViewBookPage
+              bookId={bookId}
               onClick={() =>
                 triggerModal(setShowViewBookModal, showViewBookModal)
               }
-              title={'Book Info'}
-            >
-              <ViewBookPage
-                bookId={bookId}
-                onClick={() =>
-                  triggerModal(setShowViewBookModal, showViewBookModal)
-                }
-              />
-            </Modal>
-          )}
-        </Section>
+            />
+          </Modal>
+        )}
         <Flex
           bgColor={colors.mono[colors.mono.length - 1]}
           justifyContent={'center'}

@@ -20,3 +20,5 @@ export { default as Card } from './Card';
 export { default as ViewBookPage } from './ViewBookPage';
 export { default as colors } from '../theme/colors';
 export { default as convertSpaces } from '../helper/convertSpaces';
+export { default as Navbar } from './Navbar';
+export { default as Layout } from './Layout';
