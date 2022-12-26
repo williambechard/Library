@@ -9,81 +9,47 @@ import {
   Button
 } from '../components';
 import colors from '../theme/colors';
-import { BooksContext } from '../providers';
+import { BooksContext, ViewBookContext } from '../providers';
 import triggerModal from '../helper/triggerModal';
 
 const AuthorsPage = () => {
   const books = useContext(BooksContext);
-  const [showViewBookModal, setShowViewBookModal] = useState(false); //Determines if ViewBook Modal is shown or not
-  const [bookId, setBookId] = useState('0'); //Keeps track of selected book ID so the correct book can be loaded into the ViewBook Modal
+  const [showViewBookModal, setShowViewBookModal, bookId, setBookId] =
+    useContext(ViewBookContext);
 
-  const showBook = id => {
-    setBookId(id); //set the bookId state to the current book id
-    setShowViewBookModal(visibleStatus => !visibleStatus); //set the viewBook modal state to the opposite, therefor showing the modal
-  };
-
-  //weird lint error saying modalValue not used, but it is in the function...
-  /**
-   * Function for showing a modal.
-   * Uses passed parameters so that ANY Modal state
-   * can be set, and therefor shown with this function.
-   * @param setModal -The Function which sets the State's value
-   * @param modalValue -The current value of the state
-   */
-  const triggerModal = (setModal, modalValue) => {
-    setModal(modalValue => !modalValue); //uses arrow function to make sure current value is used and not stale data
-  };
-
-  const displayBooksByAuthor = arr => {
-    return arr.map(item => {
-      return (
-        <Card
-          key={item.id}
-          label={item.title}
-          onClick={() => {
-            setBookId(item.id);
-            triggerModal(setShowViewBookModal, showViewBookModal);
-          }}
-        >
-          <Text
-            bgColor={colors.mono[2]}
-            fontSize={'1'}
-            fontWeight={'900'}
-            display={'block'}
-          >
-            <span>{item.title}</span>
-          </Text>
-        </Card>
-      );
-    });
-  };
-
-  const displayBooks = () => {
+  //loop over our books array and create an object with properties that groups
+  // the authors books all together under a custom author key
+  const convertBooksToAuthors = () => {
     let allAuthors = {};
 
     books.map(book => {
+      //craft an id in the pattern authorid.firstName lastName
+      //    I craft what will be the key this was as i can use split
+      //    later to get what i want out of it
       let id =
         book.author.id +
         '-' +
         book.author.firstName +
         ' ' +
         book.author.lastName;
-
+      //check if property/key already exists, if not create a blank array
       if (!allAuthors.hasOwnProperty(id)) allAuthors[id] = [];
-
+      //now push the book onto the property that matches
       allAuthors[id].push(book);
     });
 
-    let jsxArray = [];
-    for (var key in allAuthors) {
-      jsxArray.push(
-        <Flex
-          height={'unset'}
-          margin={'20px'}
-          justifyContent={'flex-start'}
-          bgColor={colors.mono[1]}
-          key={key.split('-')[0]}
-        >
+    return allAuthors;
+  };
+
+  //displays the books on the page. This method is crafted to show by Author and group their books together
+  const displayBooks = () => {
+    let jsx = [];
+
+    //iterate over the object
+    Object.entries(convertBooksToAuthors()).forEach(entry => {
+      const [key, value] = entry;
+      jsx.push(
+        <div key={key.split('-')[0]} style={{ width: '100%', margin: '20px' }}>
           <Text
             margin={'0px 0px 0px 20px'}
             bgColor={colors.mono[1]}
@@ -92,12 +58,33 @@ const AuthorsPage = () => {
             {key.split('-')[1]}
           </Text>
           <Flex height={'unset'} bgColor={colors.mono[1]}>
-            {displayBooksByAuthor(allAuthors[key])}
+            {value.map(item => {
+              return (
+                <Card
+                  key={item.id}
+                  label={item.title}
+                  onClick={() => {
+                    setBookId(item.id);
+                    triggerModal(setShowViewBookModal, showViewBookModal);
+                  }}
+                >
+                  <Text
+                    bgColor={colors.mono[2]}
+                    fontSize={'1'}
+                    fontWeight={'900'}
+                    display={'block'}
+                  >
+                    <span>{item.title}</span>
+                  </Text>
+                </Card>
+              );
+            })}
           </Flex>
-        </Flex>
+        </div>
       );
-    }
-    return <>{jsxArray}</>;
+    });
+
+    return jsx;
   };
 
   return (
@@ -109,8 +96,8 @@ const AuthorsPage = () => {
           bgColor={colors.mono[1]}
           wrap={'wrap'}
           zIndex={'0'}
-          gap={'50px'}
-          transform={'translateY(80px)'}
+          transform={'translateY(125px)'}
+          height={'100%'}
         >
           {displayBooks()}
         </Flex>

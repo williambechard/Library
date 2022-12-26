@@ -37,7 +37,7 @@ const ViewBookPage = ({ bookId, onClick, returnPath }) => {
               display={'inline-block'}
               fontSize={'0.75'}
             >
-              <span>{returnPath} </span>
+              <span>{returnPath}</span>
             </Text>
             <Text
               content={'/' + book.title}
@@ -68,7 +68,7 @@ const ViewBookPage = ({ bookId, onClick, returnPath }) => {
           </Text>
         </Flex>
       ) : (
-        <Text content={'Loading...'} />
+        <Text>{'Loading...'}</Text>
       )}
     </Section>
   );

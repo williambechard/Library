@@ -12,7 +12,7 @@
     "build": "babel --extensions .js,.jsx ./src -d dist",
     "start": "npm run build && node dist/index.js",
     "dev": "next dev",
-    "test": "jest",
+    "test": "jest --detectOpenHandles --forceExit ",
     "coverage": "jest --coverage",
     "lint": "eslint",
     "preview": "jest-preview"

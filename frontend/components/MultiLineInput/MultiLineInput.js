@@ -17,7 +17,7 @@ const StyledInput = styled.textarea`
   box-sizing: border-box;
 `;
 
-const StyledAlert = styled.span`
+const StyledAlert = styled.div`
   color: ${colors.bright[1]};
   font-family: Poppins;
 `;
@@ -50,7 +50,7 @@ const MultiLineInput = ({
               : colors.mono[colors.mono.length - 1]
           }
         >
-          <span>{labelText}</span>
+          {labelText}
         </Text>
       </label>
       <StyledInput

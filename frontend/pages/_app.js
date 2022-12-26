@@ -5,6 +5,7 @@ import { BooksProvider, ToastProvider } from '../providers';
 import { createContext } from 'react';
 import { useGetBooks } from '../api/books';
 import { Layout } from '../components';
+import ViewBookProvider from '../providers/ViewBookProvider';
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000/graphql/',
@@ -22,7 +23,9 @@ const App = ({ Component, pageProps }) => {
         <ToastProvider>
           <Layout>
             <BooksProvider>
-              <Component {...pageProps} />
+              <ViewBookProvider>
+                <Component {...pageProps} />
+              </ViewBookProvider>
             </BooksProvider>
           </Layout>
         </ToastProvider>

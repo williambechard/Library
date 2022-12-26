@@ -1,4 +1,5 @@
 import { Html, Head, Main, NextScript } from 'next/document';
+import { colors } from '../components';
 
 //only used to edit basic structure of html
 export default function Document() {
@@ -16,7 +17,7 @@ export default function Document() {
           rel="stylesheet"
         />
       </Head>
-      <body>
+      <body style={{ backgroundColor: colors.mono[1] }}>
         <div id="ModalArea"></div>
         <Main />
         <NextScript />

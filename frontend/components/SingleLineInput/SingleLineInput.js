@@ -20,7 +20,7 @@ const StyledInput = styled.input`
 `};
 `;
 
-const StyledAlert = styled.span`
+const StyledAlert = styled.div`
   color: ${colors.bright[1]};
   font-family: Poppins;
 `;
@@ -52,7 +52,7 @@ const SingleLineInput = ({
               : colors.mono[colors.mono.length - 1]
           }
         >
-          <span>{labelText}</span>
+          {labelText}
         </Text>
       </label>
       <StyledInput

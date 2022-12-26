@@ -14,6 +14,7 @@ import colors from '../theme/colors';
 import { useGetBooks } from '../api/books';
 import { BooksContext } from '../providers';
 import triggerModal from '../helper/triggerModal';
+import ViewBookContext from '../providers/ViewBookContext';
 /**
  * Main landing page of the application
  */
@@ -22,11 +23,13 @@ const Home = () => {
    * States
    */
   const [showAddBookModal, setAddBookModal] = useState(false); //Determines if AddBook Modal is shown or not
-  const [showViewBookModal, setShowViewBookModal] = useState(false); //Determines if ViewBook Modal is shown or not
-  const [bookId, setBookId] = useState('0'); //Keeps track of selected book ID so the correct book can be loaded into the ViewBook Modal
+  const [showViewBookModal, setShowViewBookModal, bookId, setBookId] =
+    useContext(ViewBookContext);
 
   const books = useContext(BooksContext);
+  //const viewBook = useContext(ViewBookContext);
 
+  //console.log('viewBook ', viewBook);
   /**
    * Function which coverts loaded books data to JSX (Card Components)
    */
@@ -73,7 +76,6 @@ const Home = () => {
       bgColor={colors.mono[1]}
       justifyContent={'space-between'}
       zIndex={'2'}
-      gap={'20px'}
       transform={'translateY(80px)'}
     >
       <Flex
@@ -82,7 +84,7 @@ const Home = () => {
         zIndex={'2'}
       >
         <Text bgColor={colors.mono[1]} fontSize={1.5} margin={'auto 20px'}>
-          <span>My Library</span>
+          My Library
         </Text>
         <Button
           label={'addBook'}
@@ -105,9 +107,7 @@ const Home = () => {
           {displayBooks()}
         </Flex>
       ) : (
-        <Text>
-          <span>No Books Found...</span>
-        </Text>
+        <Text>No Books Found...</Text>
       )}
       {showAddBookModal && (
         <Modal

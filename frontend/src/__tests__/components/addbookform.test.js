@@ -108,11 +108,11 @@ describe('AddBookForm Component Tests', () => {
     await userEvent.type(title, 'hello');
     expect(title).toHaveValue('hello');
 
-    const firstName = screen.getByRole('textbox', { name: /first_name/i });
+    const firstName = screen.getByRole('textbox', { name: /first name/i });
     await userEvent.type(firstName, 'Will');
     expect(firstName).toHaveValue('Will');
 
-    const lastName = screen.getByRole('textbox', { name: /last_name/i });
+    const lastName = screen.getByRole('textbox', { name: /last name/i });
     await userEvent.type(lastName, 'Smith');
     expect(lastName).toHaveValue('Smith');
 
@@ -154,11 +154,11 @@ describe('AddBookForm Component Tests', () => {
     await userEvent.type(title, 'hello');
     expect(title).toHaveValue('hello');
 
-    const firstName = screen.getByRole('textbox', { name: /first_name/i });
+    const firstName = screen.getByRole('textbox', { name: /first name/i });
     await userEvent.type(firstName, 'Will');
     expect(firstName).toHaveValue('Will');
 
-    const lastName = screen.getByRole('textbox', { name: /last_name/i });
+    const lastName = screen.getByRole('textbox', { name: /last name/i });
     await userEvent.type(lastName, 'Smith');
     expect(lastName).toHaveValue('Smith');
 
@@ -202,12 +202,12 @@ describe('AddBookForm Component Tests', () => {
 
     expect(title).toHaveValue('hello');
 
-    const firstName = screen.getByRole('textbox', { name: /first_name/i });
+    const firstName = screen.getByRole('textbox', { name: /first name/i });
     await userEvent.type(firstName, 'Will');
 
     expect(firstName).toHaveValue('Will');
 
-    const lastName = screen.getByRole('textbox', { name: /last_name/i });
+    const lastName = screen.getByRole('textbox', { name: /last name/i });
     await userEvent.type(lastName, 'Smith');
 
     expect(lastName).toHaveValue('Smith');

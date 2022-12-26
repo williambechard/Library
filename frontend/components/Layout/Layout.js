@@ -17,48 +17,39 @@ const Layout = ({ children }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Flex
-        direction={'column'}
-        zIndex={'2'}
+        zIndex={'4'}
         justifyContent={'flex-start'}
         alignContent={'flex-start'}
         height={'auto'}
-        wrap={'nowrap'}
+        wrap={'wrap'}
+        position={'fixed'}
+        top={'0'}
       >
-        <Flex
-          zIndex={'4'}
-          justifyContent={'flex-start'}
-          alignContent={'flex-start'}
-          height={'auto'}
-          wrap={'wrap'}
-          position={'fixed'}
-          top={'0'}
-        >
-          <div style={{ margin: '10px', display: 'inline-block' }}>
-            <Image src={DULogo} alt={'DULogo'} width={'50px'} height={'50px'} />
-          </div>
-          <Text fontSize={'1.70'} fontWeight={'1000'} margin={'auto 10px'}>
-            William's Capstone
-          </Text>
-          <Navbar />
-        </Flex>
-        {children}
-        <Flex
+        <div style={{ margin: '10px', display: 'inline-block' }}>
+          <Image src={DULogo} alt={'DULogo'} width={'50px'} height={'50px'} />
+        </div>
+        <Text fontSize={'1.70'} fontWeight={'1000'} margin={'auto 10px'}>
+          William's Capstone
+        </Text>
+        <Navbar />
+      </Flex>
+      {children}
+      <Flex
+        bgColor={colors.mono[colors.mono.length - 1]}
+        justifyContent={'center'}
+        height={'30px'}
+        position={'fixed'}
+        bottom={'0'}
+        zIndex={4}
+      >
+        <Text
           bgColor={colors.mono[colors.mono.length - 1]}
-          justifyContent={'center'}
-          height={'30px'}
-          position={'fixed'}
-          bottom={'0'}
-          zIndex={4}
+          fColor={colors.mono[0]}
+          fontSize={1}
+          margin={'auto 10px'}
         >
-          <Text
-            bgColor={colors.mono[colors.mono.length - 1]}
-            fColor={colors.mono[0]}
-            fontSize={1}
-            margin={'auto 10px'}
-          >
-            <span>@ 2022 Omni Federal - All Rights Reserved</span>
-          </Text>
-        </Flex>
+          @ 2022 Omni Federal - All Rights Reserved
+        </Text>
       </Flex>
     </>
   );
