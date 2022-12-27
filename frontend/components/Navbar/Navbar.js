@@ -37,6 +37,19 @@ const Navbar = () => {
           Authors
         </Text>
       </Link>
+      <Link href="/categories">
+        <Text
+          clickable={true}
+          margin={'auto 5px auto 5px'}
+          onClick={() => setCurrentPage('/categories')}
+          display={'inline-block'}
+          fontSize={'1'}
+          fColor={currentPage === '/categories' ? 'blue' : 'black'}
+          fontWeight={currentPage === '/categories' ? 'bolder' : '400'}
+        >
+          Categories
+        </Text>
+      </Link>
     </Flex>
   );
 };

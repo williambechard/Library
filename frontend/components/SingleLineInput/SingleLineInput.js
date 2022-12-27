@@ -38,12 +38,14 @@ const SingleLineInput = ({
   name = 'test',
   errors,
   register,
-  width = '100%'
+  width = '100%',
+  bgColor = 'white'
 }) => {
   return (
-    <StyledDiv>
-      <label htmlFor={name}>
+    <StyledDiv bgColor={bgColor}>
+      <label style={{ display: 'block' }} htmlFor={name}>
         <Text
+          bgColor={bgColor}
           fontWeight={'1000'}
           fontSize={'1'}
           fColor={

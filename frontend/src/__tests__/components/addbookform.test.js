@@ -131,16 +131,15 @@ describe('AddBookForm Component Tests', () => {
     });
 
     useAddAuthor.mockReturnValue({
-      addAuthor: (fName, lName) =>
-        Promise.resolve({
-          data: {
-            addAuthor: {
-              id: '2',
-              firstName: fName,
-              lastName: lName
-            }
+      addAuthor: (fName, lName) => ({
+        data: {
+          addAuthor: {
+            id: '2',
+            firstName: fName,
+            lastName: lName
           }
-        })
+        }
+      })
     });
 
     useGetAuthors.mockReturnValue({

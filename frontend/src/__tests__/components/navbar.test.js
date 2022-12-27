@@ -64,10 +64,7 @@ describe('Navbar component tests', () => {
     );
   });
 
-  it('should chnage to Author page from the Books page', async () => {
-    const setState = jest.fn();
-    const useStateMock = initState => [initState, setState];
-    jest.spyOn(React, 'useState').mockImplementation(useStateMock);
+  it('should change to Author page from the Books page', async () => {
     const url = 'http://localhost:3000/';
     Object.defineProperty(window, 'location', {
       value: new URL(url)
@@ -79,28 +76,24 @@ describe('Navbar component tests', () => {
     const textElement2 = screen.getByText(/Books/i);
     waitFor(() => {
       userEvent.click(textElement);
-      expect(textElement2).toHaveStyle(
+      expect(textElement).toHaveStyle(
         'margin:auto 5px auto 5px',
         'display:inline-block',
         'font-size:1',
         'color:blue',
         'font-weight:bolder'
       );
-      expect(textElement).toHaveStyle(
+      expect(textElement2).toHaveStyle(
         'margin:auto 5px auto 5px',
         'display:inline-block',
         'font-size:1',
         'color:black',
         'font-weight:400'
       );
-      expect(setState).toHaveBeenCalledTimes(2);
     });
   });
 
   it('should chnage to Books page from the Authors page', async () => {
-    const setState = jest.fn();
-    const useStateMock = initState => [initState, setState];
-    jest.spyOn(React, 'useState').mockImplementation(useStateMock);
     const url = 'http://localhost:3000/authors';
     Object.defineProperty(window, 'location', {
       value: new URL(url)
@@ -112,22 +105,21 @@ describe('Navbar component tests', () => {
     const textElement2 = screen.getByText(/Books/i);
 
     waitFor(() => {
-      userEvent.click(textElement);
-      expect(textElement).toHaveStyle(
+      userEvent.click(textElement2);
+      expect(textElement2).toHaveStyle(
         'margin:auto 5px auto 5px',
         'display:inline-block',
         'font-size:1',
         'color:blue',
         'font-weight:bolder'
       );
-      expect(textElement2).toHaveStyle(
+      expect(textElement).toHaveStyle(
         'margin:auto 5px auto 5px',
         'display:inline-block',
         'font-size:1',
         'color:black',
         'font-weight:400'
       );
-      expect(setState).toHaveBeenCalledTimes(2);
     });
   });
 });

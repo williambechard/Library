@@ -200,7 +200,8 @@ export const resolvers = {
     books: ({ id: bookId }) => books.filter(book => book.id === bookId)
   },
   Category: {
-    books: ({ id: bookId }) => books.filter(book => book.id === bookId)
+    books: ({ books: bookId }) =>
+      books.filter(books => bookId.includes(books.id))
   },
   Query: {
     getBooks: () => books,
@@ -240,7 +241,8 @@ export const resolvers = {
     addCategory: (_parent, { name }) => {
       const category = {
         id: String(categories.length + 1),
-        name
+        name,
+        books: []
       };
       categories.push(category);
       return category;

@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form';
 import { useAddBook } from '../../api/books';
 import { useAddAuthor, useGetAuthors } from '../../api/authors';
 import useToast from '../../hooks/useToast';
-import convertSpaces from '../../helper/convertSpaces';
 import colors from '../../theme/colors';
 
 /**
@@ -39,7 +38,7 @@ const AddBookForm = ({ onClick }) => {
 
     const targetAuthor =
       findAuthor(fName, lName) ??
-      (await addAuthor(fName, lName).catch(err => false)).data.addAuthor;
+      (await addAuthor(fName, lName).data.addAuthor);
 
     addBook(title, targetAuthor.id, '', [''], description)
       .then(() => {
