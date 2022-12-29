@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { useAddCategory } from '../../api/categories';
 import useToast from '../../hooks/useToast';
 import colors from '../../theme/colors';
+import { CategoriesContext } from '../../providers';
 
 /**
  * Style component based on a form

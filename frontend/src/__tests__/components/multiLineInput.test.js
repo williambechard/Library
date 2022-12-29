@@ -1,9 +1,6 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { MultiLineInput } from '../../../components';
-import { colors } from '../../../components';
-import preview from 'jest-preview';
-import { debug } from 'jest-preview';
 
 describe('Multi Line Text Input Component Tests', () => {
   it('should render a default Multi Line Input component', () => {

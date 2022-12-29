@@ -1,7 +1,6 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { SingleLineInput } from '../../../components';
-import colors from '../../../components';
 
 describe('Single Line Text Input Component Tests', () => {
   it('should render a default Single Line Input component', () => {
@@ -31,7 +30,7 @@ describe('Single Line Text Input Component Tests', () => {
     );
     const textInputComponent = screen.getByRole('textbox');
     expect(textInputComponent).toBeInTheDocument();
-    expect(textInputComponent).toHaveStyle('width:50%');
+    expect(textInputComponent).toHaveStyle('width:100%');
   });
   it('should have a label that correctly points to its input', () => {
     render(<SingleLineInput register={jest.fn()} errors={jest.fn()} />);

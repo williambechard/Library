@@ -6,7 +6,9 @@ import {
   useAddCategory,
   getCategory,
   getCategories,
-  addCategoryMutation
+  addCategoryMutation,
+  useUpdateCategory,
+  updateCategoryMutation
 } from '../../../api/categories';
 import { MockedProvider } from '@apollo/client/testing';
 
@@ -58,7 +60,7 @@ describe('api Categories test', () => {
           getCategory: {
             id: '1',
             name: 'Fantasy',
-            books: [{ id: '1', title: 'book 1' }]
+            books: [{ id: '1' }]
           }
         }
       }
@@ -75,7 +77,7 @@ describe('api Categories test', () => {
       JSON.stringify({
         id: '1',
         name: 'Fantasy',
-        books: [{ id: '1', title: 'book 1' }]
+        books: [{ id: '1' }]
       })
     );
   });
@@ -110,6 +112,36 @@ describe('api Categories test', () => {
     await act(async () => {
       const authorInfo = await result.current.addCategory('Horror');
       expect(authorInfo.data.addCategory.id).toBe('2');
+    });
+  });
+
+  it('should update a category', async () => {
+    const updateCategoryMock = [
+      {
+        request: {
+          query: updateCategoryMutation,
+          variables: { oldId: '1', id: '2', name: '', bookId: '1' }
+        },
+        result: {
+          data: { updateCategory: jest.fn() }
+        }
+      }
+    ];
+
+    const wrapper = ({ children }) => (
+      <MockedProvider mocks={updateCategoryMock} addTypename={false}>
+        {children}
+      </MockedProvider>
+    );
+
+    const { result } = renderHook(() => useUpdateCategory(), { wrapper });
+    await waitFor(() =>
+      expect(result.current.updateCategoryLoading).toBe(false)
+    );
+    await act(() => {
+      result.current.updateCategory('1', '2', '', '1');
+      waitFor(() => expect(result.current.updateCategoryLoading).toBeFalsy());
+      expect(result.current.updateCategoryError).toBeFalsy();
     });
   });
 });

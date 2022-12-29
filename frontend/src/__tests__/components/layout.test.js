@@ -1,7 +1,6 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import Layout from '../../../components/Layout/Layout';
-import { colors } from '../../../components';
 import { debug } from 'jest-preview';
 
 jest.mock('next/image', () => ({ src, alt, width, height }) => {

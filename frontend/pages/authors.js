@@ -96,7 +96,7 @@ const AuthorsPage = () => {
           bgColor={colors.mono[1]}
           wrap={'wrap'}
           zIndex={'0'}
-          transform={'translateY(125px)'}
+          margin={'20px 0px 20px 0px'}
           height={'100%'}
         >
           {displayBooks()}

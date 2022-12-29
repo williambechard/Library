@@ -1,6 +1,6 @@
 import '../styles/global.css';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-import { BooksProvider, ToastProvider } from '../providers';
+import { BooksProvider, CategoriesProvider, ToastProvider } from '../providers';
 
 import { createContext } from 'react';
 import { useGetBooks } from '../api/books';
@@ -13,19 +13,17 @@ const client = new ApolloClient({
 });
 
 const App = ({ Component, pageProps }) => {
-  //const { books } = useGetBooks();
-
-  //const BooksContext = createContext(books);
-
   return (
     <>
       <ApolloProvider client={client}>
         <ToastProvider>
           <Layout>
             <BooksProvider>
-              <ViewBookProvider>
-                <Component {...pageProps} />
-              </ViewBookProvider>
+              <CategoriesProvider>
+                <ViewBookProvider>
+                  <Component {...pageProps} />
+                </ViewBookProvider>
+              </CategoriesProvider>
             </BooksProvider>
           </Layout>
         </ToastProvider>

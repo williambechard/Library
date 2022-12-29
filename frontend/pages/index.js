@@ -67,7 +67,7 @@ const Home = () => {
       );
     });
   };
-
+  console.log('books ', books);
   /**
    * returns JSX
    */
@@ -76,12 +76,12 @@ const Home = () => {
       bgColor={colors.mono[1]}
       justifyContent={'space-between'}
       zIndex={'2'}
-      transform={'translateY(80px)'}
     >
       <Flex
         bgColor={colors.mono[1]}
         justifyContent={'space-between'}
         zIndex={'2'}
+        margin={'20px 0px 20px 0px'}
       >
         <Text bgColor={colors.mono[1]} fontSize={1.5} margin={'auto 20px'}>
           My Library
@@ -102,7 +102,7 @@ const Home = () => {
           wrap={'wrap'}
           zIndex={'0'}
           gap={'10px'}
-          margin={'0px 0px 100px 0px'}
+          margin={'0px 20px 100px 20px'}
         >
           {displayBooks()}
         </Flex>

@@ -1,8 +1,8 @@
 import React from 'react';
 import '@testing-library/jest-dom';
 import { Navbar } from '../../../components';
-import { logRoles, render, screen, waitFor } from '@testing-library/react';
-import { debug, jestPreviewConfigure } from 'jest-preview';
+import { render, screen, waitFor } from '@testing-library/react';
+import { debug } from 'jest-preview';
 import userEvent from '@testing-library/user-event';
 
 beforeEach(() => {

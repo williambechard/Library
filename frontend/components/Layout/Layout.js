@@ -22,8 +22,9 @@ const Layout = ({ children }) => {
         alignContent={'flex-start'}
         height={'auto'}
         wrap={'wrap'}
-        position={'fixed'}
+        position={'sticky'}
         top={'0'}
+        left={'0'}
       >
         <div style={{ margin: '10px', display: 'inline-block' }}>
           <Image src={DULogo} alt={'DULogo'} width={'50px'} height={'50px'} />

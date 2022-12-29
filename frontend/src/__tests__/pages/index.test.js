@@ -3,12 +3,7 @@ import { render, screen } from '@testing-library/react';
 import Home from '../../../pages';
 import { useGetBooks } from '../../../api/books';
 import userEvent from '@testing-library/user-event';
-import {
-  BooksContext,
-  BooksProvider,
-  ViewBookContext,
-  ViewBookProvider
-} from '../../../providers';
+import { BooksProvider, ViewBookProvider } from '../../../providers';
 import { debug } from 'jest-preview';
 
 jest.mock('../../../api/books');

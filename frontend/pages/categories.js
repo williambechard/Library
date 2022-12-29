@@ -1,24 +1,22 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import {
-  Section,
   Flex,
-  Card,
   Text,
-  ViewBookPage,
   Modal,
   Button,
   Table,
   AddCategoryForm
 } from '../components';
 import colors from '../theme/colors';
-import { BooksContext, ViewBookContext } from '../providers';
+import { BooksContext } from '../providers';
 import triggerModal from '../helper/triggerModal';
-import { useGetCategories } from '../api/categories';
+import CategoriesContext from '../providers/CategoriesContext/CategoriesContext';
 
 const CategoriesPage = () => {
   const [showAddCategoryModal, setAddCategoryModal] = useState(false); //Determines if AddBook Modal is shown or not
-  const { categoriesLoading, categoriesError, categories } = useGetCategories();
-
+  const books = useContext(BooksContext);
+  const { categoriesLoading, categoriesError, categories } =
+    useContext(CategoriesContext);
   //useMemo so that when data is refreshed the table isnt, unless the data has actually
   // changed
   const columns = React.useMemo(
@@ -35,8 +33,12 @@ const CategoriesPage = () => {
     []
   );
 
-  const data = React.useMemo(() => Object.values(categories), [categories]);
+  const data = React.useMemo(
+    () => Object.values(categories),
+    [categories, books, categoriesLoading]
+  );
 
+  console.log('categories ', categories);
   return (
     <>
       {!categoriesLoading ? (
@@ -47,14 +49,14 @@ const CategoriesPage = () => {
             bgColor={colors.mono[1]}
             wrap={'wrap'}
             zIndex={'0'}
-            transform={'translateY(125px)'}
+            margin={'20px 0px 20px 0px'}
           >
-            <div style={{ padding: '0rem 4rem' }}>
+            <div style={{ padding: '2rem 4rem' }}>
               <Text bgColor={colors.mono[1]} fontSize={'2'}>
                 Categories
               </Text>
             </div>
-            <div style={{ padding: '0rem 4rem' }}>
+            <div style={{ padding: '2rem 4rem' }}>
               <Button
                 onClick={() =>
                   triggerModal(setAddCategoryModal, showAddCategoryModal)
@@ -70,10 +72,9 @@ const CategoriesPage = () => {
             bgColor={colors.mono[1]}
             wrap={'wrap'}
             zIndex={'0'}
-            transform={'translateY(125px)'}
             height={'100%'}
           >
-            <Table columns={columns} data={data} />
+            <Table columns={columns} data={data ?? {}} />
           </Flex>
           {showAddCategoryModal && (
             <Modal

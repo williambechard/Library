@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import styled from '@emotion/styled';
 import Text from '../Text/Text';
 import colors from '../../theme/colors';
@@ -36,8 +36,15 @@ const MultiLineInput = ({
   name = 'test',
   errors,
   rows,
-  resize = 'none'
+  resize = 'none',
+  value = ''
 }) => {
+  const [input, setInput] = useState('');
+
+  useMemo(() => {
+    setInput(value);
+  }, []);
+
   return (
     <StyledLabel>
       <label htmlFor={name}>
@@ -67,6 +74,8 @@ const MultiLineInput = ({
           minLength: 1,
           maxLength: 800
         })}
+        value={input}
+        onChange={e => setInput(e.target.value)}
       />
       {errors?.[name] && errors?.[name].type === 'required' && (
         <StyledAlert role={'alert'}>Input is Required</StyledAlert>

@@ -4,3 +4,5 @@ export { default as BooksProvider } from './BooksProvider';
 export { default as BooksContext } from './BooksContext';
 export { default as ViewBookProvider } from './ViewBookProvider';
 export { default as ViewBookContext } from './ViewBookContext';
+export { default as CategoriesProvider } from './CategoriesProvider';
+export { default as CategoriesContext } from './CategoriesContext';

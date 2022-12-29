@@ -24,3 +24,4 @@ export { default as Layout } from './Layout';
 export { default as Table } from './Table';
 export { default as AddCategoryForm } from './AddCategoryForm';
 export { default as GlobalSearch } from './GlobalSearch';
+export { default as SelectDropDown } from './SelectDropDown';

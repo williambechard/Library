@@ -1,8 +1,7 @@
 import '@testing-library/jest-dom';
-import { render, screen, waitFor, logRoles } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import AddCategoryForm from '../../../components/AddCategoryForm';
-import { useAddBook } from '../../../api/books';
-import { useAddAuthor, useGetAuthors } from '../../../api/authors';
+
 import userEvent from '@testing-library/user-event';
 import { useAddCategory } from '../../../api/categories';
 

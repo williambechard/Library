@@ -8,7 +8,7 @@ const books = [
     author: '1',
     coverImage:
       'https://m.media-amazon.com/images/I/51mFoFmu0EL._AC_SY780_.jpg',
-    categories: ['1', '2'],
+    category: '1',
     description:
       'Harry Potter and the Chamber of Secrets is a 1998 young adult fantasy novel by J.K. Rowling, the second in the Harry Potter series. The story follows Harry’s tumultuous second year at Hogwarts School of Witchcraft and Wizardry, including an encounter with Voldemort, the wizard who killed Harry’s parents. Against this fantastic backdrop, Rowling examines such themes as death, fame, friendship, choice, and prejudice. Upon release, the novel became a worldwide bestseller and won several awards, including Children’s Book of the Year at the British Book Awards and the Nestlé Smarties Book Award; it was subsequently adapted into a 2002 film directed by Chris Columbus.'
   },
@@ -18,7 +18,7 @@ const books = [
     author: '1',
     coverImage:
       'https://m.media-amazon.com/images/I/51DQeuJ5QDL._SY291_BO1,204,203,200_QL40_FMwebp_.jpg',
-    categories: ['1', '2']
+    category: '1'
   },
   {
     id: '3',
@@ -26,7 +26,7 @@ const books = [
     author: '1',
     coverImage:
       'https://m.media-amazon.com/images/I/51gy+g8Z+1L._SX343_BO1,204,203,200_.jpg',
-    categories: ['1', '2']
+    category: '2'
   },
   {
     id: '4',
@@ -34,7 +34,7 @@ const books = [
     author: '2',
     coverImage:
       'https://m.media-amazon.com/images/I/51LNAmfIQ3L._SX404_BO1,204,203,200_.jpg',
-    categories: ['3']
+    category: '3'
   }
 ];
 const authors = [
@@ -91,12 +91,12 @@ const categories = [
   {
     id: '1',
     name: 'Fantasy',
-    books: ['1', '2', '3']
+    books: ['1', '2']
   },
   {
     id: '2',
     name: 'Fiction',
-    books: ['1', '2', '3']
+    books: ['3']
   },
   {
     id: '3',
@@ -116,7 +116,7 @@ export const typeDefs = gql`
     "The book's cover image"
     coverImage: String
     "The book's categories (array of IDs)"
-    categories: [Category!]!
+    category: Category
     "The book's description"
     description: String
   }
@@ -162,15 +162,17 @@ export const typeDefs = gql`
       title: String!
       authorId: String!
       coverImage: String
-      categoryIds: [String!]!
+      categoryId: String!
       description: String
     ): Book
     "Updates a book"
     updateBook(
       id: ID!
       title: String!
-      authorId: ID!
-      categoryIds: [ID!]!
+      authorId: String!
+      coverImage: String
+      categoryId: String!
+      description: String
     ): Book
     "Removes a book by its id"
     removeBook(id: ID!): ID
@@ -183,7 +185,7 @@ export const typeDefs = gql`
     "Creates a new category"
     addCategory(name: String!): Category
     "Updates a category"
-    updateCategory(id: ID!, name: String!): Category
+    updateCategory(oldId: ID!, id: ID!, name: String!, bookId: ID!): Category
     "Removes a category by its id"
     removeCategory(id: ID!): ID
   }
@@ -193,8 +195,8 @@ export const resolvers = {
   Book: {
     author: ({ author: authorId }) =>
       authors.find(author => author.id === authorId),
-    categories: ({ categories: categoryIds }) =>
-      categories.filter(category => categoryIds.includes(category.id))
+    category: ({ category: categoryId }) =>
+      categories.find(category => category.id === categoryId)
   },
   Author: {
     books: ({ id: bookId }) => books.filter(book => book.id === bookId)
@@ -216,16 +218,17 @@ export const resolvers = {
   Mutation: {
     addBook: (
       _parent,
-      { title, authorId, coverImage, categoryIds, description }
+      { title, authorId, coverImage, categoryId, description }
     ) => {
       const book = {
         id: String(books.length + 1),
         title,
         author: authorId,
         coverImage: coverImage,
-        categories: categoryIds,
+        category: categoryId,
         description: description
       };
+
       books.push(book);
       return book;
     },
@@ -247,14 +250,16 @@ export const resolvers = {
       categories.push(category);
       return category;
     },
-    updateBook: (_parent, { id, title, authorId, categoryIds }) => {
+    updateBook: (_parent, { id, title, authorId, categoryId, description }) => {
       const bookIndex = books.findIndex(book => book.id === id);
       if (bookIndex === -1) throw new Error('This book does not exist.');
+
       const book = {
         id,
         title,
         author: authorId,
-        categories: categoryIds
+        category: categoryId,
+        description
       };
       books[bookIndex] = book;
 
@@ -271,18 +276,42 @@ export const resolvers = {
       authors[authorIndex] = author;
       return author;
     },
-    updateCategory: (_parent, { id, name }) => {
+    updateCategory: (_parent, { oldId, id, name, bookId }) => {
+      //remove book from oldCategory
+      if (oldId != '-1') {
+        const oldCategoryIndex = categories.findIndex(
+          category => category.id === oldId
+        );
+        //if book appears in another category, then remove it
+        if (categories[oldCategoryIndex].books !== undefined) {
+          const indexToRemove = categories[oldCategoryIndex].books.find(
+            book => book.id === bookId
+          );
+
+          if (indexToRemove === -1) throw new Error('index not found');
+
+          categories[oldCategoryIndex].books.splice(indexToRemove, 1);
+        }
+      }
+
+      //get index of targetCategory
       const categoryIndex = categories.findIndex(
         category => category.id === id
       );
-      if (categoryIndex === -1)
-        throw new Error('This category does not exist.');
-      const category = {
-        id,
-        name
-      };
-      categories[categoryIndex] = category;
-      return category;
+      if (categoryIndex !== -1) {
+        const category = {
+          id,
+          name: categories[categoryIndex].name
+        };
+
+        let allBooks = categories[categoryIndex].books;
+
+        allBooks.push(bookId);
+
+        category.books = allBooks;
+        categories[categoryIndex] = category;
+        return category;
+      }
     },
     removeBook: (_parent, { id }) => {
       const bookIndex = books.findIndex(book => book.id === id);

@@ -1,8 +1,7 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { Table } from '../../../components';
-import userEvent from '@testing-library/user-event';
-import { useTable } from 'react-table';
+
 import { debug } from 'jest-preview';
 
 describe('Table component test', () => {

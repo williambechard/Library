@@ -3,13 +3,12 @@ import { render, screen } from '@testing-library/react';
 import CategoriesPage from '../../../pages/categories';
 import { useGetCategories } from '../../../api/categories';
 import userEvent from '@testing-library/user-event';
-import { Table } from '../../../components';
+
 import { debug } from 'jest-preview';
-import { useState } from 'react';
+import { CategoriesProvider } from '../../../providers';
 
 jest.mock('../../../api/categories');
 jest.mock('../../../components/Modal/Modal', () => ({ children }) => {
-  let clickState = false;
   return (
     <>
       <div>MODAL</div>
@@ -57,7 +56,11 @@ describe('categories page tests', () => {
         categoriesError: false,
         categories: []
       });
-      render(<CategoriesPage />);
+      render(
+        <CategoriesProvider>
+          <CategoriesPage />
+        </CategoriesProvider>
+      );
       const message = screen.getByText(/Categories Loading.../i);
       expect(message).toBeInTheDocument();
       debug();
@@ -74,7 +77,11 @@ describe('categories page tests', () => {
           }
         ]
       });
-      render(<CategoriesPage />);
+      render(
+        <CategoriesProvider>
+          <CategoriesPage />
+        </CategoriesProvider>
+      );
       debug();
       const message = screen.getByText(/Categories/i);
       expect(message).toBeInTheDocument();
@@ -95,7 +102,11 @@ describe('categories page tests', () => {
           }
         ]
       });
-      render(<CategoriesPage />);
+      render(
+        <CategoriesProvider>
+          <CategoriesPage />
+        </CategoriesProvider>
+      );
       debug();
       const button = screen.getByRole('button');
       expect(button).toBeInTheDocument();
@@ -112,7 +123,11 @@ describe('categories page tests', () => {
           }
         ]
       });
-      render(<CategoriesPage />);
+      render(
+        <CategoriesProvider>
+          <CategoriesPage />
+        </CategoriesProvider>
+      );
       debug();
       const button = screen.getByRole('button');
       expect(button).toBeInTheDocument();
