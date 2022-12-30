@@ -6,3 +6,5 @@ export { default as ViewBookProvider } from './ViewBookProvider';
 export { default as ViewBookContext } from './ViewBookContext';
 export { default as CategoriesProvider } from './CategoriesProvider';
 export { default as CategoriesContext } from './CategoriesContext';
+export { default as AuthorsProvider } from './AuthorsProvider';
+export { default as AuthorsContext } from './AuthorsContext';

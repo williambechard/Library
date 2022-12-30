@@ -21,6 +21,10 @@ export const allAuthorsQuery = gql`
       id
       firstName
       lastName
+      books {
+        id
+        title
+      }
     }
   }
 `;

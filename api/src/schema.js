@@ -115,7 +115,7 @@ export const typeDefs = gql`
     author: Author!
     "The book's cover image"
     coverImage: String
-    "The book's categories (array of IDs)"
+    "The book's category (an ID)"
     category: Category
     "The book's description"
     description: String
@@ -199,11 +199,12 @@ export const resolvers = {
       categories.find(category => category.id === categoryId)
   },
   Author: {
-    books: ({ id: bookId }) => books.filter(book => book.id === bookId)
+    books: ({ books: allBooks }) =>
+      books.filter(book => allBooks.includes(book.id))
   },
   Category: {
-    books: ({ books: bookId }) =>
-      books.filter(books => bookId.includes(books.id))
+    books: ({ books: allBooks }) =>
+      books.filter(book => allBooks.includes(book.id))
   },
   Query: {
     getBooks: () => books,

@@ -95,17 +95,20 @@ const Home = () => {
         </Button>
       </Flex>
       {books.length > 0 ? (
-        <Flex
-          justifyContent={'flex-start'}
-          alignContent={'center'}
-          bgColor={colors.mono[1]}
-          wrap={'wrap'}
-          zIndex={'0'}
-          gap={'10px'}
-          margin={'0px 20px 100px 20px'}
-        >
-          {displayBooks()}
-        </Flex>
+        <>
+          <Flex
+            justifyContent={'flex-start'}
+            alignContent={'center'}
+            bgColor={colors.mono[1]}
+            wrap={'wrap'}
+            zIndex={'0'}
+            gap={'10px'}
+            margin={'0px 20px 100px 20px'}
+          >
+            {displayBooks()}
+          </Flex>
+          <div style={{ height: '40px' }}></div>
+        </>
       ) : (
         <Text>No Books Found...</Text>
       )}
