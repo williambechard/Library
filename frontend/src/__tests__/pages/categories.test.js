@@ -43,9 +43,9 @@ jest.mock('../../../components/Table/Table', () => ({ columns, data }) => {
             <tr key={'6'}>
               <td key={'7'}>{item.name}</td>
               <td key={'8'}>{item.books?.length}</td>
-              <td key={'7'}>{item.description}</td>
-              <td key={'9'}>{item.author?.name}</td>
-              <td key={'10'}>{item.title}</td>
+              <td key={'9'}>{item.description}</td>
+              <td key={'10'}>{item.author?.name}</td>
+              <td key={'11'}>{item.title}</td>
             </tr>
           );
         })}
@@ -77,6 +77,8 @@ describe('categories page tests', () => {
       expect(message).toBeInTheDocument();
       debug();
     });
+  });
+  describe('with categories', () => {
     it('should display a table with the categories', () => {
       useGetCategories.mockReturnValue({
         categoriesLoading: false,

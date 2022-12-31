@@ -9,7 +9,8 @@ import triggerModal from '../../helper/triggerModal';
  * @param onClick - function to be called when close is clicked
  * @returns {JSX.Element}
  */
-const ViewBookPage = ({ bookId, onClick, returnPath, showEditForm }) => {
+const ViewBookPage = ({ bookId, onClick, returnPath }) => {
+  //showEditForm
   /**
    * Hook for getting info from a book based on a bookId
    */

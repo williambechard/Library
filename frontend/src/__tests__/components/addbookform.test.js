@@ -1,7 +1,12 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import AddBookForm from '../../../components/AddBookForm';
-import { useAddBook, useGetBooks, useUpdateBook } from '../../../api/books';
+import {
+  useAddBook,
+  useGetBook,
+  useGetBooks,
+  useUpdateBook
+} from '../../../api/books';
 import { useAddAuthor, useGetAuthors } from '../../../api/authors';
 import { useGetCategories, useUpdateCategory } from '../../../api/categories';
 import userEvent from '@testing-library/user-event';
@@ -242,6 +247,95 @@ describe('AddBookForm Component Tests', () => {
     await userEvent.click(submitButton);
 
     expect(updateBookCallBack).toHaveBeenCalledTimes(1);
+  });
+
+  it('should update a category', async () => {
+    const updateCategory = useUpdateCategory.mockReturnValue({
+      updateCategory: () => Promise.resolve({ data: true })
+    });
+
+    const updateBookCallBack = useUpdateBook.mockReturnValue({
+      updateBook: () => Promise.resolve({ data: true })
+    });
+
+    useGetCategories.mockReturnValue({
+      categories: [
+        {
+          id: '1',
+          name: 'Fantasy',
+          books: ['1']
+        },
+        {
+          id: '2',
+          name: 'Fiction',
+          books: ['2', '3']
+        }
+      ]
+    });
+
+    useAddAuthor.mockReturnValue({
+      addAuthor: (fName, lName) =>
+        Promise.resolve({
+          data: {
+            addAuthor: {
+              id: '2',
+              firstName: fName,
+              lastName: lName
+            }
+          }
+        })
+    });
+
+    useGetAuthors.mockReturnValue({
+      authors: [{ id: '1', firstName: 'Jim', lastName: 'Bob' }]
+    });
+
+    useGetBooks.mockReturnValue({
+      books: [
+        {
+          id: '1',
+          title: 'H',
+          description: 'HDesc',
+          category: '1',
+          author: {
+            id: '1',
+            firstName: 'Jim',
+            lastName: 'Bob'
+          }
+        }
+      ]
+    });
+
+    render(
+      <BooksProvider>
+        <CategoriesProvider>
+          <AddBookForm bookId={'1'} />
+        </CategoriesProvider>
+      </BooksProvider>
+    );
+
+    const title = screen.getByRole('textbox', { name: /title/i });
+    expect(title).toBeInTheDocument();
+    expect(title).toHaveValue('H');
+
+    const firstName = screen.getByRole('textbox', { name: /first name/i });
+    expect(firstName).toHaveValue('Jim');
+
+    const lastName = screen.getByRole('textbox', { name: /last name/i });
+    expect(lastName).toHaveValue('Bob');
+
+    const description = screen.getByRole('textbox', { name: /description/i });
+    expect(description).toHaveValue('HDesc');
+
+    const combobox = screen.getByRole('combobox');
+    expect(combobox).toBeInTheDocument();
+    userEvent.click(combobox, { target: { value: 2 } });
+
+    const submitButton = screen.getByLabelText('submitUpdateBookForm');
+    await userEvent.click(submitButton);
+
+    expect(updateBookCallBack).toHaveBeenCalledTimes(1);
+    expect(updateCategory).toHaveBeenCalledTimes(1);
   });
   it('should create an author if no previous author is found when new book is sumitted', async () => {
     const addBookCallBack = useAddBook.mockReturnValue({

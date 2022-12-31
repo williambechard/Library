@@ -122,4 +122,34 @@ describe('Navbar component tests', () => {
       );
     });
   });
+
+  it('should change to Categories page from the Authors page', async () => {
+    const url = 'http://localhost:3000/authors';
+    Object.defineProperty(window, 'location', {
+      value: new URL(url)
+    });
+
+    render(<Navbar />);
+    debug();
+    const textElement = screen.getByText(/Authors/i);
+
+    const textElement3 = screen.getByText(/Categories/i);
+    waitFor(() => {
+      userEvent.click(textElement3);
+      expect(textElement3).toHaveStyle(
+        'margin:auto 5px auto 5px',
+        'display:inline-block',
+        'font-size:1',
+        'color:blue',
+        'font-weight:bolder'
+      );
+      expect(textElement).toHaveStyle(
+        'margin:auto 5px auto 5px',
+        'display:inline-block',
+        'font-size:1',
+        'color:black',
+        'font-weight:400'
+      );
+    });
+  });
 });

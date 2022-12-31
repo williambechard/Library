@@ -212,7 +212,10 @@ export const resolvers = {
     getAuthors: () =>
       authors.sort((a, b) => a.lastName.localeCompare(b.lastName)),
     getAuthor: (_parent, { id }) => authors.find(author => author.id === id),
-    getCategories: () => categories,
+    getCategories: () =>
+      categories.sort((a, b) => {
+        return a.name.localeCompare(b.name);
+      }),
     getCategory: (_parent, { id }) =>
       categories.find(category => category.id === id)
   },
