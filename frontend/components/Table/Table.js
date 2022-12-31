@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import colors from '../../theme/colors';
+
 import { useGlobalFilter, usePagination, useTable } from 'react-table';
-import { Button, SingleLineInput, MultiLineInput, Flex } from '../index';
+import { Button } from '../index';
 import GlobalSearch from '../GlobalSearch/GlobalSearch';
 
 const Styles = styled.div`
-  padding: 4rem;
+  padding: 2rem;
 
   table {
     table-layout: fixed;
@@ -26,10 +26,15 @@ const Styles = styled.div`
     th,
     td {
       padding: 12px 15px;
+      overflow: auto;
     }
 
     tbody tr {
       border-bottom: thin solid #dddddd;
+      max-height: 220px;
+    }
+    tbody td {
+      overflow: hidden;
     }
     tbody tr:nth-of-type(even) {
       background-color: #f3f3f3;

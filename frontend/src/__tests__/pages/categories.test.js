@@ -1,13 +1,15 @@
 import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import CategoriesPage from '../../../pages/categories';
 import { useGetCategories } from '../../../api/categories';
+import { useGetBooks } from '../../../api/books';
 import userEvent from '@testing-library/user-event';
 
 import { debug } from 'jest-preview';
-import { CategoriesProvider } from '../../../providers';
+import { BooksProvider, CategoriesProvider } from '../../../providers';
 
 jest.mock('../../../api/categories');
+jest.mock('../../../api/books');
 jest.mock('../../../components/Modal/Modal', () => ({ children }) => {
   return (
     <>
@@ -26,16 +28,20 @@ jest.mock('../../../components/Table/Table', () => ({ columns, data }) => {
     <table>
       <thead key={'1'}>
         <tr key={'2'}>
-          <th key={'3'}>{columns[0].Header}</th>
-          <th key={'4'}>{columns[1].Header}</th>
+          {columns.map(col => {
+            return <th key={Object.values(col)[0]}>{Object.values(col)[0]}</th>;
+          })}
         </tr>
       </thead>
       <tbody key={'5'}>
-        {data.map(cat => {
+        {data.map(item => {
           return (
             <tr key={'6'}>
-              <td key={'7'}>{cat.name}</td>
-              <td key={'8'}>{cat.books.length}</td>
+              <td key={'7'}>{item.name}</td>
+              <td key={'8'}>{item.books?.length}</td>
+              <td key={'7'}>{item.description}</td>
+              <td key={'9'}>{item.author?.name}</td>
+              <td key={'10'}>{item.title}</td>
             </tr>
           );
         })}
@@ -71,9 +77,20 @@ describe('categories page tests', () => {
         categoriesError: false,
         categories: [
           {
-            books: ['1'],
             id: 1,
-            name: 'Fantasy'
+            name: 'Fantasy',
+            books: [
+              {
+                id: '1',
+                title: 'Harry Potter',
+                author: {
+                  id: '1',
+                  firstName: 'JK',
+                  lastName: 'Rowling'
+                },
+                description: 'wizards'
+              }
+            ]
           }
         ]
       });
@@ -123,6 +140,7 @@ describe('categories page tests', () => {
           }
         ]
       });
+
       render(
         <CategoriesProvider>
           <CategoriesPage />
@@ -133,6 +151,47 @@ describe('categories page tests', () => {
       expect(button).toBeInTheDocument();
       await userEvent.click(button);
       expect(screen.getByText(/Add Category Form/)).toBeInTheDocument();
+    });
+    it('should show category details when a category title is clicked on the table ', async () => {
+      useGetCategories.mockReturnValue({
+        categoriesLoading: false,
+        categoriesError: false,
+        categories: [
+          {
+            id: 1,
+            name: 'Fantasy',
+            books: [
+              {
+                id: '1',
+                title: 'Harry Potter',
+                author: {
+                  id: '1',
+                  firstName: 'JK',
+                  lastName: 'Rowling'
+                },
+                description: 'wizards'
+              }
+            ]
+          }
+        ]
+      });
+
+      render(
+        <CategoriesProvider>
+          <CategoriesPage />
+        </CategoriesProvider>
+      );
+
+      debug();
+
+      const categoryTitle = screen.getByText(/Fantasy/i);
+      expect(categoryTitle).toBeInTheDocument();
+
+      await userEvent.click(categoryTitle);
+
+      expect(screen.getByText(/Harry Potter/i)).toBeInTheDocument();
+      expect(screen.getByText(/JK Rowling/i)).toBeInTheDocument();
+      expect(screen.getByText(/wizards/i)).toBeInTheDocument();
     });
   });
 });

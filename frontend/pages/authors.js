@@ -12,7 +12,6 @@ const AuthorsPage = () => {
     useContext(ViewBookContext);
 
   const displayAuthors = () => {
-    console.log('authors ', authors);
     return authors?.map(author => {
       return (
         <div key={author.id} style={{ width: '100%', margin: '20px' }}>
