@@ -67,7 +67,7 @@ const Home = () => {
       );
     });
   };
-  console.log('books ', books);
+
   /**
    * returns JSX
    */
@@ -99,7 +99,7 @@ const Home = () => {
           <Flex
             justifyContent={'flex-start'}
             alignContent={'center'}
-            bgColor={colors.mono[1]}
+            bgColor={colors.mono[0]}
             wrap={'wrap'}
             zIndex={'0'}
             gap={'10px'}

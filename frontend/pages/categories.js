@@ -5,10 +5,11 @@ import {
   Modal,
   Button,
   Table,
-  AddCategoryForm
+  AddCategoryForm,
+  ViewBookPage
 } from '../components';
 import colors from '../theme/colors';
-import { BooksContext } from '../providers';
+import { BooksContext, ViewBookContext } from '../providers';
 import triggerModal from '../helper/triggerModal';
 import CategoriesContext from '../providers/CategoriesContext/CategoriesContext';
 
@@ -16,25 +17,34 @@ const CategoriesPage = () => {
   const [showBooksInCategory, setShowBooksInCategory] = useState(false);
   const [targetCategory, setTargetCategory] = useState({});
   const [showAddCategoryModal, setAddCategoryModal] = useState(false); //Determines if AddBook Modal is shown or not
-  const books = useContext(BooksContext);
+
   const { categoriesLoading, categoriesError, categories } =
     useContext(CategoriesContext);
+  const [showViewBookModal, setShowViewBookModal, bookId, setBookId] =
+    useContext(ViewBookContext);
 
   const categoryClickHandler = e => {
     e.stopPropagation();
     let targetId = e.target.id?.split('_')[1];
-    console.log('targetIde ', targetId);
+
     if (targetId != undefined) {
-      let c = categories.find(
-        cat => cat.id.toString() === e.target.id.split('_')[1].toString()
+      setTargetCategory(
+        categories.find(cat => cat.id.toString() === targetId.toString())
       );
-      console.log('c ', c);
-      setTargetCategory(c);
       setShowBooksInCategory(true);
     } else console.log('targetId = ', targetId);
-
-    console.log('targetcategory ', targetCategory);
   };
+
+  const compareName = React.useMemo(() => {
+    return (rowA, rowB) => {
+      let a = rowA.values.name.props.sort;
+      let b = rowB.values.name.props.sort;
+
+      if (a > b) return 1;
+      if (a < b) return -1;
+      return 0;
+    };
+  }, []);
 
   //useMemo so that when data is refreshed the table isnt, unless the data has actually
   // changed
@@ -42,7 +52,8 @@ const CategoriesPage = () => {
     () => [
       {
         Header: 'Category',
-        accessor: 'name' // accessor is the "key" in the data
+        accessor: 'name',
+        sortType: compareName // custom function
       },
       {
         Header: 'Number Of Books',
@@ -72,26 +83,63 @@ const CategoriesPage = () => {
 
   const data = React.useMemo(
     () =>
-      Object.values(categories).map(cat => {
-        return {
-          ...cat,
-          name: (
-            <a id={'category_' + cat.id} onClick={categoryClickHandler}>
-              {cat.name}
-            </a>
-          ),
-          books: cat.books
-        };
-      }),
+      Object.values(categories)
+        .sort((a, b) => {
+          return a.name.localeCompare(b.name);
+        })
+        .map(cat => {
+          return {
+            ...cat,
+            name: (
+              <Text
+                clickable={true}
+                onClick={categoryClickHandler}
+                bgColor={'unset'}
+                sort={cat.name}
+              >
+                <a id={'category_' + cat.id}>{cat.name}</a>
+              </Text>
+            ),
+            books: cat.books
+          };
+        }),
     [categories, categoriesLoading]
   );
 
-  //const bookDetailsData = React.useMemo( () => Object.values(targetCategory.books),, [targetCategory]);
-  //console.log('data', data);
   return (
     <>
       {!categoriesLoading ? (
         <>
+          {showBooksInCategory && (
+            <div
+              style={{
+                backgroundColor: `${colors.mono[1]}`,
+                marginTop: '.5rem'
+              }}
+            >
+              <Text
+                clickable={true}
+                onClick={() =>
+                  setShowBooksInCategory(value => {
+                    !value;
+                  })
+                }
+                bgColor={colors.mono[1]}
+                margin={'0px 0px 0px 1rem'}
+                display={'inline-block'}
+                fontSize={'0.75'}
+              >
+                <span>Categories</span>
+              </Text>
+              <Text
+                display={'inline-block'}
+                fontSize={'0.75'}
+                bgColor={colors.mono[1]}
+              >
+                / Books In Category
+              </Text>
+            </div>
+          )}
           <Flex
             justifyContent={'space-between'}
             alignContent={'center'}
@@ -102,7 +150,9 @@ const CategoriesPage = () => {
           >
             <div style={{ padding: '2rem 4rem' }}>
               <Text bgColor={colors.mono[1]} fontSize={'2'}>
-                Categories
+                {!showBooksInCategory
+                  ? 'Categories'
+                  : 'Books In Category: ' + targetCategory.name}
               </Text>
             </div>
             <div style={{ padding: '2rem 4rem' }}>
@@ -140,7 +190,22 @@ const CategoriesPage = () => {
                       author: {
                         ...book.author,
                         name: book.author.firstName + ' ' + book.author.lastName
-                      }
+                      },
+                      title: (
+                        <Text
+                          clickable={true}
+                          bgColor={'unset'}
+                          onClick={() => {
+                            setBookId(book.id);
+                            triggerModal(
+                              setShowViewBookModal,
+                              showViewBookModal
+                            );
+                          }}
+                        >
+                          {book.title}
+                        </Text>
+                      )
                     };
                   })}
                 />
@@ -164,6 +229,20 @@ const CategoriesPage = () => {
         </>
       ) : (
         <div>Categories Loading...</div>
+      )}
+      {showViewBookModal && (
+        <Modal
+          onClick={() => triggerModal(setShowViewBookModal, showViewBookModal)}
+          title={'Book Info'}
+        >
+          <ViewBookPage
+            bookId={bookId}
+            returnPath={'Categories / Books In Category '}
+            onClick={() =>
+              triggerModal(setShowViewBookModal, showViewBookModal)
+            }
+          />
+        </Modal>
       )}
     </>
   );

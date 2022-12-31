@@ -92,7 +92,6 @@ const AddBookForm = ({ onClick, bookId = '-1' }) => {
           if (oldCat != category)
             updateCategory(oldCat, category, '', bookId)
               .then(() => {
-                console.log('category updated');
                 showToast('success', 'The Book was succesfully updated');
                 onClick();
               })
@@ -120,7 +119,6 @@ const AddBookForm = ({ onClick, bookId = '-1' }) => {
             //only need to update current category, so -1 is passed for old category
             updateCategory('-1', category, '', book.data?.addBook.id)
               .then(() => {
-                console.log('category updated');
                 showToast('success', 'The Book was succesfully updated');
                 onClick();
               })

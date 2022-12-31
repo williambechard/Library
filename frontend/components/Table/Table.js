@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
-
 import { useGlobalFilter, usePagination, useTable } from 'react-table';
+import { useSortBy } from 'react-table';
 import { Button } from '../index';
 import GlobalSearch from '../GlobalSearch/GlobalSearch';
 
@@ -26,7 +26,8 @@ const Styles = styled.div`
     th,
     td {
       padding: 12px 15px;
-      overflow: auto;
+      overflow-y: auto;
+      overflow-x: hidden;
     }
 
     tbody tr {
@@ -44,8 +45,17 @@ const Styles = styled.div`
 
 const Table = ({ columns, data }) => {
   const tableInstance = useTable(
-    { columns, data },
+    {
+      columns,
+      data,
+      disableSortRemove: true,
+      defaultCanSort: true,
+      initialState: {
+        sortBy: [{ id: columns[0].accessor, desc: true }]
+      }
+    },
     useGlobalFilter,
+    useSortBy,
     usePagination
   );
   const {
@@ -62,6 +72,7 @@ const Table = ({ columns, data }) => {
     state,
     setGlobalFilter
   } = tableInstance;
+
   const { globalFilter, pageIndex } = state;
 
   return (
@@ -81,11 +92,23 @@ const Table = ({ columns, data }) => {
                     // Loop over the headers in each row
                     headerGroup.headers.map(column => (
                       // Apply the header cell props
-                      <th {...column.getHeaderProps()}>
+                      <th
+                        {...column.getHeaderProps(
+                          column.getSortByToggleProps()
+                        )}
+                      >
                         {
                           // Render the header
                           column.render('Header')
                         }
+                        {console.log('sort', column.isSortedDesc)}
+                        <span>
+                          {column.isSorted
+                            ? column.isSortedDesc
+                              ? ' 🔽'
+                              : ' 🔼'
+                            : ''}
+                        </span>
                       </th>
                     ))
                   }

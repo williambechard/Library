@@ -4,9 +4,13 @@ import CategoriesPage from '../../../pages/categories';
 import { useGetCategories } from '../../../api/categories';
 import { useGetBooks } from '../../../api/books';
 import userEvent from '@testing-library/user-event';
-
+import ViewBooksProvider from '../../../providers/ViewBookProvider/ViewBookProvider';
 import { debug } from 'jest-preview';
-import { BooksProvider, CategoriesProvider } from '../../../providers';
+import {
+  BooksProvider,
+  CategoriesProvider,
+  ViewBookContext
+} from '../../../providers';
 
 jest.mock('../../../api/categories');
 jest.mock('../../../api/books');
@@ -64,7 +68,9 @@ describe('categories page tests', () => {
       });
       render(
         <CategoriesProvider>
-          <CategoriesPage />
+          <ViewBooksProvider>
+            <CategoriesPage />
+          </ViewBooksProvider>
         </CategoriesProvider>
       );
       const message = screen.getByText(/Categories Loading.../i);
@@ -96,7 +102,9 @@ describe('categories page tests', () => {
       });
       render(
         <CategoriesProvider>
-          <CategoriesPage />
+          <ViewBooksProvider>
+            <CategoriesPage />
+          </ViewBooksProvider>
         </CategoriesProvider>
       );
       debug();
@@ -121,7 +129,9 @@ describe('categories page tests', () => {
       });
       render(
         <CategoriesProvider>
-          <CategoriesPage />
+          <ViewBooksProvider>
+            <CategoriesPage />
+          </ViewBooksProvider>
         </CategoriesProvider>
       );
       debug();
@@ -143,7 +153,9 @@ describe('categories page tests', () => {
 
       render(
         <CategoriesProvider>
-          <CategoriesPage />
+          <ViewBooksProvider>
+            <CategoriesPage />
+          </ViewBooksProvider>
         </CategoriesProvider>
       );
       debug();
@@ -164,12 +176,12 @@ describe('categories page tests', () => {
               {
                 id: '1',
                 title: 'Harry Potter',
+                description: 'wizards',
                 author: {
                   id: '1',
                   firstName: 'JK',
                   lastName: 'Rowling'
-                },
-                description: 'wizards'
+                }
               }
             ]
           }
@@ -178,7 +190,9 @@ describe('categories page tests', () => {
 
       render(
         <CategoriesProvider>
-          <CategoriesPage />
+          <ViewBooksProvider>
+            <CategoriesPage />
+          </ViewBooksProvider>
         </CategoriesProvider>
       );
 

@@ -22,7 +22,7 @@ const AuthorsPage = () => {
           >
             {author.firstName + ' ' + author.lastName}
           </Text>
-          <Flex height={'unset'} bgColor={colors.mono[1]}>
+          <Flex height={'unset'} bgColor={colors.mono[0]}>
             {author.books?.map(item => {
               return (
                 <Card
@@ -52,7 +52,6 @@ const AuthorsPage = () => {
 
   return (
     <>
-      {console.log('authors ', authors)}
       {authors?.length > 0 ? (
         <>
           <Flex
