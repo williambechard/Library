@@ -1,16 +1,11 @@
 import '@testing-library/jest-dom';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import CategoriesPage from '../../../pages/categories';
 import { useGetCategories } from '../../../api/categories';
-import { useGetBooks } from '../../../api/books';
 import userEvent from '@testing-library/user-event';
 import ViewBooksProvider from '../../../providers/ViewBookProvider/ViewBookProvider';
 import { debug } from 'jest-preview';
-import {
-  BooksProvider,
-  CategoriesProvider,
-  ViewBookContext
-} from '../../../providers';
+import { CategoriesProvider } from '../../../providers';
 
 jest.mock('../../../api/categories');
 jest.mock('../../../api/books');

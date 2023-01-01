@@ -101,7 +101,6 @@ const Table = ({ columns, data }) => {
                           // Render the header
                           column.render('Header')
                         }
-                        {console.log('sort', column.isSortedDesc)}
                         <span>
                           {column.isSorted
                             ? column.isSortedDesc

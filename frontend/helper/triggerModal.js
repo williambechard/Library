@@ -1,4 +1,3 @@
-//weird lint error saying modalValue not used, but it is in the function...
 /**
  * Function for showing a modal.
  * Uses passed parameters so that ANY Modal state

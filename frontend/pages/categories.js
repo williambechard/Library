@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Flex,
   Text,
@@ -9,30 +9,21 @@ import {
   ViewBookPage
 } from '../components';
 import colors from '../theme/colors';
-import { BooksContext, ViewBookContext } from '../providers';
-import triggerModal from '../helper/triggerModal';
+import { ViewBookContext } from '../providers';
 import CategoriesContext from '../providers/CategoriesContext/CategoriesContext';
+import useHelperFunctions from '../hooks/useHelperFunctions';
 
 const CategoriesPage = () => {
   const [showBooksInCategory, setShowBooksInCategory] = useState(false);
   const [targetCategory, setTargetCategory] = useState({});
   const [showAddCategoryModal, setAddCategoryModal] = useState(false); //Determines if AddBook Modal is shown or not
 
+  const { compareText } = useHelperFunctions();
+
   const { categoriesLoading, categoriesError, categories } =
     useContext(CategoriesContext);
   const [showViewBookModal, setShowViewBookModal, bookId, setBookId] =
     useContext(ViewBookContext);
-
-  const compareText = React.useMemo(() => {
-    return (rowA, rowB) => {
-      let a = rowA.values.name.props.sort;
-      let b = rowB.values.name.props.sort;
-
-      if (a > b) return 1;
-      if (a < b) return -1;
-      return 0;
-    };
-  }, []);
 
   const categoryClickHandler = e => {
     e.stopPropagation();
@@ -120,7 +111,7 @@ const CategoriesPage = () => {
             bgColor={'unset'}
             onClick={() => {
               setBookId(book.id);
-              triggerModal(setShowViewBookModal, showViewBookModal);
+              setShowViewBookModal(value => !value);
             }}
           >
             {book.title}
@@ -179,11 +170,7 @@ const CategoriesPage = () => {
               </Text>
             </div>
             <div style={{ padding: '2rem 4rem' }}>
-              <Button
-                onClick={() =>
-                  triggerModal(setAddCategoryModal, showAddCategoryModal)
-                }
-              >
+              <Button onClick={() => setAddCategoryModal(value => !value)}>
                 + Add Category
               </Button>
             </div>
@@ -203,31 +190,23 @@ const CategoriesPage = () => {
           </Flex>
           {showAddCategoryModal && (
             <Modal
-              onClick={() =>
-                triggerModal(setAddCategoryModal, showAddCategoryModal)
-              }
+              onClick={() => setAddCategoryModal(value => !value)}
               title={'Add New Category'}
             >
               <AddCategoryForm
-                onClick={() =>
-                  triggerModal(setAddCategoryModal, showAddCategoryModal)
-                }
+                onClick={() => setAddCategoryModal(value => !value)}
               />
             </Modal>
           )}
           {showViewBookModal && (
             <Modal
-              onClick={() =>
-                triggerModal(setShowViewBookModal, showViewBookModal)
-              }
+              onClick={() => setShowViewBookModal(value => !value)}
               title={'Book Info'}
             >
               <ViewBookPage
                 bookId={bookId}
                 returnPath={'Categories / Books In Category '}
-                onClick={() =>
-                  triggerModal(setShowViewBookModal, showViewBookModal)
-                }
+                onClick={() => setShowViewBookModal(value => !value)}
               />
             </Modal>
           )}

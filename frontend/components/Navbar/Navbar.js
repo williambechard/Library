@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, Flex, colors } from '../';
+import { Text, Flex } from '../';
 import Link from 'next/link';
 
 const Navbar = () => {

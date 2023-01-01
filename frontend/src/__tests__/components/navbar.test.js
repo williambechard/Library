@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '@testing-library/jest-dom';
+import { renderHook } from '@testing-library/react';
 import { Navbar } from '../../../components';
 import { render, screen, waitFor } from '@testing-library/react';
 import { debug } from 'jest-preview';
 import userEvent from '@testing-library/user-event';
+import useHelperFunctions from '../../../hooks/useHelperFunctions';
 
 beforeEach(() => {
   delete global.window.location;
@@ -72,18 +74,18 @@ describe('Navbar component tests', () => {
 
     render(<Navbar />);
     debug();
-    const textElement = screen.getByText(/Authors/i);
-    const textElement2 = screen.getByText(/Books/i);
+    const authorsLink = screen.getByText(/Authors/i);
+    const booksLink = screen.getByText(/Books/i);
     waitFor(() => {
-      userEvent.click(textElement);
-      expect(textElement).toHaveStyle(
+      userEvent.click(authorsLink);
+      expect(authorsLink).toHaveStyle(
         'margin:auto 5px auto 5px',
         'display:inline-block',
         'font-size:1',
         'color:blue',
         'font-weight:bolder'
       );
-      expect(textElement2).toHaveStyle(
+      expect(booksLink).toHaveStyle(
         'margin:auto 5px auto 5px',
         'display:inline-block',
         'font-size:1',
@@ -101,19 +103,19 @@ describe('Navbar component tests', () => {
 
     render(<Navbar />);
     debug();
-    const textElement = screen.getByText(/Authors/i);
-    const textElement2 = screen.getByText(/Books/i);
+    const authorsLink = screen.getByText(/Authors/i);
+    const booksLink = screen.getByText(/Books/i);
 
     waitFor(() => {
-      userEvent.click(textElement2);
-      expect(textElement2).toHaveStyle(
+      userEvent.click(booksLink);
+      expect(booksLink).toHaveStyle(
         'margin:auto 5px auto 5px',
         'display:inline-block',
         'font-size:1',
         'color:blue',
         'font-weight:bolder'
       );
-      expect(textElement).toHaveStyle(
+      expect(authorsLink).toHaveStyle(
         'margin:auto 5px auto 5px',
         'display:inline-block',
         'font-size:1',
@@ -131,19 +133,19 @@ describe('Navbar component tests', () => {
 
     render(<Navbar />);
     debug();
-    const textElement = screen.getByText(/Authors/i);
+    const authorsLink = screen.getByText(/Authors/i);
 
-    const textElement3 = screen.getByText(/Categories/i);
+    const categoriesLink = screen.getByText(/Categories/i);
     waitFor(() => {
-      userEvent.click(textElement3);
-      expect(textElement3).toHaveStyle(
+      userEvent.click(categoriesLink);
+      expect(categoriesLink).toHaveStyle(
         'margin:auto 5px auto 5px',
         'display:inline-block',
         'font-size:1',
         'color:blue',
         'font-weight:bolder'
       );
-      expect(textElement).toHaveStyle(
+      expect(authorsLink).toHaveStyle(
         'margin:auto 5px auto 5px',
         'display:inline-block',
         'font-size:1',

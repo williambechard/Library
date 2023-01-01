@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import {
   Button,
@@ -9,7 +9,12 @@ import {
 } from '../index';
 import { useForm } from 'react-hook-form';
 import { useAddBook, useUpdateBook } from '../../api/books';
-import { useAddAuthor, useGetAuthors } from '../../api/authors';
+import {
+  updateAuthorMutation,
+  useAddAuthor,
+  useGetAuthors,
+  useUpdateAuthor
+} from '../../api/authors';
 import { useUpdateCategory } from '../../api/categories';
 import useToast from '../../hooks/useToast';
 import colors from '../../theme/colors';
@@ -33,6 +38,7 @@ const AddBookForm = ({ onClick, bookId = '-1' }) => {
   const { categories } = useContext(CategoriesContext);
   const books = useContext(BooksContext);
   const { updateCategory } = useUpdateCategory();
+  const { updateAuthor } = useUpdateAuthor();
   const { addBook } = useAddBook();
   const { updateBook } = useUpdateBook();
   const { addAuthor } = useAddAuthor();
@@ -45,6 +51,7 @@ const AddBookForm = ({ onClick, bookId = '-1' }) => {
   let targetLastName = '';
   let targetDescription = '';
   let targetCat = '';
+  let targetCoverImage = ' ';
 
   if (bookId != '-1') {
     let targetBook = books.find(book => book.id == bookId);
@@ -54,8 +61,11 @@ const AddBookForm = ({ onClick, bookId = '-1' }) => {
       targetLastName = targetBook.author.lastName;
       targetDescription = targetBook.description ?? '';
       targetCat = targetBook.category != null ? targetBook.category.id : '-1';
+      targetCoverImage = targetBook.coverImage;
     }
   }
+
+  const [inputValue, setInputValue] = useState(targetCoverImage);
 
   const findAuthor = (fName, lName) => {
     return authors.find(
@@ -65,8 +75,8 @@ const AddBookForm = ({ onClick, bookId = '-1' }) => {
 
   const submitForm = async data => {
     //destructure the date from the form
-    const { fName, lName, title, description, category } = data;
-
+    const { fName, lName, title, description, category, url } = data;
+    console.log('data submit ', data);
     //find author and assign to targetAurthor if they exist
     //  otherwise we create the author and add its data to the
     //  targetAuthor const
@@ -86,13 +96,16 @@ const AddBookForm = ({ onClick, bookId = '-1' }) => {
         books.find(book => book.id === bookId).category?.id ?? '-1';
 
       //update
-      updateBook(bookId, title, targetAuthor.id, category, description)
+      updateBook(bookId, title, targetAuthor.id, category, description, url)
         .then(() => {
           //only update category if the category changed to a different category
           if (oldCat != category)
             updateCategory(oldCat, category, '', bookId)
               .then(() => {
-                showToast('success', 'The Book was succesfully updated');
+                setToast({
+                  type: 'success',
+                  message: 'The Book was succesfully updated'
+                });
                 onClick();
               })
               .catch(err => console.log(err));
@@ -112,14 +125,26 @@ const AddBookForm = ({ onClick, bookId = '-1' }) => {
           });
         });
     } else {
-      addBook(title, targetAuthor.id, 'imageURL', category, description)
+      addBook(title, targetAuthor.id, url, category, description)
         .then(book => {
+          console.log('book.id ', book.data.addBook.id);
+          //update auther to add this new book
+          updateAuthor(
+            targetAuthor.id,
+            targetAuthor.firstName,
+            targetAuthor.lastName,
+            book.data.addBook.id
+          );
+
           //only update Category if it is a valid category selected
           if (category != '-1')
             //only need to update current category, so -1 is passed for old category
             updateCategory('-1', category, '', book.data?.addBook.id)
               .then(() => {
-                showToast('success', 'The Book was succesfully updated');
+                setToast({
+                  type: 'success',
+                  message: 'The Book was succesfully updated'
+                });
                 onClick();
               })
               .catch(err => console.log(err));
@@ -189,6 +214,15 @@ const AddBookForm = ({ onClick, bookId = '-1' }) => {
             value={targetLastName}
           />
         </Flex>
+        <SingleLineInput
+          labelText={'Cover Image URL'}
+          name={'url'}
+          register={register}
+          value={targetCoverImage}
+          inputState={value => {
+            setInputValue(value);
+          }}
+        />
         <SelectDropDown
           labelText={'Category'}
           name={'category'}
@@ -204,21 +238,23 @@ const AddBookForm = ({ onClick, bookId = '-1' }) => {
           selectRef={selectedCategory}
           value={targetCat}
         />
-        <Flex
-          height={'200px'}
-          direction={'column'}
-          justifyContent={'flex-end'}
-          alignContent={'flex-end'}
-        >
-          <MultiLineInput
-            labelText={'Description'}
-            name={'description'}
-            rows={5}
-            register={register}
-            errors={errors}
-            value={targetDescription}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 10fr' }}>
+          <img
+            src={inputValue}
+            alt={'Book Cover Image'}
+            style={{ width: '100px', height: '200px' }}
           />
-        </Flex>
+          <div style={{ width: 'auto', marginLeft: '20px' }}>
+            <MultiLineInput
+              labelText={'Description'}
+              name={'description'}
+              rows={5}
+              register={register}
+              errors={errors}
+              value={targetDescription}
+            />
+          </div>
+        </div>
         <Flex
           justifyContent={'flex-end'}
           alignContent={'flex-end'}

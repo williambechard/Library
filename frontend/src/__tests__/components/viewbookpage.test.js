@@ -1,25 +1,27 @@
 import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { ViewBookPage } from '../../../components';
 import { useGetBook } from '../../../api/books';
 import userEvent from '@testing-library/user-event';
-import triggerModal from '../../../helper/triggerModal';
 
-const triggerMock = jest.mock('../../../helper/triggerModal');
 jest.mock('../../../api/books');
-const mockUseGetBook = useGetBook;
 
 jest.mock('../../../components/AddBookForm/AddBookForm', () => () => {
   return <div>Edit Book</div>;
 });
-jest.mock('../../../components/Modal/Modal', () => ({ children }) => {
-  return (
-    <>
-      <div>MODAL</div>
-      {children}
-    </>
-  );
-});
+jest.mock(
+  '../../../components/Modal/Modal',
+  () =>
+    ({ children, title, onClick }) => {
+      return (
+        <div>
+          <button onClick={() => onClick}>X</button>
+          <div>MODAL {title}</div>
+          {children}
+        </div>
+      );
+    }
+);
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -27,7 +29,7 @@ beforeEach(() => {
 
 describe('Book Info Page Component Tests', () => {
   it('should render a default ViewBookPage component with text Loading... as long as bookLoading=true and bookError=false', () => {
-    mockUseGetBook.mockReturnValue({
+    useGetBook.mockReturnValue({
       bookLoading: true,
       bookError: false
     });
@@ -36,7 +38,7 @@ describe('Book Info Page Component Tests', () => {
     expect(viewBookPage).toBeInTheDocument();
   });
   it('should render a default ViewBookPage component with text Loading... as long as bookLoading=false and bookError=true', () => {
-    mockUseGetBook.mockReturnValue({
+    useGetBook.mockReturnValue({
       bookLoading: false,
       bookError: true
     });
@@ -45,7 +47,7 @@ describe('Book Info Page Component Tests', () => {
     expect(viewBookPage).toBeInTheDocument();
   });
   it('should render a default ViewBookPage component with text Loading... as long as bookLoading=true and bookError=true', () => {
-    mockUseGetBook.mockReturnValue({
+    useGetBook.mockReturnValue({
       bookLoading: true,
       bookError: true
     });
@@ -54,7 +56,7 @@ describe('Book Info Page Component Tests', () => {
     expect(viewBookPage).toBeInTheDocument();
   });
   it('should render a ViewBookPage component and respond to a click on the My Library breadcrumb', async () => {
-    mockUseGetBook.mockReturnValue({
+    useGetBook.mockReturnValue({
       bookLoading: false,
       bookError: false,
       book: {
@@ -76,7 +78,7 @@ describe('Book Info Page Component Tests', () => {
     expect(mockCallBack).toHaveBeenCalledTimes(1);
   });
   it('should respond to edit button click', async () => {
-    mockUseGetBook.mockReturnValue({
+    useGetBook.mockReturnValue({
       bookLoading: false,
       bookError: false,
       book: {
@@ -96,6 +98,15 @@ describe('Book Info Page Component Tests', () => {
 
     await userEvent.click(editButton);
 
-    expect(screen.getByText(/Edit Book/i)).toBeInTheDocument();
+    expect(screen.getByText(/MODAL Edit Book/i)).toBeInTheDocument();
+
+    const xButton = screen.getByRole('button', { name: 'X' });
+    expect(xButton).toBeInTheDocument();
+
+    await userEvent.click(xButton);
+
+    waitFor(() =>
+      expect(screen.getByText(/MODAL Edit Book/i)).not.toBeInTheDocument()
+    );
   });
 });

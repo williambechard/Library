@@ -7,10 +7,18 @@ import {
   useGetBooks,
   useUpdateBook
 } from '../../../api/books';
-import { useAddAuthor, useGetAuthors } from '../../../api/authors';
+import {
+  useAddAuthor,
+  useGetAuthors,
+  useUpdateAuthor
+} from '../../../api/authors';
 import { useGetCategories, useUpdateCategory } from '../../../api/categories';
 import userEvent from '@testing-library/user-event';
-import { BooksProvider, CategoriesProvider } from '../../../providers';
+import {
+  AuthorsProvider,
+  BooksProvider,
+  CategoriesProvider
+} from '../../../providers';
 
 jest.mock('../../../api/books');
 jest.mock('../../../api/authors');
@@ -61,6 +69,12 @@ beforeEach(() => {
   useAddBook.mockReturnValue({
     addBook: jest.fn()
   });
+
+  useUpdateAuthor.mockReturnValue({
+    updateAuthor: (id, firstName, lastName, bookToAdd) => jest.fn(),
+    updateAuthorLoading: false,
+    updateAuthorError: false
+  });
 });
 
 describe('AddBookForm Component Tests', () => {
@@ -78,7 +92,9 @@ describe('AddBookForm Component Tests', () => {
     render(
       <BooksProvider>
         <CategoriesProvider>
-          <AddBookForm />
+          <AuthorsProvider>
+            <AddBookForm />
+          </AuthorsProvider>
         </CategoriesProvider>
       </BooksProvider>
     );
@@ -102,7 +118,9 @@ describe('AddBookForm Component Tests', () => {
     render(
       <BooksProvider>
         <CategoriesProvider>
-          <AddBookForm onClick={mockCallBack} />
+          <AuthorsProvider>
+            <AddBookForm onClick={mockCallBack} />
+          </AuthorsProvider>
         </CategoriesProvider>
       </BooksProvider>
     );
@@ -135,7 +153,9 @@ describe('AddBookForm Component Tests', () => {
     render(
       <BooksProvider>
         <CategoriesProvider>
-          <AddBookForm />
+          <AuthorsProvider>
+            <AddBookForm />
+          </AuthorsProvider>
         </CategoriesProvider>
       </BooksProvider>
     );
@@ -173,7 +193,9 @@ describe('AddBookForm Component Tests', () => {
     render(
       <BooksProvider>
         <CategoriesProvider>
-          <AddBookForm />
+          <AuthorsProvider>
+            <AddBookForm />
+          </AuthorsProvider>
         </CategoriesProvider>
       </BooksProvider>
     );
@@ -225,7 +247,9 @@ describe('AddBookForm Component Tests', () => {
     render(
       <BooksProvider>
         <CategoriesProvider>
-          <AddBookForm bookId={'1'} />
+          <AuthorsProvider>
+            <AddBookForm bookId={'1'} />
+          </AuthorsProvider>
         </CategoriesProvider>
       </BooksProvider>
     );
@@ -309,7 +333,9 @@ describe('AddBookForm Component Tests', () => {
     render(
       <BooksProvider>
         <CategoriesProvider>
-          <AddBookForm bookId={'1'} />
+          <AuthorsProvider>
+            <AddBookForm bookId={'1'} />
+          </AuthorsProvider>
         </CategoriesProvider>
       </BooksProvider>
     );
@@ -361,7 +387,9 @@ describe('AddBookForm Component Tests', () => {
     render(
       <BooksProvider>
         <CategoriesProvider>
-          <AddBookForm />
+          <AuthorsProvider>
+            <AddBookForm />
+          </AuthorsProvider>
         </CategoriesProvider>
       </BooksProvider>
     );
@@ -414,7 +442,9 @@ describe('AddBookForm Component Tests', () => {
     render(
       <BooksProvider>
         <CategoriesProvider>
-          <AddBookForm />
+          <AuthorsProvider>
+            <AddBookForm />
+          </AuthorsProvider>
         </CategoriesProvider>
       </BooksProvider>
     );
@@ -444,5 +474,39 @@ describe('AddBookForm Component Tests', () => {
     await userEvent.click(submitButton);
 
     expect(addBookCallBack).toHaveBeenCalledTimes(1);
+  });
+
+  it('should add url input to the img component', async () => {
+    useGetAuthors.mockReturnValue({
+      authors: [{ id: '1', firstName: 'Will', lastName: 'Smith' }]
+    });
+    useAddAuthor.mockReturnValue({
+      addAuthor: (fName, lName) =>
+        Promise.resolve({
+          data: {
+            addAuthor: {
+              id: '2',
+              firstName: fName,
+              lastName: lName
+            }
+          }
+        })
+    });
+    render(
+      <BooksProvider>
+        <CategoriesProvider>
+          <AuthorsProvider>
+            <AddBookForm />
+          </AuthorsProvider>
+        </CategoriesProvider>
+      </BooksProvider>
+    );
+
+    const url = screen.getByRole('textbox', { name: /url/i });
+    expect(url).toBeInTheDocument();
+    await userEvent.type(url, 'www.url');
+    const imageElement = screen.getByAltText('Book Cover Image');
+    expect(imageElement).toBeInTheDocument();
+    expect(imageElement).toHaveAttribute('src', ' www.url');
   });
 });

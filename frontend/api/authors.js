@@ -1,5 +1,6 @@
 import { gql, useQuery, useMutation } from '@apollo/client';
 
+const EMPTY_ARRAY = [];
 //exportable queries
 export const anAuthorQuery = gql`
   query getAuthor($id: ID!) {
@@ -10,6 +11,7 @@ export const anAuthorQuery = gql`
       books {
         id
         title
+        coverImage
       }
     }
   }
@@ -24,6 +26,7 @@ export const allAuthorsQuery = gql`
       books {
         id
         title
+        coverImage
       }
     }
   }
@@ -39,12 +42,50 @@ export const addAuthorMutation = gql`
   }
 `;
 
+export const updateAuthorMutation = gql`
+  mutation UpdateAuthor(
+    $id: ID!
+    $firstName: String!
+    $lastName: String!
+    $bookToAdd: String!
+  ) {
+    updateAuthor(
+      id: $id
+      firstName: $firstName
+      lastName: $lastName
+      bookToAdd: $bookToAdd
+    ) {
+      id
+      firstName
+      lastName
+      books {
+        id
+      }
+    }
+  }
+`;
+
+export const useUpdateAuthor = (id, firstName, lastName, bookToAdd) => {
+  const [update, { loading, error, data }] = useMutation(updateAuthorMutation, {
+    variables: { id, firstName, lastName, bookToAdd },
+    refetchQueries: ['getAuthors']
+  });
+
+  return {
+    updateAuthor: (id, firstName, lastName, bookToAdd) =>
+      update({ variables: { id, firstName, lastName, bookToAdd } }),
+    updateAuthorLoading: loading,
+    updateAuthorError: error,
+    updateAuthorData: data
+  };
+};
+
 export const useGetAuthors = () => {
   const { loading, error, data } = useQuery(allAuthorsQuery);
   return {
     authorsLoading: loading,
     authorsError: error,
-    authors: data?.getAuthors || []
+    authors: data?.getAuthors || EMPTY_ARRAY
   };
 };
 
@@ -55,13 +96,14 @@ export const useGetAuthor = id => {
   return {
     authorLoading: loading,
     authorError: error,
-    author: data?.getAuthor || []
+    author: data?.getAuthor || EMPTY_ARRAY
   };
 };
 
 export const useAddAuthor = (firstName, lastName) => {
   const [add, { loading, error, data }] = useMutation(addAuthorMutation, {
-    variables: { firstName, lastName }
+    variables: { firstName, lastName },
+    refetchQueries: ['getAuthors']
   });
 
   return {

@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import AuthorsPage from '../../../pages/authors';
 import { useGetBooks } from '../../../api/books';
 import userEvent from '@testing-library/user-event';
@@ -10,8 +10,6 @@ import {
 } from '../../../providers';
 import { debug } from 'jest-preview';
 import { useGetAuthors } from '../../../api/authors';
-import ReactDOM from 'react-dom/client';
-import { Modal } from '../../../components';
 
 jest.mock('../../../api/books');
 jest.mock('../../../api/authors');
@@ -24,20 +22,36 @@ jest.mock('next/image', () => ({ src, alt, width, height }) => {
   );
 });
 
-jest.mock('../../../components/Modal/Modal', onClick => ({ children }) => {
-  return (
-    <div>
-      <div>MODAL</div>
-      {children}
-    </div>
-  );
-});
+jest.mock(
+  '../../../components/Modal/Modal',
+  () =>
+    ({ children, title, onClick }) => {
+      return (
+        <div>
+          <button onClick={() => onClick}>X</button>
+          <div>MODAL {title}</div>
+          {children}
+        </div>
+      );
+    }
+);
 jest.mock('../../../components/AddBookForm/AddBookForm', () => () => {
   return <div>Add Book Form</div>;
 });
-jest.mock('../../../components/ViewBookPAge/ViewBookPage', () => () => {
-  return <div>View Book Page</div>;
-});
+jest.mock(
+  '../../../components/ViewBookPAge/ViewBookPage',
+  () =>
+    ({ bookId, returnPath, onClick }) => {
+      return (
+        <>
+          <button onClick={() => onClick}>Cancel</button>
+          <div>{returnPath}</div>
+          <div>bookId:{bookId}</div>
+          <div>View Book Page</div>
+        </>
+      );
+    }
+);
 beforeEach(() => {
   jest.clearAllMocks();
 });
@@ -157,7 +171,7 @@ describe('authors page tests', () => {
       );
     });
 
-    it('should respond to the book card click', async () => {
+    it('should respond to the book card modal X click', async () => {
       render(
         <BooksProvider>
           <AuthorsProvider>
@@ -175,7 +189,44 @@ describe('authors page tests', () => {
 
       await userEvent.click(bookCard);
       expect(screen.getByText(/MODAL/i)).toBeInTheDocument();
+      expect(screen.getByText(/Book Info/i)).toBeInTheDocument();
       expect(screen.getByText(/View Book Page/i)).toBeInTheDocument();
+      const xButton = screen.getByRole('button', { name: 'X' });
+      expect(xButton).toBeInTheDocument();
+
+      await userEvent.click(xButton);
+
+      waitFor(() => expect(screen.getByText(/MODAL/i)).not.toBeInTheDocument());
+    });
+
+    it('should respond to the View Book Page Cancel Button click', async () => {
+      render(
+        <BooksProvider>
+          <AuthorsProvider>
+            <ViewBookProvider>
+              <AuthorsPage />
+            </ViewBookProvider>
+          </AuthorsProvider>
+        </BooksProvider>
+      );
+
+      debug();
+
+      const bookCard = screen.getByText(/Hello/i).closest('div').closest('div');
+      expect(bookCard).toBeInTheDocument();
+
+      await userEvent.click(bookCard);
+      expect(screen.getByText(/MODAL/i)).toBeInTheDocument();
+      expect(screen.getByText(/Book Info/i)).toBeInTheDocument();
+      expect(screen.getByText(/View Book Page/i)).toBeInTheDocument();
+      const cancelButton = screen.getByRole('button', { name: 'Cancel' });
+      expect(cancelButton).toBeInTheDocument();
+
+      expect(screen.getByText(/Authors/i)).toBeInTheDocument();
+      expect(screen.getByText(/bookId:1/i)).toBeInTheDocument();
+      await userEvent.click(cancelButton);
+
+      waitFor(() => expect(screen.getByText(/MODAL/i)).not.toBeInTheDocument());
     });
   });
 });
