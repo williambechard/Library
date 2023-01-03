@@ -13,7 +13,6 @@ import Text from '../components/Text/Text';
 import colors from '../theme/colors';
 import { useGetBooks } from '../api/books';
 import { BooksContext } from '../providers';
-import triggerModal from '../helper/triggerModal';
 import ViewBookContext from '../providers/ViewBookContext';
 /**
  * Main landing page of the application
@@ -43,7 +42,7 @@ const Home = () => {
           label={book.title}
           onClick={() => {
             setBookId(book.id);
-            triggerModal(setShowViewBookModal, showViewBookModal);
+            setShowViewBookModal(value => !value);
           }}
         >
           <Text
@@ -88,7 +87,7 @@ const Home = () => {
         </Text>
         <Button
           label={'addBook'}
-          onClick={() => triggerModal(setAddBookModal, showAddBookModal)}
+          onClick={() => setAddBookModal(value => !value)}
           margin={'auto 10px'}
         >
           + Add Book
@@ -114,25 +113,21 @@ const Home = () => {
       )}
       {showAddBookModal && (
         <Modal
-          onClick={() => triggerModal(setAddBookModal, showAddBookModal)}
+          onClick={() => setAddBookModal((value = !value))}
           title={'Add New Book'}
         >
-          <AddBookForm
-            onClick={() => triggerModal(setAddBookModal, showAddBookModal)}
-          />
+          <AddBookForm onClick={() => setAddBookModal((value = !value))} />
         </Modal>
       )}
       {showViewBookModal && (
         <Modal
-          onClick={() => triggerModal(setShowViewBookModal, showViewBookModal)}
+          onClick={() => setShowViewBookModal(value => !value)}
           title={'Book Info'}
         >
           <ViewBookPage
             bookId={bookId}
             returnPath={'My Library'}
-            onClick={() =>
-              triggerModal(setShowViewBookModal, showViewBookModal)
-            }
+            onClick={() => setShowViewBookModal(value => !value)}
           />
         </Modal>
       )}

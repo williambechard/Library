@@ -76,7 +76,7 @@ const AddBookForm = ({ onClick, bookId = '-1' }) => {
   const submitForm = async data => {
     //destructure the date from the form
     const { fName, lName, title, description, category, url } = data;
-    console.log('data submit ', data);
+
     //find author and assign to targetAurthor if they exist
     //  otherwise we create the author and add its data to the
     //  targetAuthor const
@@ -127,7 +127,6 @@ const AddBookForm = ({ onClick, bookId = '-1' }) => {
     } else {
       addBook(title, targetAuthor.id, url, category, description)
         .then(book => {
-          console.log('book.id ', book.data.addBook.id);
           //update auther to add this new book
           updateAuthor(
             targetAuthor.id,
