@@ -88,7 +88,10 @@ const ViewBookPage = ({ bookId, onClick, returnPath }) => {
             <span>{book.title}</span>
             <Button
               margin={'0px 0px 0px 20px'}
-              onClick={() => setShowEditBookModal(value => !value)}
+              onClick={() => {
+                setShowEditBookModal(true);
+              }}
+              label={'Edit'}
             >
               Edit
             </Button>
@@ -117,14 +120,21 @@ const ViewBookPage = ({ bookId, onClick, returnPath }) => {
       ) : (
         <Text>{'Loading...'}</Text>
       )}
-      {showEditBookModal && (
-        <Modal onClick={() => setShowEditBookModal(false)} title={'Edit Book'}>
+      {showEditBookModal ? (
+        <Modal
+          onClick={() => {
+            setShowEditBookModal(false);
+          }}
+          title={'Edit Book'}
+        >
           <AddBookForm
             bookId={bookId}
-            onClick={() => setShowEditBookModal(false)}
+            onClick={() => {
+              setShowEditBookModal(false);
+            }}
           />
         </Modal>
-      )}
+      ) : null}
     </Section>
   );
 };
