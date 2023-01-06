@@ -8,8 +8,6 @@ import {
   ToastProvider
 } from '../providers';
 
-import { createContext } from 'react';
-import { useGetBooks } from '../api/books';
 import { Layout } from '../components';
 
 const client = new ApolloClient({

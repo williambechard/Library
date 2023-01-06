@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Text, Section, Flex, Button, Modal, AddBookForm } from '../index';
 import { useGetBook } from '../../api/books';
@@ -15,7 +15,7 @@ const ViewBookPage = ({ bookId, onClick, returnPath }) => {
    * Hook for getting info from a book based on a bookId
    */
   const { bookLoading, bookError, book } = useGetBook(bookId);
-  const [showEditBookModal, setShowEditBookModal] = useState(false); //Determines if EditBook Modal is shown or not
+  const [showEditBookModal, setShowEditBookModal] = React.useState(false); //Determines if EditBook Modal is shown or not
 
   const displayDescription = () => {
     return (
@@ -88,7 +88,10 @@ const ViewBookPage = ({ bookId, onClick, returnPath }) => {
             <span>{book.title}</span>
             <Button
               margin={'0px 0px 0px 20px'}
-              onClick={() => setShowEditBookModal(value => !value)}
+              onClick={() => {
+                setShowEditBookModal(true);
+              }}
+              label={'Edit'}
             >
               Edit
             </Button>
@@ -117,17 +120,21 @@ const ViewBookPage = ({ bookId, onClick, returnPath }) => {
       ) : (
         <Text>{'Loading...'}</Text>
       )}
-      {showEditBookModal && (
+      {showEditBookModal ? (
         <Modal
-          onClick={() => setShowEditBookModal(value => !value)}
+          onClick={() => {
+            setShowEditBookModal(false);
+          }}
           title={'Edit Book'}
         >
           <AddBookForm
             bookId={bookId}
-            onClick={() => setShowEditBookModal(value => !value)}
+            onClick={() => {
+              setShowEditBookModal(false);
+            }}
           />
         </Modal>
-      )}
+      ) : null}
     </Section>
   );
 };
