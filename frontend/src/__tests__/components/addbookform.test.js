@@ -407,7 +407,7 @@ describe('AddBookForm component test', () => {
 
         const combobox = screen.getByRole('combobox');
         expect(combobox).toBeInTheDocument();
-        console.log('combobox ', combobox);
+
         user.selectOptions(combobox, ['1']);
 
         const submitButton = screen.getByLabelText('submitAddBookForm');

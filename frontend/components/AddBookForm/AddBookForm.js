@@ -76,7 +76,6 @@ const AddBookForm = ({ onClick, bookId = '-1' }) => {
   const submitForm = async data => {
     //destructure the date from the form
     const { fName, lName, title, description, category, url } = data;
-    console.log('data ', data);
 
     //find author and assign to targetAurthor if they exist
     //  otherwise we create the author and add its data to the
@@ -99,12 +98,10 @@ const AddBookForm = ({ onClick, bookId = '-1' }) => {
       //update
       updateBook(bookId, title, targetAuthor.id, category, description, url)
         .then(() => {
-          console.log('book updated!');
           //only update category if the category changed to a different category
           if (oldCat != category)
             updateCategory(oldCat, category, '', bookId)
               .then(() => {
-                console.log('category updated!');
                 setToast({
                   type: 'success',
                   message: 'The Book was succesfully updated'
@@ -113,7 +110,6 @@ const AddBookForm = ({ onClick, bookId = '-1' }) => {
               })
               .catch(err => console.log(err));
           else {
-            console.log('category NOT updated!');
             //otherwise no category update needed, so show toast and force click to exit modal
             setToast({
               type: 'success',
@@ -131,8 +127,6 @@ const AddBookForm = ({ onClick, bookId = '-1' }) => {
     } else {
       addBook(title, targetAuthor.id, url, category, description)
         .then(async book => {
-          console.log('book Added!', book);
-
           //update auther to add this new book
           await updateAuthor(
             targetAuthor.id,
@@ -140,14 +134,12 @@ const AddBookForm = ({ onClick, bookId = '-1' }) => {
             targetAuthor.lastName,
             book.data.addBook.id
           );
-          console.log('Author Updated');
-          console.log('category = ', category);
+
           //only update Category if it is a valid category selected
           if (category != '-1')
             //only need to update current category, so -1 is passed for old category
             updateCategory('-1', category, '', book.data?.addBook.id)
               .then(() => {
-                console.log('category updated!');
                 setToast({
                   type: 'success',
                   message: 'The Book was succesfully updated'
@@ -156,7 +148,6 @@ const AddBookForm = ({ onClick, bookId = '-1' }) => {
               })
               .catch(err => console.log(err));
           else {
-            console.log('category NOT updated!');
             //otherwise no category update needed
             setToast({
               type: 'success',
