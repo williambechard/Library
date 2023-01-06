@@ -3,8 +3,12 @@ import { render, screen } from '@testing-library/react';
 import Home from '../../../pages';
 import { useGetBooks } from '../../../api/books';
 import userEvent from '@testing-library/user-event';
+import { BooksProvider, ViewBookProvider } from '../../../providers';
+import { debug } from 'jest-preview';
+
 jest.mock('../../../api/books');
 jest.mock('../../../api/authors');
+
 jest.mock('next/image', () => ({ src, alt, width, height }) => {
   // eslint-disable-next-line @next/next/no-img-element
   return (
@@ -27,38 +31,63 @@ jest.mock('../../../components/AddBookForm/AddBookForm', () => () => {
 jest.mock('../../../components/ViewBookPAge/ViewBookPage', () => () => {
   return <div>View Book Page</div>;
 });
-const mockUseGetBooks = useGetBooks;
-
+beforeEach(() => {
+  jest.clearAllMocks();
+});
 describe('test of the main index home page', () => {
+  beforeEach(() => {
+    useGetBooks.mockReturnValue({
+      bookLoading: false,
+      bookError: false,
+      books: []
+    });
+  });
   describe('if books are empty', () => {
     it('should display the default page', () => {
-      mockUseGetBooks.mockReturnValue({
+      useGetBooks.mockReturnValue({
         bookLoading: false,
         bookError: false,
         books: []
       });
-      render(<Home />);
-
-      expect(screen.getByText("William's Capstone")).toBeInTheDocument();
-      expect(screen.getAllByTestId('section-1')[0]).toHaveStyle(
-        'background-color:#DFDFDF'
+      render(
+        <BooksProvider>
+          <ViewBookProvider>
+            <Home />
+          </ViewBookProvider>
+        </BooksProvider>
       );
-      expect(screen.getByText('My Library')).toHaveStyle('color:black');
-      expect(
-        screen.getByText('@ 2022 Omni Federal - All Rights Reserved')
-      ).toBeInTheDocument();
-    });
-    it('should show no book Cards if no books loaded', () => {
-      render(<Home />);
-      expect(screen.getByText('No Books Found...')).toBeInTheDocument();
+
+      debug();
+      const textElement = screen.getByText(/My Library/i);
+      expect(textElement).toBeInTheDocument();
+      expect(textElement).toHaveStyle(
+        'background-color:#dfdfdf',
+        'font-size:1.5',
+        'margin:auto 20px'
+      );
+      expect(textElement.closest('div')).toHaveStyle(
+        'background-color:#dfdfdf',
+        'justify-content:space-between',
+        'z-index:2'
+      );
+      expect(textElement.closest('div').closest('div')).toHaveStyle(
+        'background-color:#dfdfdf',
+        'justify-content:space-between',
+        'z-index:2',
+        'transform:translateY(80px)'
+      );
+
+      const addBookButton = screen.getByRole('button');
+      expect(addBookButton).toBeInTheDocument();
+      expect(addBookButton).toHaveStyle('margin:auto 10px');
+
+      const noBooksFoundText = screen.getByText(/No Books Found.../i);
+      expect(noBooksFoundText).toBeInTheDocument();
     });
   });
   describe('if books have data', () => {
-    jest.clearAllMocks();
-    const mockUseGetBooks = useGetBooks;
-
-    it('should show book a book Card for each book loaded (1x)', () => {
-      mockUseGetBooks.mockReturnValue({
+    beforeEach(() => {
+      useGetBooks.mockReturnValue({
         bookLoading: false,
         bookError: false,
         books: [
@@ -73,11 +102,26 @@ describe('test of the main index home page', () => {
           }
         ]
       });
-      render(<Home />);
+    });
+
+    it('should show book a book Card for each book loaded (1x)', () => {
+      render(
+        <BooksProvider>
+          <ViewBookProvider>
+            <Home />
+          </ViewBookProvider>
+        </BooksProvider>
+      );
       expect(screen.getByText('Hello')).toBeInTheDocument();
     });
     it('should open Add Book Form when + book button clicked', async () => {
-      render(<Home />);
+      render(
+        <BooksProvider>
+          <ViewBookProvider>
+            <Home />
+          </ViewBookProvider>
+        </BooksProvider>
+      );
 
       const addBookButton = screen.getByRole('button', {
         label: '+ Add Book'
@@ -88,7 +132,13 @@ describe('test of the main index home page', () => {
       expect(screen.getByText(/Add Book Form/i)).toBeInTheDocument();
     });
     it('should open View Book Form when a book card is clicked', async () => {
-      render(<Home />);
+      render(
+        <BooksProvider>
+          <ViewBookProvider>
+            <Home />
+          </ViewBookProvider>
+        </BooksProvider>
+      );
 
       const bookCard = screen.getByText('Hello');
       expect(bookCard).toBeInTheDocument();

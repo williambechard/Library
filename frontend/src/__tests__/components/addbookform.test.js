@@ -1,16 +1,62 @@
 import '@testing-library/jest-dom';
-import { render, screen, waitFor, logRoles } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import AddBookForm from '../../../components/AddBookForm';
-import { useAddBook } from '../../../api/books';
+import { useAddBook, useGetBooks, useUpdateBook } from '../../../api/books';
 import { useAddAuthor, useGetAuthors } from '../../../api/authors';
+import { useGetCategories, useUpdateCategory } from '../../../api/categories';
 import userEvent from '@testing-library/user-event';
-
-beforeEach(() => {
-  jest.resetAllMocks();
-});
+import { BooksProvider, CategoriesProvider } from '../../../providers';
 
 jest.mock('../../../api/books');
 jest.mock('../../../api/authors');
+jest.mock('../../../api/categories');
+
+beforeEach(() => {
+  jest.resetAllMocks();
+  useGetBooks.mockReturnValue({
+    bookLoading: false,
+    bookError: false,
+    books: [
+      {
+        id: '1',
+        title: 'Hello',
+        author: {
+          firstName: 'Jim',
+          lastName: 'Bob'
+        },
+        description: 'Hello World'
+      }
+    ]
+  });
+
+  useGetCategories.mockReturnValue({
+    categoriesLoading: false,
+    categoriesError: false,
+    categories: [
+      {
+        id: '1',
+        name: 'Fantasy',
+        books: ['1']
+      }
+    ]
+  });
+
+  useUpdateCategory.mockReturnValue({
+    updateCategoryLoading: false,
+    updateCategoryError: false,
+    updateCategory: (oldId, id, name, bookId) => jest.fn()
+  });
+
+  useUpdateBook.mockReturnValue({
+    updateBook: (id, title, authorId, categoryId, description) => jest.fn(),
+    updateBookLoading: false,
+    updateBookError: false
+  });
+
+  useAddBook.mockReturnValue({
+    addBook: jest.fn()
+  });
+});
 
 describe('AddBookForm Component Tests', () => {
   it('should display the default AddBookForm', () => {
@@ -24,7 +70,13 @@ describe('AddBookForm Component Tests', () => {
       authors: jest.fn()
     });
 
-    render(<AddBookForm />);
+    render(
+      <BooksProvider>
+        <CategoriesProvider>
+          <AddBookForm />
+        </CategoriesProvider>
+      </BooksProvider>
+    );
 
     const addBookFormComponent = screen.getByRole('form');
     expect(addBookFormComponent).toBeInTheDocument();
@@ -42,7 +94,13 @@ describe('AddBookForm Component Tests', () => {
       authors: jest.fn()
     });
 
-    render(<AddBookForm onClick={mockCallBack} />);
+    render(
+      <BooksProvider>
+        <CategoriesProvider>
+          <AddBookForm onClick={mockCallBack} />
+        </CategoriesProvider>
+      </BooksProvider>
+    );
 
     const cancelButton = screen.getByLabelText('closeAddBookForm');
     await userEvent.click(cancelButton);
@@ -69,7 +127,13 @@ describe('AddBookForm Component Tests', () => {
       authors: [{ id: '1', 'First Name': 'Will', 'Last Name': 'Smith' }]
     });
 
-    render(<AddBookForm />);
+    render(
+      <BooksProvider>
+        <CategoriesProvider>
+          <AddBookForm />
+        </CategoriesProvider>
+      </BooksProvider>
+    );
 
     const submitButton = screen.getByLabelText('submitAddBookForm');
 
@@ -101,18 +165,24 @@ describe('AddBookForm Component Tests', () => {
       authors: [{ id: '1', firstName: 'Will', lastName: 'Smith' }]
     });
 
-    render(<AddBookForm />);
+    render(
+      <BooksProvider>
+        <CategoriesProvider>
+          <AddBookForm />
+        </CategoriesProvider>
+      </BooksProvider>
+    );
 
     const title = screen.getByRole('textbox', { name: /title/i });
     expect(title).toBeInTheDocument();
     await userEvent.type(title, 'hello');
     expect(title).toHaveValue('hello');
 
-    const firstName = screen.getByRole('textbox', { name: /first_name/i });
+    const firstName = screen.getByRole('textbox', { name: /first name/i });
     await userEvent.type(firstName, 'Will');
     expect(firstName).toHaveValue('Will');
 
-    const lastName = screen.getByRole('textbox', { name: /last_name/i });
+    const lastName = screen.getByRole('textbox', { name: /last name/i });
     await userEvent.type(lastName, 'Smith');
     expect(lastName).toHaveValue('Smith');
 
@@ -125,9 +195,9 @@ describe('AddBookForm Component Tests', () => {
 
     expect(addBookCallBack).toHaveBeenCalledTimes(1);
   });
-  it('should create an author if no previous author is found when new book is sumitted', async () => {
-    const addBookCallBack = useAddBook.mockReturnValue({
-      addBook: () => Promise.resolve({ data: true })
+  it('should update a book', async () => {
+    const updateBookCallBack = useUpdateBook.mockReturnValue({
+      updateBook: () => Promise.resolve({ data: true })
     });
 
     useAddAuthor.mockReturnValue({
@@ -144,21 +214,74 @@ describe('AddBookForm Component Tests', () => {
     });
 
     useGetAuthors.mockReturnValue({
+      authors: [{ id: '1', firstName: 'Will', lastName: 'Smith' }]
+    });
+
+    render(
+      <BooksProvider>
+        <CategoriesProvider>
+          <AddBookForm bookId={'1'} />
+        </CategoriesProvider>
+      </BooksProvider>
+    );
+
+    const title = screen.getByRole('textbox', { name: /title/i });
+    expect(title).toBeInTheDocument();
+    expect(title).toHaveValue('Hello');
+
+    const firstName = screen.getByRole('textbox', { name: /first name/i });
+    expect(firstName).toHaveValue('Jim');
+
+    const lastName = screen.getByRole('textbox', { name: /last name/i });
+    expect(lastName).toHaveValue('Bob');
+
+    const description = screen.getByRole('textbox', { name: /description/i });
+    expect(description).toHaveValue('Hello World');
+
+    const submitButton = screen.getByLabelText('submitUpdateBookForm');
+    await userEvent.click(submitButton);
+
+    expect(updateBookCallBack).toHaveBeenCalledTimes(1);
+  });
+  it('should create an author if no previous author is found when new book is sumitted', async () => {
+    const addBookCallBack = useAddBook.mockReturnValue({
+      addBook: () => Promise.resolve({ data: true })
+    });
+
+    useAddAuthor.mockReturnValue({
+      addAuthor: (fName, lName) => ({
+        data: {
+          addAuthor: {
+            id: '2',
+            firstName: fName,
+            lastName: lName
+          }
+        }
+      })
+    });
+
+    useGetAuthors.mockReturnValue({
       authors: [{ id: '2', firstName: 'Will', lastName: 'Smithers' }]
     });
 
-    render(<AddBookForm />);
+    render(
+      <BooksProvider>
+        <CategoriesProvider>
+          <AddBookForm />
+        </CategoriesProvider>
+      </BooksProvider>
+    );
 
     const title = screen.getByRole('textbox', { name: /title/i });
     expect(title).toBeInTheDocument();
     await userEvent.type(title, 'hello');
     expect(title).toHaveValue('hello');
 
-    const firstName = screen.getByRole('textbox', { name: /first_name/i });
+    const firstName = screen.getByRole('textbox', { name: /first name/i });
     await userEvent.type(firstName, 'Will');
     expect(firstName).toHaveValue('Will');
 
-    const lastName = screen.getByRole('textbox', { name: /last_name/i });
+    const lastName = screen.getByRole('textbox', { name: /last name/i });
     await userEvent.type(lastName, 'Smith');
     expect(lastName).toHaveValue('Smith');
 
@@ -194,7 +317,13 @@ describe('AddBookForm Component Tests', () => {
       authors: [{ id: '1', firstName: 'Will', lastName: 'Smith' }]
     });
 
-    render(<AddBookForm />);
+    render(
+      <BooksProvider>
+        <CategoriesProvider>
+          <AddBookForm />
+        </CategoriesProvider>
+      </BooksProvider>
+    );
 
     const title = screen.getByRole('textbox', { name: /title/i });
     expect(title).toBeInTheDocument();
@@ -202,12 +331,12 @@ describe('AddBookForm Component Tests', () => {
 
     expect(title).toHaveValue('hello');
 
-    const firstName = screen.getByRole('textbox', { name: /first_name/i });
+    const firstName = screen.getByRole('textbox', { name: /first name/i });
     await userEvent.type(firstName, 'Will');
 
     expect(firstName).toHaveValue('Will');
 
-    const lastName = screen.getByRole('textbox', { name: /last_name/i });
+    const lastName = screen.getByRole('textbox', { name: /last name/i });
     await userEvent.type(lastName, 'Smith');
 
     expect(lastName).toHaveValue('Smith');

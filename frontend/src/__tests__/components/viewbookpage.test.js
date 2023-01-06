@@ -48,7 +48,7 @@ describe('Book Info Page Component Tests', () => {
       }
     });
     const mockCallBack = jest.fn();
-    render(<ViewBookPage onClick={mockCallBack()} />);
+    render(<ViewBookPage returnPath={'My Library'} onClick={mockCallBack()} />);
 
     const bookLink = screen.getByText('My Library');
     expect(bookLink).toBeInTheDocument();
