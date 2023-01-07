@@ -18,6 +18,10 @@ export const aBookQuery = gql`
         id
         firstName
         lastName
+        books {
+          id
+          title
+        }
       }
       description
     }
@@ -35,6 +39,9 @@ export const allBooksQuery = gql`
         id
         firstName
         lastName
+        books {
+          id
+        }
       }
       category {
         id

@@ -52,9 +52,9 @@ const AddBookForm = ({ onClick, bookId = '-1' }) => {
   let targetDescription = '';
   let targetCat = '';
   let targetCoverImage = ' ';
-
+  let targetBook = undefined;
   if (bookId != '-1') {
-    let targetBook = books.find(book => book.id == bookId);
+    targetBook = books.find(book => book.id == bookId);
     if (targetBook !== undefined) {
       targetTitle = targetBook.title;
       targetFirstName = targetBook.author.firstName;
@@ -88,13 +88,35 @@ const AddBookForm = ({ onClick, bookId = '-1' }) => {
 
     //We call either AddBook or UpdateBook depending on if this is a new book or not
     //  we can determine this based on if bookId is a valid bookId
-    if (bookId != '-1') {
+    if (targetBook !== undefined) {
       //Update
       //This book already has a category assigned
       // if it is null assign it a value of -1 for the current category
       const oldCat =
         books.find(book => book.id === bookId).category?.id ?? '-1';
 
+      //did author change?
+      if (targetBook.author.id != targetAuthor.id) {
+        //update the old author
+        await updateAuthor(
+          targetBook.author.id,
+          targetBook.author.firstName,
+          targetBook.author.lastName,
+          targetBook.author.books
+            ?.filter(b => b.id != targetBook.id)
+            .map(b => b.id) ?? []
+        );
+        //let authBooks = targetAuthor.books.map(b => b.id).concat([targetBook.id]);
+        //authBooks.push(targetBook.id);
+
+        //update the new author
+        await updateAuthor(
+          targetAuthor.id,
+          targetAuthor.firstName,
+          targetAuthor.lastName,
+          targetAuthor.books.map(b => b.id).concat([targetBook.id])
+        );
+      }
       //update
       updateBook(bookId, title, targetAuthor.id, category, description, url)
         .then(() => {
@@ -128,11 +150,12 @@ const AddBookForm = ({ onClick, bookId = '-1' }) => {
       addBook(title, targetAuthor.id, url, category, description)
         .then(async book => {
           //update auther to add this new book
+          //update the new author
           await updateAuthor(
             targetAuthor.id,
             targetAuthor.firstName,
             targetAuthor.lastName,
-            book.data.addBook.id
+            targetAuthor.books.map(b => b.id).concat([book.data.addBook.id])
           );
 
           //only update Category if it is a valid category selected
@@ -207,8 +230,8 @@ const AddBookForm = ({ onClick, bookId = '-1' }) => {
           />
           <SingleLineInput
             labelText={'Last Name'}
-            register={register}
             name={'lName'}
+            register={register}
             errors={errors}
             value={targetLastName}
           />

@@ -183,7 +183,7 @@ export const typeDefs = gql`
       id: ID!
       firstName: String!
       lastName: String!
-      bookToAdd: String!
+      books: [String!]!
     ): Author
     "Removes an author by its id"
     removeAuthor(id: ID!): ID
@@ -282,16 +282,16 @@ export const resolvers = {
 
       return book;
     },
-    updateAuthor: (_parent, { id, firstName, lastName, bookToAdd }) => {
+    updateAuthor: (_parent, { id, firstName, lastName, books }) => {
       const authorIndex = authors.findIndex(author => author.id === id);
       if (authorIndex === -1) throw new Error('This author does not exist.');
       const author = {
         id,
         firstName,
         lastName,
-        books: authors[authorIndex].books
+        books
       };
-      author.books.push(bookToAdd);
+
       authors[authorIndex] = author;
       return author;
     },

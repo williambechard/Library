@@ -26,9 +26,7 @@ const Home = () => {
     useContext(ViewBookContext);
 
   const books = useContext(BooksContext);
-  //const viewBook = useContext(ViewBookContext);
 
-  //console.log('viewBook ', viewBook);
   /**
    * Function which coverts loaded books data to JSX (Card Components)
    */
@@ -87,7 +85,7 @@ const Home = () => {
         </Text>
         <Button
           label={'addBook'}
-          onClick={() => setAddBookModal(value => !value)}
+          onClick={() => setAddBookModal(true)}
           margin={'auto 10px'}
         >
           + Add Book
@@ -112,11 +110,8 @@ const Home = () => {
         <Text>No Books Found...</Text>
       )}
       {showAddBookModal && (
-        <Modal
-          onClick={() => setAddBookModal((value = !value))}
-          title={'Add New Book'}
-        >
-          <AddBookForm onClick={() => setAddBookModal((value = !value))} />
+        <Modal onClick={() => setAddBookModal(false)} title={'Add New Book'}>
+          <AddBookForm onClick={() => setAddBookModal(false)} />
         </Modal>
       )}
       {showViewBookModal && (

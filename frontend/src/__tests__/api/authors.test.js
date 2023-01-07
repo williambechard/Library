@@ -136,7 +136,7 @@ describe('api Authors test', () => {
           id: '1',
           firstName: 'Jim',
           lastName: 'Bean',
-          bookToAdd: '2'
+          books: ['2']
         }
       },
       result: {
@@ -174,12 +174,9 @@ describe('api Authors test', () => {
     await waitFor(() => expect(result.current.updateAuthorLoading).toBeFalsy());
 
     await act(async () => {
-      const authorInfo = await result.current.updateAuthor(
-        '1',
-        'Jim',
-        'Bean',
+      const authorInfo = await result.current.updateAuthor('1', 'Jim', 'Bean', [
         '2'
-      );
+      ]);
       expect(authorInfo.data.updateAuthor.firstName).toBe('Jim');
     });
   });

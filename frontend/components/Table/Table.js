@@ -4,6 +4,7 @@ import { useGlobalFilter, usePagination, useTable } from 'react-table';
 import { useSortBy } from 'react-table';
 import { Button } from '../index';
 import GlobalSearch from '../GlobalSearch/GlobalSearch';
+import { ContinuousDeployment } from '@carbon/icons-react';
 
 const Styles = styled.div`
   padding: 2rem;
@@ -70,7 +71,9 @@ const Table = ({ columns, data }) => {
     prepareRow,
     pageOptions,
     state,
-    setGlobalFilter
+    setGlobalFilter,
+    rows,
+    preGlobalFilteredRows
   } = tableInstance;
 
   const { globalFilter, pageIndex } = state;

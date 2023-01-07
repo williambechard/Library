@@ -38,6 +38,11 @@ export const addAuthorMutation = gql`
       id
       firstName
       lastName
+      books {
+        id
+        title
+        coverImage
+      }
     }
   }
 `;
@@ -47,13 +52,13 @@ export const updateAuthorMutation = gql`
     $id: ID!
     $firstName: String!
     $lastName: String!
-    $bookToAdd: String!
+    $books: [String!]!
   ) {
     updateAuthor(
       id: $id
       firstName: $firstName
       lastName: $lastName
-      bookToAdd: $bookToAdd
+      books: $books
     ) {
       id
       firstName
@@ -65,15 +70,15 @@ export const updateAuthorMutation = gql`
   }
 `;
 
-export const useUpdateAuthor = (id, firstName, lastName, bookToAdd) => {
+export const useUpdateAuthor = (id, firstName, lastName, books) => {
   const [update, { loading, error, data }] = useMutation(updateAuthorMutation, {
-    variables: { id, firstName, lastName, bookToAdd },
+    variables: { id, firstName, lastName, books },
     refetchQueries: ['getAuthors']
   });
 
   return {
-    updateAuthor: (id, firstName, lastName, bookToAdd) =>
-      update({ variables: { id, firstName, lastName, bookToAdd } }),
+    updateAuthor: (id, firstName, lastName, books) =>
+      update({ variables: { id, firstName, lastName, books } }),
     updateAuthorLoading: loading,
     updateAuthorError: error,
     updateAuthorData: data

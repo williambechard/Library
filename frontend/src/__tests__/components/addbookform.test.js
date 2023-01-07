@@ -216,14 +216,17 @@ describe('AddBookForm component test', () => {
                 addAuthor: {
                   id: '2',
                   firstName: fName,
-                  lastName: lName
+                  lastName: lName,
+                  books: ['1']
                 }
               }
             })
         });
 
         useGetAuthors.mockReturnValue({
-          authors: [{ id: '1', firstName: 'Will', lastName: 'Smith' }]
+          authors: [
+            { id: '1', firstName: 'Will', lastName: 'Smith', books: ['1'] }
+          ]
         });
       });
       it('should call addBook when form is submitted', async () => {
@@ -316,14 +319,14 @@ describe('AddBookForm component test', () => {
         });
 
         const updateAuthorMock = useUpdateAuthor.mockReturnValue({
-          updateAuthor: (id, firstName, lastName, bookToAdd) =>
+          updateAuthor: (id, firstName, lastName, books) =>
             Promise.resolve({
               data: {
                 update: {
                   id: '1',
                   firstName: fName,
                   lastName: lName,
-                  bookToAdd: '2'
+                  books: ['2']
                 }
               }
             })
@@ -428,14 +431,17 @@ describe('AddBookForm component test', () => {
               addAuthor: {
                 id: '2',
                 firstName: fName,
-                lastName: lName
+                lastName: lName,
+                books: ['1']
               }
             }
           })
         });
 
         useGetAuthors.mockReturnValue({
-          authors: [{ id: '2', firstName: 'Will', lastName: 'Smithers' }]
+          authors: [
+            { id: '2', firstName: 'Will', lastName: 'Smithers', books: ['1'] }
+          ]
         });
 
         render(
@@ -488,13 +494,16 @@ describe('AddBookForm component test', () => {
                 addAuthor: {
                   id: '2',
                   firstName: fName,
-                  lastName: lName
+                  lastName: lName,
+                  books: ['1']
                 }
               }
             })
         });
         useGetAuthors.mockReturnValue({
-          authors: [{ id: '1', firstName: 'Will', lastName: 'Smith' }]
+          authors: [
+            { id: '1', firstName: 'Will', lastName: 'Smith', books: ['1'] }
+          ]
         });
 
         render(
@@ -545,21 +554,31 @@ describe('AddBookForm component test', () => {
                 addAuthor: {
                   id: '2',
                   firstName: fName,
-                  lastName: lName
+                  lastName: lName,
+                  books: ['1']
                 }
               }
             })
         });
 
         useGetAuthors.mockReturnValue({
-          authors: [{ id: '1', firstName: 'Will', lastName: 'Smith' }]
+          authors: [
+            { id: '1', firstName: 'Will', lastName: 'Smith', books: ['1'] }
+          ]
         });
       });
 
       it('should update a book', async () => {
         const user = userEvent.setup();
         const updateBookCallBack = useUpdateBook.mockReturnValue({
-          updateBook: () => Promise.resolve({ data: true })
+          updateBook: (
+            id,
+            title,
+            authorId,
+            categoryId,
+            description,
+            coverImage
+          ) => Promise.resolve({ data: true })
         });
 
         render(
@@ -624,14 +643,17 @@ describe('AddBookForm component test', () => {
                 addAuthor: {
                   id: '2',
                   firstName: fName,
-                  lastName: lName
+                  lastName: lName,
+                  books: ['1']
                 }
               }
             })
         });
 
         useGetAuthors.mockReturnValue({
-          authors: [{ id: '1', firstName: 'Jim', lastName: 'Bob' }]
+          authors: [
+            { id: '1', firstName: 'Jim', lastName: 'Bob', books: ['1'] }
+          ]
         });
 
         useGetBooks.mockReturnValue({
@@ -644,7 +666,8 @@ describe('AddBookForm component test', () => {
               author: {
                 id: '1',
                 firstName: 'Jim',
-                lastName: 'Bob'
+                lastName: 'Bob',
+                books: ['1']
               }
             }
           ]

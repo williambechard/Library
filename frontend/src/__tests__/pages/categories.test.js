@@ -6,6 +6,7 @@ import userEvent from '@testing-library/user-event';
 import ViewBooksProvider from '../../../providers/ViewBookProvider/ViewBookProvider';
 import { debug } from 'jest-preview';
 import { CategoriesProvider } from '../../../providers';
+import { Table } from '../../../components';
 
 jest.mock('../../../api/categories');
 jest.mock('../../../api/books');
@@ -20,33 +21,6 @@ jest.mock('../../../components/Modal/Modal', () => ({ children }) => {
 
 jest.mock('../../../components/AddCategoryForm/AddCategoryForm', () => () => {
   return <div>Add Category Form</div>;
-});
-
-jest.mock('../../../components/Table/Table', () => ({ columns, data }) => {
-  return (
-    <table>
-      <thead key={'1'}>
-        <tr key={'2'}>
-          {columns.map(col => {
-            return <th key={Object.values(col)[0]}>{Object.values(col)[0]}</th>;
-          })}
-        </tr>
-      </thead>
-      <tbody key={'5'}>
-        {data.map(item => {
-          return (
-            <tr key={'6'}>
-              <td key={'7'}>{item.name}</td>
-              <td key={'8'}>{item.books?.length}</td>
-              <td key={'9'}>{item.description}</td>
-              <td key={'10'}>{item.author?.name}</td>
-              <td key={'11'}>{item.title}</td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
-  );
 });
 
 beforeEach(() => {
@@ -110,7 +84,8 @@ describe('categories page tests', () => {
       const table = screen.getByRole('table');
       expect(table).toBeInTheDocument();
       expect(screen.getByText(/Fantasy/i)).toBeInTheDocument();
-      expect(screen.getByText(/1/i)).toBeInTheDocument();
+      const allCells = screen.getByRole('cell', { name: '1' });
+      expect(allCells).toBeInTheDocument();
     });
     it('should display an add category button', () => {
       useGetCategories.mockReturnValue({
@@ -132,10 +107,11 @@ describe('categories page tests', () => {
         </CategoriesProvider>
       );
       debug();
-      const button = screen.getByRole('button');
+      const button = screen.getByRole('button', { name: 'Add Category' });
       expect(button).toBeInTheDocument();
     });
     it('should respond to add category button click', async () => {
+      const user = userEvent.setup();
       useGetCategories.mockReturnValue({
         categoriesLoading: false,
         categoriesError: false,
@@ -156,12 +132,14 @@ describe('categories page tests', () => {
         </CategoriesProvider>
       );
       debug();
-      const button = screen.getByRole('button');
+      const button = screen.getByRole('button', { name: 'Add Category' });
       expect(button).toBeInTheDocument();
-      await userEvent.click(button);
+      await user.click(button);
       expect(screen.getByText(/Add Category Form/)).toBeInTheDocument();
     });
     it('should show category details when a category title is clicked on the table ', async () => {
+      const user = userEvent.setup();
+
       useGetCategories.mockReturnValue({
         categoriesLoading: false,
         categoriesError: false,
@@ -198,7 +176,7 @@ describe('categories page tests', () => {
       const categoryTitle = screen.getByText(/Fantasy/i);
       expect(categoryTitle).toBeInTheDocument();
 
-      await userEvent.click(categoryTitle);
+      await user.click(categoryTitle);
 
       expect(screen.getByText(/Harry Potter/i)).toBeInTheDocument();
       expect(screen.getByText(/JK Rowling/i)).toBeInTheDocument();
