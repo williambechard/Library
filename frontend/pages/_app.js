@@ -1,11 +1,14 @@
 import '../styles/global.css';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-import { BooksProvider, CategoriesProvider, ToastProvider } from '../providers';
+import {
+  AuthorsProvider,
+  BooksProvider,
+  CategoriesProvider,
+  ViewBookProvider,
+  ToastProvider
+} from '../providers';
 
-import { createContext } from 'react';
-import { useGetBooks } from '../api/books';
 import { Layout } from '../components';
-import ViewBookProvider from '../providers/ViewBookProvider';
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000/graphql/',
@@ -20,9 +23,11 @@ const App = ({ Component, pageProps }) => {
           <Layout>
             <BooksProvider>
               <CategoriesProvider>
-                <ViewBookProvider>
-                  <Component {...pageProps} />
-                </ViewBookProvider>
+                <AuthorsProvider>
+                  <ViewBookProvider>
+                    <Component {...pageProps} />
+                  </ViewBookProvider>
+                </AuthorsProvider>
               </CategoriesProvider>
             </BooksProvider>
           </Layout>

@@ -13,7 +13,6 @@ import Text from '../components/Text/Text';
 import colors from '../theme/colors';
 import { useGetBooks } from '../api/books';
 import { BooksContext } from '../providers';
-import triggerModal from '../helper/triggerModal';
 import ViewBookContext from '../providers/ViewBookContext';
 /**
  * Main landing page of the application
@@ -27,9 +26,7 @@ const Home = () => {
     useContext(ViewBookContext);
 
   const books = useContext(BooksContext);
-  //const viewBook = useContext(ViewBookContext);
 
-  //console.log('viewBook ', viewBook);
   /**
    * Function which coverts loaded books data to JSX (Card Components)
    */
@@ -43,7 +40,7 @@ const Home = () => {
           label={book.title}
           onClick={() => {
             setBookId(book.id);
-            triggerModal(setShowViewBookModal, showViewBookModal);
+            setShowViewBookModal(value => !value);
           }}
         >
           <Text
@@ -67,7 +64,7 @@ const Home = () => {
       );
     });
   };
-  console.log('books ', books);
+
   /**
    * returns JSX
    */
@@ -88,48 +85,44 @@ const Home = () => {
         </Text>
         <Button
           label={'addBook'}
-          onClick={() => triggerModal(setAddBookModal, showAddBookModal)}
+          onClick={() => setAddBookModal(true)}
           margin={'auto 10px'}
         >
           + Add Book
         </Button>
       </Flex>
       {books.length > 0 ? (
-        <Flex
-          justifyContent={'flex-start'}
-          alignContent={'center'}
-          bgColor={colors.mono[1]}
-          wrap={'wrap'}
-          zIndex={'0'}
-          gap={'10px'}
-          margin={'0px 20px 100px 20px'}
-        >
-          {displayBooks()}
-        </Flex>
+        <>
+          <Flex
+            justifyContent={'flex-start'}
+            alignContent={'center'}
+            bgColor={colors.mono[0]}
+            wrap={'wrap'}
+            zIndex={'0'}
+            gap={'10px'}
+            margin={'0px 20px 100px 20px'}
+          >
+            {displayBooks()}
+          </Flex>
+          <div style={{ height: '40px' }}></div>
+        </>
       ) : (
         <Text>No Books Found...</Text>
       )}
       {showAddBookModal && (
-        <Modal
-          onClick={() => triggerModal(setAddBookModal, showAddBookModal)}
-          title={'Add New Book'}
-        >
-          <AddBookForm
-            onClick={() => triggerModal(setAddBookModal, showAddBookModal)}
-          />
+        <Modal onClick={() => setAddBookModal(false)} title={'Add New Book'}>
+          <AddBookForm onClick={() => setAddBookModal(false)} />
         </Modal>
       )}
       {showViewBookModal && (
         <Modal
-          onClick={() => triggerModal(setShowViewBookModal, showViewBookModal)}
+          onClick={() => setShowViewBookModal(value => !value)}
           title={'Book Info'}
         >
           <ViewBookPage
             bookId={bookId}
             returnPath={'My Library'}
-            onClick={() =>
-              triggerModal(setShowViewBookModal, showViewBookModal)
-            }
+            onClick={() => setShowViewBookModal(value => !value)}
           />
         </Modal>
       )}

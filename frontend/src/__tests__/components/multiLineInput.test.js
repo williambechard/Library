@@ -8,7 +8,7 @@ describe('Multi Line Text Input Component Tests', () => {
     const textInputComponent = screen.getByRole('textbox');
     expect(textInputComponent).toBeInTheDocument();
     expect(textInputComponent).toHaveStyle(
-      'width: inherit',
+      'width: 100%',
       'resize: none',
       'font-size: 1rem',
       'border-radius: 6px',

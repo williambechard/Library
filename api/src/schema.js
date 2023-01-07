@@ -115,7 +115,7 @@ export const typeDefs = gql`
     author: Author!
     "The book's cover image"
     coverImage: String
-    "The book's categories (array of IDs)"
+    "The book's category (an ID)"
     category: Category
     "The book's description"
     description: String
@@ -179,7 +179,12 @@ export const typeDefs = gql`
     "Creates a new author"
     addAuthor(firstName: String!, lastName: String!): Author
     "Updates an author"
-    updateAuthor(id: ID!, firstName: String!, lastName: String!): Author
+    updateAuthor(
+      id: ID!
+      firstName: String!
+      lastName: String!
+      books: [String!]!
+    ): Author
     "Removes an author by its id"
     removeAuthor(id: ID!): ID
     "Creates a new category"
@@ -199,19 +204,25 @@ export const resolvers = {
       categories.find(category => category.id === categoryId)
   },
   Author: {
-    books: ({ id: bookId }) => books.filter(book => book.id === bookId)
+    books: ({ books: allBooks }) =>
+      books.filter(book => allBooks.includes(book.id))
   },
   Category: {
-    books: ({ books: bookId }) =>
-      books.filter(books => bookId.includes(books.id))
+    books: ({ books: allBooks }) =>
+      books.filter(book => allBooks.includes(book.id))
   },
   Query: {
     getBooks: () => books,
     getBook: (_parent, { id }) => books.find(book => book.id === id),
     getAuthors: () =>
-      authors.sort((a, b) => a.lastName.localeCompare(b.lastName)),
+      authors.sort((a, b) => {
+        return a.lastName.localeCompare(b.lastName);
+      }),
     getAuthor: (_parent, { id }) => authors.find(author => author.id === id),
-    getCategories: () => categories,
+    getCategories: () =>
+      categories.sort((a, b) => {
+        return a.name.localeCompare(b.name);
+      }),
     getCategory: (_parent, { id }) =>
       categories.find(category => category.id === id)
   },
@@ -236,8 +247,10 @@ export const resolvers = {
       const author = {
         id: String(authors.length + 1),
         firstName,
-        lastName
+        lastName,
+        books: []
       };
+
       authors.push(author);
       return author;
     },
@@ -250,7 +263,10 @@ export const resolvers = {
       categories.push(category);
       return category;
     },
-    updateBook: (_parent, { id, title, authorId, categoryId, description }) => {
+    updateBook: (
+      _parent,
+      { id, title, authorId, categoryId, description, coverImage }
+    ) => {
       const bookIndex = books.findIndex(book => book.id === id);
       if (bookIndex === -1) throw new Error('This book does not exist.');
 
@@ -259,20 +275,23 @@ export const resolvers = {
         title,
         author: authorId,
         category: categoryId,
+        coverImage: coverImage,
         description
       };
       books[bookIndex] = book;
 
       return book;
     },
-    updateAuthor: (_parent, { id, firstName, lastName }) => {
+    updateAuthor: (_parent, { id, firstName, lastName, books }) => {
       const authorIndex = authors.findIndex(author => author.id === id);
       if (authorIndex === -1) throw new Error('This author does not exist.');
       const author = {
         id,
         firstName,
-        lastName
+        lastName,
+        books
       };
+
       authors[authorIndex] = author;
       return author;
     },
