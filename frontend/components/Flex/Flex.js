@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import colors from '../../theme/colors';
+import COLORS from '../../helper/COLORS';
 
 /**
  * Style component based on a div element
@@ -32,7 +32,7 @@ const StyledFlex = styled.div`
 
 const Flex = ({
   children,
-  bgColor = colors.mono[0],
+  bgColor = COLORS.MONO[0],
   gap = 'unset',
   wrap = 'wrap',
   margin = '0',
@@ -52,6 +52,7 @@ const Flex = ({
 }) => {
   return (
     <StyledFlex
+      data-testid={'flex-1'}
       bgColor={bgColor}
       gap={gap}
       wrap={wrap}

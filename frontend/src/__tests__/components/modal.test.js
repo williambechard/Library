@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import ReactDOM from 'react-dom';
-import { logRoles, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Modal } from '../../../components';
 import userEvent from '@testing-library/user-event';
 
@@ -14,12 +14,11 @@ beforeEach(() => {
 
 describe('Modal Component Tests', () => {
   it('Should render a default Modal', () => {
-    const { container } = render(<Modal>modal-1</Modal>);
+    render(<Modal />);
+    const modalComponent = screen.getByTestId('modal-1');
+    expect(modalComponent).toBeInTheDocument();
 
-    const innerSection = screen.getByText('Test Modal');
-    expect(innerSection).toBeInTheDocument();
-
-    const modalComponent = container.querySelector('[aria-modal="true"]');
+    expect(modalComponent).toHaveTextContent('Test Modal');
 
     expect(modalComponent).toHaveStyle(
       'position: fixed',
@@ -35,7 +34,7 @@ describe('Modal Component Tests', () => {
     );
   });
   it('Should render a custom Title', () => {
-    render(<Modal title={'Modal 1'}>modal-1</Modal>);
+    render(<Modal title={'Modal 1'} />);
     const modalComponent = screen.getByText('Modal 1');
     expect(modalComponent).toBeInTheDocument();
   });

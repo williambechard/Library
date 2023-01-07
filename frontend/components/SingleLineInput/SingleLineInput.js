@@ -1,7 +1,7 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 import Text from '../Text/Text';
-import colors from '../../theme/colors';
+import COLORS from '../../helper/COLORS';
 import { stringifyForDisplay } from '@apollo/client/utilities';
 
 /**
@@ -9,19 +9,19 @@ import { stringifyForDisplay } from '@apollo/client/utilities';
  */
 const StyledInput = styled.input`
   ${props => `
-  color: ${colors.mono[colors.mono.length - 1]};
+  color: ${COLORS.MONO[COLORS.MONO.length - 1]};
   font-size: 1rem;
   height: 2rem;
   border-radius: 6px;
-  border: 1px solid ${colors.mono[4]};
+  border: 1px solid ${COLORS.MONO[4]};
   padding-left: 0.5rem;
   width: ${props.width};
   box-sizing: border-box;
 `};
 `;
 
-const StyledAlert = styled.div`
-  color: ${colors.bright[1]};
+const StyledAlert = styled.span`
+  color: ${COLORS.BRIGHT[1]};
   font-family: Poppins;
 `;
 
@@ -30,63 +30,46 @@ const StyledAlert = styled.div`
  * Styling for label part of the input
  */
 const StyledDiv = styled.div`
-  ${props => `width: ${props.width};`};
+  margin-bottom: 20px;
 `;
 
 const SingleLineInput = ({
   labelText = 'Label',
-  name = 'test',
   errors,
   register,
-  width = '100%',
-  bgColor = 'white',
-  inputState = () => {},
-  value = ''
+  width = '100%'
 }) => {
-  const [input, setInput] = useState('');
-
-  useMemo(() => {
-    setInput(value);
-  }, []);
-
   return (
-    <StyledDiv bgColor={bgColor} width={width}>
-      <label style={{ display: 'block' }} htmlFor={name}>
+    <StyledDiv data-testid={'div-1'}>
+      <label htmlFor={labelText}>
         <Text
-          bgColor={bgColor}
+          content={labelText}
           fontWeight={'1000'}
           fontSize={'1'}
           fColor={
-            errors?.[name]
-              ? colors.bright[1]
-              : colors.mono[colors.mono.length - 1]
+            errors?.[labelText]
+              ? COLORS.BRIGHT[1]
+              : COLORS.MONO[COLORS.MONO.length - 1]
           }
-        >
-          {labelText}
-        </Text>
+        />
       </label>
       <StyledInput
         type={'text'}
-        name={name}
-        title={name}
-        id={name}
-        width={'100%'}
-        aria-invalid={errors?.[name] ? 'true' : 'false'}
-        {...register(name, {
+        name={labelText}
+        title={labelText}
+        id={labelText}
+        width={width}
+        aria-invalid={errors?.[labelText] ? 'true' : 'false'}
+        {...register(labelText, {
           required: 'Required',
           minLength: 1,
           maxLength: 110
         })}
-        value={input}
-        onChange={e => {
-          setInput(e.target.value);
-          inputState(e.target.value);
-        }}
       />
-      {errors?.[name] && errors?.[name].type === 'required' && (
+      {errors?.[labelText] && errors?.[labelText].type === 'required' && (
         <StyledAlert role={'alert'}>Input is Required</StyledAlert>
       )}
-      {errors?.[name] && errors?.[name].type === 'maxLength' && (
+      {errors?.[labelText] && errors?.[labelText].type === 'maxLength' && (
         <StyledAlert role={'alert'}>Max length exceeded</StyledAlert>
       )}
     </StyledDiv>

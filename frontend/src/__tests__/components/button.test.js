@@ -1,7 +1,8 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Button, colors } from '../../../components';
+import { Button } from '../../../components';
+import { COLORS } from '../../../components';
 import React from 'react';
 
 describe('Button  Component Tests', () => {
@@ -12,9 +13,9 @@ describe('Button  Component Tests', () => {
     expect(buttonComponent).toHaveStyle(
       'fontWeight:400',
       'fontSize:1',
-      `background-color:white`,
-      `color:black`,
-      `border-color:black`,
+      `background-color:${COLORS.MONO[0]}`,
+      `color:${COLORS.MONO[COLORS.MONO.length - 1]}`,
+      `border-color:${COLORS.MONO[COLORS.MONO.length - 1]}`,
       'margin:unset'
     );
   });
@@ -28,9 +29,9 @@ describe('Button  Component Tests', () => {
       <Button
         fontWeight={'900'}
         fontSize={'2'}
-        bgColor={colors.mono[1]}
-        fColor={colors.mono[2]}
-        borderColor={colors.mono[1]}
+        bgColor={COLORS.MONO[1]}
+        fColor={COLORS.MONO[2]}
+        borderColor={COLORS.MONO[1]}
         margin={'1px'}
       />
     );
@@ -39,9 +40,9 @@ describe('Button  Component Tests', () => {
     expect(buttonComponent).toHaveStyle(
       'fontWeight:900',
       'fontSize:2',
-      `background-color:#dfdfdf`,
-      `color:#bfbfbf`,
-      `border-color:#dfdfdf`,
+      `background-color:${COLORS.MONO[1]}`,
+      `color:${COLORS.MONO[2]}`,
+      `border-color:${COLORS.MONO[1]}`,
       'margin:1px'
     );
   });

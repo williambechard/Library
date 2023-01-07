@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import colors from '../../theme/colors';
+import COLORS from '../../helper/COLORS';
 
 /**
  * Style component based on a div element
@@ -15,14 +15,18 @@ const StyledCard = styled.div`
   box-shadow: 5px 5px 10px #a9a9a9;
   cursor: pointer;
   &:hover {
-    border: 0.2rem solid ${colors.mono[colors.mono.length - 1]};
-    box-shadow: 5px 10px 20px ${colors.mono[3]};
+    border: 0.2rem solid ${COLORS.MONO[COLORS.MONO.length - 1]};
+    box-shadow: 5px 10px 20px ${COLORS.MONO[3]};
   }
 `;
 
 const Card = ({ children, label = 'Moby Dick', onClick }) => {
   return (
-    <StyledCard aria-label={'Book Card ' + label} onClick={onClick}>
+    <StyledCard
+      aria-label={'Book Card ' + label}
+      onClick={onClick}
+      data-testid={'card-1'}
+    >
       {children}
     </StyledCard>
   );

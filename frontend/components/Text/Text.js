@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import colors from '../../theme/colors';
+import COLORS from '../../helper/COLORS';
 
 /**
  * Style component based on a div element
@@ -25,51 +25,47 @@ const TextItem = styled.div`
   ${props =>
     props.clickable &&
     `
+    text-decoration:underline dotted;
     cursor: pointer;
      &:hover {
         text-decoration:underline;
-        color:${colors.bright[2]};
+        color:${COLORS.BRIGHT[2]};
         text-weight:bold
       }
   `}
   text-align: left;
   font-family: Poppins, serif;
 `;
-
-const Text = React.forwardRef(
-  (
-    {
-      display = 'inline-block',
-      fontSize = '1',
-      bgColor = colors.mono[0],
-      fColor = colors.mono[colors.mono.length - 1],
-      fontWeight = '400',
-      margin = '0',
-      overflow = 'hidden',
-      maxHeight = '40vh',
-      clickable = false,
-      onClick,
-      children
-    },
-    ref
-  ) => {
-    return (
-      <TextItem
-        display={display}
-        fontSize={fontSize}
-        bgColor={bgColor}
-        fColor={fColor}
-        fontWeight={fontWeight}
-        margin={margin}
-        overflow={overflow}
-        maxHeight={maxHeight}
-        clickable={clickable}
-        onClick={onClick}
-      >
-        {children}
-      </TextItem>
-    );
-  }
-);
+const Text = ({
+  display = 'inline-block',
+  content = 'test',
+  fontSize = '1',
+  bgColor = COLORS.MONO[0],
+  fColor = COLORS.MONO[COLORS.MONO.length - 1],
+  fontWeight = '400',
+  margin = '0',
+  overflow = 'hidden',
+  maxHeight = '40vh',
+  clickable = false,
+  onClick
+}) => {
+  return (
+    <TextItem
+      aria-label={content}
+      display={display}
+      fontSize={fontSize}
+      bgColor={bgColor}
+      fColor={fColor}
+      fontWeight={fontWeight}
+      margin={margin}
+      overflow={overflow}
+      maxHeight={maxHeight}
+      clickable={clickable}
+      onClick={onClick}
+    >
+      {content}
+    </TextItem>
+  );
+};
 
 export default Text;

@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import colors from '../../theme/colors';
+import COLORS from '../../helper/COLORS';
 
 /**
  * Style component based on a div element
  */
-const StyledPage = styled.section`
+const StyledPage = styled.div`
   ${props =>
     `
       background-color:${props.bgColor};
@@ -19,7 +19,7 @@ const StyledPage = styled.section`
 `;
 
 const Section = ({
-  bgColor = colors.mono[0],
+  bgColor = COLORS.MONO[0],
   templateRows = 'auto 1fr auto',
   borderRadius = '0',
   height = '100vh',
@@ -29,6 +29,7 @@ const Section = ({
 }) => {
   return (
     <StyledPage
+      data-testid={'section-1'}
       templateRows={templateRows}
       height={height}
       borderRadius={borderRadius}

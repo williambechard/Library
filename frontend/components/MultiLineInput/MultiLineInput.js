@@ -1,7 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 import Text from '../Text/Text';
-import colors from '../../theme/colors';
+import COLORS from '../../helper/COLORS';
 
 /**
  * Style component based on a textarea
@@ -11,17 +11,14 @@ const StyledInput = styled.textarea`
   resize: ${props => props.resize};
   font-size: 1rem;
   border-radius: 6px;
-  color: ${colors.mono[colors.mono.length - 1]};
-  border: 1px solid ${colors.mono[4]};
+  color: ${COLORS.MONO[COLORS.MONO.length - 1]};
+  border: 1px solid ${COLORS.MONO[4]};
   padding-left: 0.5rem;
   box-sizing: border-box;
-  display: block;
-  width: 100%;
-  height: 85%;
 `;
 
-const StyledAlert = styled.div`
-  color: ${colors.bright[1]};
+const StyledAlert = styled.span`
+  color: ${COLORS.BRIGHT[1]};
   font-family: Poppins;
 `;
 
@@ -36,54 +33,43 @@ const StyledLabel = styled.label`
 const MultiLineInput = ({
   register,
   labelText = 'Label',
-  name = 'test',
   errors,
   rows,
-  resize = 'none',
-  value = ''
+  resize = 'none'
 }) => {
-  const [input, setInput] = useState('');
-
-  useMemo(() => {
-    setInput(value);
-  }, []);
-
   return (
     <StyledLabel>
-      <label htmlFor={name}>
+      <label htmlFor={labelText}>
         <Text
+          content={labelText}
           fontSize={1}
           fontWeight={'1000'}
           fColor={
-            errors?.[name]
-              ? colors.bright[1]
-              : colors.mono[colors.mono.length - 1]
+            errors?.[labelText]
+              ? COLORS.BRIGHT[1]
+              : COLORS.MONO[COLORS.MONO.length - 1]
           }
-        >
-          {labelText}
-        </Text>
+        />
       </label>
       <StyledInput
         type={'text'}
-        aria-label={name}
-        id={name}
-        title={name}
+        aria-label={labelText}
+        id={labelText}
+        title={labelText}
         rows={rows}
         resize={resize}
-        name={name}
-        aria-invalid={errors?.[name] ? 'true' : 'false'}
-        {...register(name, {
+        name={labelText}
+        aria-invalid={errors?.[labelText] ? 'true' : 'false'}
+        {...register(labelText, {
           required: 'Required',
           minLength: 1,
           maxLength: 800
         })}
-        value={input}
-        onChange={e => setInput(e.target.value)}
       />
-      {errors?.[name] && errors?.[name].type === 'required' && (
+      {errors?.[labelText] && errors?.[labelText].type === 'required' && (
         <StyledAlert role={'alert'}>Input is Required</StyledAlert>
       )}
-      {errors?.[name] && errors?.[name].type === 'maxLength' && (
+      {errors?.[labelText] && errors?.[labelText].type === 'maxLength' && (
         <StyledAlert role={'alert'}>Max length exceeded</StyledAlert>
       )}
     </StyledLabel>
